@@ -10,7 +10,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AMazeByIsabellaWu">
         <activity
-            android:name=".MainActivity"
+            android:name=".GeneratingActivity"
+            android:exported="true" />
+        <activity
+            android:name=".AMazeActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
