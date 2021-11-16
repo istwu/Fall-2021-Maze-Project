@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 
 public class GeneratingActivity extends AppCompatActivity {
@@ -14,19 +15,19 @@ public class GeneratingActivity extends AppCompatActivity {
         setContentView(R.layout.activity_generating);
     }
 
-    public void startGame(View view){
+    public void startGame(View view) {
         // check if progress bar is at 100%
         // check if driver + config have been selected
+//        Log.v();
 
-//        Intent intent = new Intent(this, GeneratingActivity.class);
-//        startActivity(intent);
-    }
-
-    private void startManual(){
-
-    }
-
-    private void startAuto(){
-
+        boolean test = true;
+        Intent intent;
+        if(test) {
+            intent = new Intent(this, PlayManuallyActivity.class);
+        }
+        else {
+            intent = new Intent(this, PlayAnimationActivity.class);
+        }
+        startActivity(intent);
     }
 }
