@@ -10,6 +10,18 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AMazeByIsabellaWu">
         <activity
+            android:name=".LosingActivity"
+            android:exported="true" />
+        <activity
+            android:name=".WinningActivity"
+            android:exported="true" />
+        <activity
+            android:name=".PlayAnimationActivity"
+            android:exported="true" />
+        <activity
+            android:name=".PlayManuallyActivity"
+            android:exported="true" />
+        <activity
             android:name=".GeneratingActivity"
             android:exported="true" />
         <activity
