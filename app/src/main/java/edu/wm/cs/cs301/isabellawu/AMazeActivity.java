@@ -14,7 +14,7 @@ public class AMazeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
     }
 
-    public void startGame(View view){
+    public void startGenerating(View view){
         Intent intent = new Intent(this, GeneratingActivity.class);
         startActivity(intent);
     }

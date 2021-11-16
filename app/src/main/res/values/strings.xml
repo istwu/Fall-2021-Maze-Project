@@ -1,9 +1,23 @@
 <resources>
     <string name="app_name">AMazeByIsabellaWu</string>
 
-    <string-array name="algorithm_names">
+    <string-array name="generation_names">
         <item>DFS</item>
         <item>Prim</item>
         <item>Boruvka</item>
     </string-array>
+
+    <string-array name="driver_names">
+        <item>Manual</item>
+        <item>Wizard</item>
+        <item>WallFollower</item>
+    </string-array>
+
+    <string-array name="config_names">
+        <item>Premium</item>
+        <item>Mediocre</item>
+        <item>So-so</item>
+        <item>Shaky</item>
+    </string-array>
+
 </resources>
