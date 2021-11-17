@@ -22,7 +22,7 @@ public class GeneratingActivity extends AppCompatActivity {
 
         boolean test = true;
         Intent intent;
-        if(test) {
+        if(!test) {
             intent = new Intent(this, PlayManuallyActivity.class);
         }
         else {
