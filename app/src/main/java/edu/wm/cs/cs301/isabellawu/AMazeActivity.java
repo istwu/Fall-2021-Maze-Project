@@ -5,12 +5,12 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.SeekBar;
+import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import org.w3c.dom.Text;
 
 public class AMazeActivity extends AppCompatActivity {
 
@@ -18,11 +18,13 @@ public class AMazeActivity extends AppCompatActivity {
     private boolean perfect;
     private int generation; // 0 = DFS, 1 = Prim, 2 = Boruvka
 
-    SeekBar skillSeekBar;
-    Switch roomSwitch;
-    TextView skillText;
+    private SeekBar skillSeekBar;
+    private Switch roomSwitch;
+    private TextView skillText;
+    private Spinner algoSpinner;
 
     private static final String TAG = "AMazeActivity";
+    private Object AdapterView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,7 +59,41 @@ public class AMazeActivity extends AppCompatActivity {
         roomSwitch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if(roomSwitch.isChecked()) {
+                    perfect = false;
+                }
+                else {
+                    perfect = true;
+                }
+                Toast toast = Toast.makeText(getApplicationContext(), "Rooms set to " + !perfect, Toast.LENGTH_SHORT);
+                toast.show();
+                Log.v(TAG, "Rooms set to " + !perfect);
+            }
+        });
 
+        algoSpinner = (Spinner) findViewById(R.id.algoSpinner);
+        algoSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(android.widget.AdapterView<?> adapterView, View view, int i, long l) {
+                // i = position
+                // l = id
+                generation = i;
+                String algo = "";
+                switch(generation) {
+                    case 0: algo = "DFS";
+                    break;
+                    case 1: algo = "Prim";
+                    break;
+                    case 2: algo = "Boruvka";
+                    break;
+                }
+                Toast toast = Toast.makeText(getApplicationContext(), "Generation algorithm set to " + algo, Toast.LENGTH_SHORT);
+                toast.show();
+                Log.v(TAG, "Generation algorithm set to " + algo);
+            }
+
+            @Override
+            public void onNothingSelected(android.widget.AdapterView<?> adapterView) {
             }
         });
 

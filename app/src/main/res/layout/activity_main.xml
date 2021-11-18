@@ -10,7 +10,7 @@
         android:id="@+id/titleText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="56dp"
+        android:layout_marginTop="40dp"
         android:text="Escape the Labyrinth"
         android:textSize="34sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -23,72 +23,21 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="132dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="16dp"
         android:text="Maze complexity:"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/titleText" />
 
-    <ToggleButton
-        android:id="@+id/toggleButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:text="ToggleButton"
-        android:textOff="Generate new maze"
-        android:textOn="Revisit last maze"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView13" />
-
-    <SeekBar
-        android:id="@+id/skillSeekBar"
-        android:layout_width="290dp"
-        android:layout_height="27dp"
-        android:layout_marginTop="16dp"
-        android:indeterminate="false"
-        android:max="15"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.495"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView" />
-
-    <Switch
-        android:id="@+id/roomSwitch"
+    <TextView
+        android:id="@+id/textView14"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
-        android:checked="true"
-        android:minHeight="48dp"
-        android:showText="false"
-        android:text="Include rooms in maze?"
+        android:text="Select generation algorithm:"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/skillSeekBar" />
-
-    <Spinner
-        android:id="@+id/algorithmSpinner"
-        android:layout_width="200dp"
-        android:layout_height="48dp"
-        android:layout_marginTop="12dp"
-        android:entries="@array/generation_names"
-        android:spinnerMode="dropdown"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.483"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView14" />
-
-    <TextView
-        android:id="@+id/skillText"
-        android:layout_width="40dp"
-        android:layout_height="23dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginEnd="56dp"
-        android:text="0"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.139"
-        app:layout_constraintStart_toEndOf="@+id/textView"
-        app:layout_constraintTop_toBottomOf="@+id/titleText" />
+        app:layout_constraintTop_toBottomOf="@+id/roomSwitch" />
 
     <Button
         android:id="@+id/startGeneratingButton"
@@ -103,27 +52,78 @@
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toggleButton"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintVertical_bias="0.072" />
+
+    <Spinner
+        android:id="@+id/algoSpinner"
+        android:layout_width="197dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="16dp"
+        android:entries="@array/generation_names"
+        android:spinnerMode="dropdown"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView14" />
+
+    <ToggleButton
+        android:id="@+id/toggleButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="ToggleButton"
+        android:textOff="Generate new maze"
+        android:textOn="Revisit last maze"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.504"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView13" />
 
     <TextView
         android:id="@+id/textView13"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="24dp"
         android:text="Generate new maze or revisit old maze?"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/algorithmSpinner" />
+        app:layout_constraintTop_toBottomOf="@+id/algoSpinner" />
 
     <TextView
-        android:id="@+id/textView14"
+        android:id="@+id/skillText"
+        android:layout_width="40dp"
+        android:layout_height="23dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="56dp"
+        android:text="0"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.162"
+        app:layout_constraintStart_toEndOf="@+id/textView"
+        app:layout_constraintTop_toBottomOf="@+id/titleText" />
+
+    <SeekBar
+        android:id="@+id/skillSeekBar"
+        android:layout_width="290dp"
+        android:layout_height="27dp"
+        android:layout_marginTop="12dp"
+        android:indeterminate="false"
+        android:max="15"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.495"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView" />
+
+    <Switch
+        android:id="@+id/roomSwitch"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="Select generation algorithm:"
+        android:layout_marginTop="12dp"
+        android:checked="true"
+        android:minHeight="48dp"
+        android:showText="false"
+        android:text="Include rooms in maze?"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/roomSwitch" />
+        app:layout_constraintTop_toBottomOf="@+id/skillSeekBar" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
