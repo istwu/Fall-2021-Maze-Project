@@ -4,9 +4,11 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Users/IW/AndroidStudioProjects/AMazeByIsabellaWu/app/src/main/res/layout/activity_generating.xml" value="0.25" />
+        <entry key="..\:/Users/IW/AndroidStudioProjects/AMazeByIsabellaWu/app/src/main/res/layout/activity_losing.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/IW/AndroidStudioProjects/AMazeByIsabellaWu/app/src/main/res/layout/activity_main.xml" value="0.22" />
         <entry key="..\:/Users/IW/AndroidStudioProjects/AMazeByIsabellaWu/app/src/main/res/layout/activity_play_animation.xml" value="0.33" />
         <entry key="..\:/Users/IW/AndroidStudioProjects/AMazeByIsabellaWu/app/src/main/res/layout/activity_play_manually.xml" value="0.35507246376811596" />
+        <entry key="..\:/Users/IW/AndroidStudioProjects/AMazeByIsabellaWu/app/src/main/res/layout/activity_winning.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/IW/AndroidStudioProjects/AMazeByIsabellaWu/app/src/main/res/menu/menu.xml" value="0.36666666666666664" />
       </map>
     </option>
