@@ -11,28 +11,24 @@ import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ToggleButton;
 
 public class AMazeActivity extends AppCompatActivity {
 
     private int skill;
     private boolean perfect;
     private int generation; // 0 = DFS, 1 = Prim, 2 = Boruvka
-
-    private SeekBar skillSeekBar;
-    private Switch roomSwitch;
-    private TextView skillText;
-    private Spinner algoSpinner;
+    private boolean revisit;
 
     private static final String TAG = "AMazeActivity";
-    private Object AdapterView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        skillText = (TextView) findViewById(R.id.skillText);
-        skillSeekBar = (SeekBar) findViewById(R.id.skillSeekBar);
+        TextView skillText = (TextView) findViewById(R.id.skillText);
+        SeekBar skillSeekBar = (SeekBar) findViewById(R.id.skillSeekBar);
         skillSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
@@ -55,23 +51,15 @@ public class AMazeActivity extends AppCompatActivity {
             }
         });
 
-        roomSwitch = (Switch) findViewById(R.id.roomSwitch);
-        roomSwitch.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(roomSwitch.isChecked()) {
-                    perfect = false;
-                }
-                else {
-                    perfect = true;
-                }
-                Toast toast = Toast.makeText(getApplicationContext(), "Rooms set to " + !perfect, Toast.LENGTH_SHORT);
-                toast.show();
-                Log.v(TAG, "Rooms set to " + !perfect);
-            }
+        Switch roomSwitch = (Switch) findViewById(R.id.roomSwitch);
+        roomSwitch.setOnClickListener(view -> {
+            perfect = !roomSwitch.isChecked();
+            Toast toast = Toast.makeText(getApplicationContext(), "Rooms set to " + !perfect, Toast.LENGTH_SHORT);
+            toast.show();
+            Log.v(TAG, "Rooms set to " + !perfect);
         });
 
-        algoSpinner = (Spinner) findViewById(R.id.algoSpinner);
+        Spinner algoSpinner = (Spinner) findViewById(R.id.algoSpinner);
         algoSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(android.widget.AdapterView<?> adapterView, View view, int i, long l) {
@@ -94,6 +82,21 @@ public class AMazeActivity extends AppCompatActivity {
 
             @Override
             public void onNothingSelected(android.widget.AdapterView<?> adapterView) {
+            }
+        });
+
+        ToggleButton toggleMazeButton = (ToggleButton) findViewById(R.id.toggleMazeButton);
+        toggleMazeButton.setOnClickListener(view -> {
+            revisit = toggleMazeButton.isChecked();
+            if(revisit) {
+                Toast toast = Toast.makeText(getApplicationContext(), "Revisiting old maze", Toast.LENGTH_SHORT);
+                toast.show();
+                Log.v(TAG, "Revisiting old maze");
+            }
+            else {
+                Toast toast = Toast.makeText(getApplicationContext(), "Generating new maze", Toast.LENGTH_SHORT);
+                toast.show();
+                Log.v(TAG, "Generating new maze");
             }
         });
 
