@@ -6,15 +6,18 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.ToggleButton;
+
+import java.util.Random;
 
 public class AMazeActivity extends AppCompatActivity {
 
+    private int seed;
     private int skill;
     private boolean perfect;
     private int generation; // 0 = DFS, 1 = Prim, 2 = Boruvka
@@ -84,25 +87,16 @@ public class AMazeActivity extends AppCompatActivity {
             public void onNothingSelected(android.widget.AdapterView<?> adapterView) {
             }
         });
-
-        ToggleButton toggleMazeButton = (ToggleButton) findViewById(R.id.toggleMazeButton);
-        toggleMazeButton.setOnClickListener(view -> {
-            revisit = toggleMazeButton.isChecked();
-            if(revisit) {
-                Toast toast = Toast.makeText(getApplicationContext(), "Revisiting old maze", Toast.LENGTH_SHORT);
-                toast.show();
-                Log.v(TAG, "Revisiting old maze");
-            }
-            else {
-                Toast toast = Toast.makeText(getApplicationContext(), "Generating new maze", Toast.LENGTH_SHORT);
-                toast.show();
-                Log.v(TAG, "Generating new maze");
-            }
-        });
-
     }
 
-    public void startGenerating(View view){
+    public void getOldMaze(View view) {
+        Intent intent = new Intent(this, GeneratingActivity.class);
+        startActivity(intent);
+    }
+
+    public void generateNewMaze(View view) {
+        Random random = new Random();
+        seed = random.nextInt();
         Intent intent = new Intent(this, GeneratingActivity.class);
         startActivity(intent);
     }
