@@ -1,18 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:android="http://schemas.android.com/apk/res/android">
-
-    <item
-        android:id="@+id/action_zoomout"
-        android:icon="@android:drawable/btn_minus"
-        android:orderInCategory="100"
-        android:title="-"
-        app:showAsAction="always" />
-    <item
-        android:id="@+id/action_zoomin"
-        android:icon="@android:drawable/btn_plus"
-        android:orderInCategory="100"
-        android:title="+"
-        app:showAsAction="always" />
-</menu>
+    xmlns:android="http://schemas.android.com/apk/res/android"/>

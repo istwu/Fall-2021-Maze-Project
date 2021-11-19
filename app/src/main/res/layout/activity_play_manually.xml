@@ -4,97 +4,145 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".PlayManuallyActivity">
-
-    <Button
-        android:id="@+id/button"
-        android:layout_width="112dp"
-        android:layout_height="60dp"
-        android:text="Toggle Map"
-        app:layout_constraintEnd_toStartOf="@+id/button2"
-        app:layout_constraintHorizontal_bias="0.432"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/button2" />
-
-    <Button
-        android:id="@+id/button2"
-        android:layout_width="112dp"
-        android:layout_height="60dp"
-        android:layout_marginTop="60dp"
-        android:text="Toggle Solution"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <Button
-        android:id="@+id/button3"
-        android:layout_width="112dp"
-        android:layout_height="60dp"
-        android:text="Toggle Walls"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.578"
-        app:layout_constraintStart_toEndOf="@+id/button2"
-        app:layout_constraintTop_toTopOf="@+id/button2" />
-
-    <ImageButton
-        android:id="@+id/imageButton"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:layout_marginBottom="120dp"
-        android:minHeight="48dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView2"
-        app:layout_constraintVertical_bias="0.294"
-        app:srcCompat="@drawable/ic_group_collapse_00"
-        app:tint="#000000"
-        tools:ignore="SpeakableTextPresentCheck" />
-
-    <ImageButton
-        android:id="@+id/imageButton2"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:layout_marginEnd="116dp"
-        android:layout_marginBottom="60dp"
-        android:minWidth="48dp"
-        android:rotation="90"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageButton"
-        app:layout_constraintVertical_bias="0.0"
-        app:srcCompat="@drawable/ic_group_collapse_00"
-        app:tint="#000000"
-        tools:ignore="SpeakableTextPresentCheck" />
-
-    <ImageButton
-        android:id="@+id/imageButton3"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:layout_marginStart="112dp"
-        android:layout_marginBottom="60dp"
-        android:minWidth="48dp"
-        android:rotation="-90"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageButton"
-        app:layout_constraintVertical_bias="0.0"
-        app:srcCompat="@drawable/ic_group_collapse_00"
-        app:tint="#000000"
-        tools:ignore="SpeakableTextPresentCheck" />
+    tools:context=".gui.PlayManuallyActivity">
 
     <ImageView
         android:id="@+id/imageView2"
         android:layout_width="300dp"
         android:layout_height="0dp"
-        android:layout_marginTop="52dp"
+        android:layout_marginTop="16dp"
         app:layout_constraintDimensionRatio="1:1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button2"
+        app:layout_constraintTop_toBottomOf="@+id/zoomSeekBar_manual"
         app:srcCompat="@drawable/ic_launcher_background" />
+
+    <ToggleButton
+        android:id="@+id/toggleMapButton_manual"
+        android:layout_width="112dp"
+        android:layout_height="60dp"
+        android:text="Toggle Map"
+        android:textOff="Map Off"
+        android:textOn="Map On"
+        app:layout_constraintEnd_toStartOf="@+id/toggleSolutionButton"
+        app:layout_constraintHorizontal_bias="0.432"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/toggleSolutionButton" />
+
+    <ToggleButton
+        android:id="@+id/toggleSolutionButton"
+        android:layout_width="112dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="20dp"
+        android:text="Toggle Solution"
+        android:textOff="Solution Off"
+        android:textOn="Solution On"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ToggleButton
+        android:id="@+id/toggleWallsButton"
+        android:layout_width="112dp"
+        android:layout_height="60dp"
+        android:text="Toggle Walls"
+        android:textOff="Walls Off"
+        android:textOn="Walls On"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.578"
+        app:layout_constraintStart_toEndOf="@+id/toggleSolutionButton"
+        app:layout_constraintTop_toTopOf="@+id/toggleSolutionButton" />
+
+    <SeekBar
+        android:id="@+id/zoomSeekBar_manual"
+        android:layout_width="287dp"
+        android:layout_height="32dp"
+        android:layout_marginTop="4dp"
+        android:max="100"
+        android:min="0"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toggleSolutionButton" />
+
+    <TextView
+        android:id="@+id/textView12"
+        android:layout_width="40dp"
+        android:layout_height="37dp"
+        android:layout_marginTop="68dp"
+        android:text="-"
+        android:textAlignment="viewEnd"
+        android:textSize="48sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toStartOf="@+id/zoomSeekBar_manual"
+        app:layout_constraintHorizontal_bias="0.272"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textView13"
+        android:layout_width="33dp"
+        android:layout_height="37dp"
+        android:layout_marginTop="76dp"
+        android:text="+"
+        android:textAlignment="viewStart"
+        android:textSize="34sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.448"
+        app:layout_constraintStart_toEndOf="@+id/zoomSeekBar_manual"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageButton
+        android:id="@+id/forwardButton"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:layout_marginBottom="120dp"
+        android:minHeight="48dp"
+        android:onClick="forward"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView2"
+        app:layout_constraintVertical_bias="0.136"
+        app:srcCompat="@drawable/ic_group_collapse_00"
+        app:tint="#000000"
+        tools:ignore="SpeakableTextPresentCheck" />
+
+    <ImageButton
+        android:id="@+id/rightButton"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:layout_marginEnd="108dp"
+        android:layout_marginBottom="60dp"
+        android:minWidth="48dp"
+        android:onClick="right"
+        android:rotation="90"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/forwardButton"
+        app:layout_constraintVertical_bias="0.0"
+        app:srcCompat="@drawable/ic_group_collapse_00"
+        app:tint="#000000"
+        tools:ignore="SpeakableTextPresentCheck" />
+
+    <ImageButton
+        android:id="@+id/leftButton"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:layout_marginStart="108dp"
+        android:layout_marginBottom="60dp"
+        android:minWidth="48dp"
+        android:onClick="left"
+        android:rotation="-90"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/forwardButton"
+        app:layout_constraintVertical_bias="0.0"
+        app:srcCompat="@drawable/ic_group_collapse_00"
+        app:tint="#000000"
+        tools:ignore="SpeakableTextPresentCheck" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

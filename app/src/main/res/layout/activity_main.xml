@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".AMazeActivity">
+    tools:context=".gui.AMazeActivity">
 
     <TextView
         android:id="@+id/titleText"
@@ -41,33 +41,29 @@
         app:layout_constraintTop_toBottomOf="@+id/titleText" />
 
     <Button
-        android:id="@+id/returnButton"
-        android:layout_width="140dp"
-        android:layout_height="68dp"
-        android:layout_marginStart="48dp"
-        android:layout_marginBottom="308dp"
-        android:onClick="getOldMaze"
-        android:text="Return to old maze"
-        android:textSize="16sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/algoSpinner"
-        app:layout_constraintVertical_bias="0.708" />
-
-    <Button
         android:id="@+id/generateButton"
         android:layout_width="140dp"
         android:layout_height="68dp"
-        android:layout_marginBottom="308dp"
+        android:layout_marginBottom="212dp"
         android:onClick="generateNewMaze"
         android:text="Generate new maze"
         android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.409"
-        app:layout_constraintStart_toEndOf="@+id/returnButton"
-        app:layout_constraintTop_toBottomOf="@+id/algoSpinner"
-        app:layout_constraintVertical_bias="0.708" />
+        app:layout_constraintHorizontal_bias="0.421"
+        app:layout_constraintStart_toEndOf="@+id/returnButton" />
+
+    <Button
+        android:id="@+id/returnButton"
+        android:layout_width="140dp"
+        android:layout_height="68dp"
+        android:layout_marginStart="48dp"
+        android:layout_marginBottom="212dp"
+        android:onClick="getOldMaze"
+        android:text="Return to old maze"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <Spinner
         android:id="@+id/algoSpinner"
@@ -90,7 +86,6 @@
         android:showText="false"
         android:text="Include rooms in maze?"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/skillSeekBar" />
 

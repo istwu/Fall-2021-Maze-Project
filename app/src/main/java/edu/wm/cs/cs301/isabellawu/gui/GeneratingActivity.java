@@ -1,9 +1,8 @@
-package edu.wm.cs.cs301.isabellawu;
+package edu.wm.cs.cs301.isabellawu.gui;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
-import android.nfc.Tag;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -11,6 +10,8 @@ import android.widget.AdapterView;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.Toast;
+
+import edu.wm.cs.cs301.isabellawu.R;
 
 public class GeneratingActivity extends AppCompatActivity {
 
@@ -111,9 +112,8 @@ public class GeneratingActivity extends AppCompatActivity {
         // check if progress bar is at 100%
         // check if driver + config have been selected
         if(progress == 100 && driver != 0 && (manual || (!manual && config != 0))) {
-            boolean test = true;
             Intent intent;
-            if(!test) {
+            if(manual) {
                 intent = new Intent(this, PlayManuallyActivity.class);
             }
             else {

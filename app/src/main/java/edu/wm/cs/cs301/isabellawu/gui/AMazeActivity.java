@@ -1,4 +1,4 @@
-package edu.wm.cs.cs301.isabellawu;
+package edu.wm.cs.cs301.isabellawu.gui;
 
 import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.Switch;
@@ -14,6 +13,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.Random;
+
+import edu.wm.cs.cs301.isabellawu.R;
 
 public class AMazeActivity extends AppCompatActivity {
 
