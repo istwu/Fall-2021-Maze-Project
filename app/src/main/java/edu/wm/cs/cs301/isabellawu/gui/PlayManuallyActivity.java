@@ -2,6 +2,7 @@ package edu.wm.cs.cs301.isabellawu.gui;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -111,5 +112,19 @@ public class PlayManuallyActivity extends AppCompatActivity {
         Toast toast = Toast.makeText(getApplicationContext(), "Right", Toast.LENGTH_SHORT);
         toast.show();
         Log.v(TAG, "Right");
+    }
+
+    public void go2winning(View view) {
+        // need to pass in steps, energy
+        Intent intent;
+        intent = new Intent(this, WinningActivity.class);
+        startActivity(intent);
+    }
+
+    public void go2losing(View view) {
+        // need to pass in steps, energy, reason for loss
+        Intent intent;
+        intent = new Intent(this, LosingActivity.class);
+        startActivity(intent);
     }
 }

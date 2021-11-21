@@ -44,26 +44,28 @@
         android:id="@+id/generateButton"
         android:layout_width="140dp"
         android:layout_height="68dp"
-        android:layout_marginBottom="212dp"
+        android:layout_marginBottom="172dp"
         android:onClick="generateNewMaze"
         android:text="Generate new maze"
         android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.421"
-        app:layout_constraintStart_toEndOf="@+id/returnButton" />
+        app:layout_constraintStart_toEndOf="@+id/returnButton"
+        app:layout_constraintTop_toBottomOf="@+id/algoSpinner" />
 
     <Button
         android:id="@+id/returnButton"
         android:layout_width="140dp"
         android:layout_height="68dp"
         android:layout_marginStart="48dp"
-        android:layout_marginBottom="212dp"
+        android:layout_marginBottom="172dp"
         android:onClick="getOldMaze"
         android:text="Return to old maze"
         android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/algoSpinner" />
 
     <Spinner
         android:id="@+id/algoSpinner"
