@@ -92,6 +92,13 @@ public class PlayManuallyActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    public void onBackPressed() {
+        Intent intent;
+        intent = new Intent(this, AMazeActivity.class);
+        startActivity(intent);
+    }
+
     public void forward(View view) {
         // move forward 1 step
         steps += 1;

@@ -108,6 +108,13 @@ public class GeneratingActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    public void onBackPressed() {
+        Intent intent;
+        intent = new Intent(this, AMazeActivity.class);
+        startActivity(intent);
+    }
+
     public void startGame(View view) {
         // check if progress bar is at 100%
         // check if driver + config have been selected

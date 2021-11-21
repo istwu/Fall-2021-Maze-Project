@@ -117,6 +117,13 @@ public class PlayAnimationActivity extends AppCompatActivity {
         });
     }
 
+    @Override
+    public void onBackPressed() {
+        Intent intent;
+        intent = new Intent(this, AMazeActivity.class);
+        startActivity(intent);
+    }
+
     public void go2winning(View view) {
         // need to pass in steps, energy
         Intent intent;
