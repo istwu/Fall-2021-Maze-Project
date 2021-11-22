@@ -13,6 +13,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.Dictionary;
+import java.util.HashMap;
 import java.util.Random;
 
 import edu.wm.cs.cs301.isabellawu.R;
@@ -23,7 +24,7 @@ public class AMazeActivity extends AppCompatActivity {
     private int skill;
     private boolean perfect;
     private int generation; // 0 = DFS, 1 = Prim, 2 = Boruvka
-    private Dictionary prev_values;
+    private HashMap prev_values;
 
     private static final String TAG = "AMazeActivity";
 
@@ -32,6 +33,7 @@ public class AMazeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        prev_values = new HashMap<String, Object>();
         Bundle extras = getIntent().getExtras();
         if(extras != null) {
             if (extras.containsKey("seed")) {
@@ -120,6 +122,20 @@ public class AMazeActivity extends AppCompatActivity {
             intent.putExtra("skill", (int) prev_values.get("skill"));
             intent.putExtra("perfect", (boolean) prev_values.get("perfect"));
             intent.putExtra("generation", (int) prev_values.get("generation"));
+            Log.v(TAG, "Seed: " + prev_values.get("seed"));
+            Log.v(TAG, "Skill level: " + prev_values.get("skill"));
+            Log.v(TAG, "Rooms included: " + prev_values.get("perfect"));
+            switch((int) prev_values.get("generation")) {
+                case 0:
+                    Log.v(TAG, "Generation algorithm: DFS");
+                    break;
+                case 1:
+                    Log.v(TAG, "Generation algorithm: Prim");
+                    break;
+                case 2:
+                    Log.v(TAG, "Generation algorithm: Boruvka");
+                    break;
+            }
             startActivity(intent);
         }
     }
@@ -132,6 +148,20 @@ public class AMazeActivity extends AppCompatActivity {
         intent.putExtra("skill", skill);
         intent.putExtra("perfect", perfect);
         intent.putExtra("generation", generation);
+        Log.v(TAG, "Seed: " + seed);
+        Log.v(TAG, "Skill level: " + skill);
+        Log.v(TAG, "Rooms included: " + perfect);
+        switch(generation) {
+            case 0:
+                Log.v(TAG, "Generation algorithm: DFS");
+                break;
+            case 1:
+                Log.v(TAG, "Generation algorithm: Prim");
+                break;
+            case 2:
+                Log.v(TAG, "Generation algorithm: Boruvka");
+                break;
+        }
         startActivity(intent);
     }
 }

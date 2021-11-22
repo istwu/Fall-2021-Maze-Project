@@ -22,6 +22,11 @@ public class GeneratingActivity extends AppCompatActivity {
     private boolean manual;
     private int config;
 
+    private int seed;
+    private int skill;
+    private boolean perfect;
+    private int generation;
+
     private static final String TAG = "GeneratingActivity";
 
     @Override
@@ -30,24 +35,10 @@ public class GeneratingActivity extends AppCompatActivity {
         setContentView(R.layout.activity_generating);
 
         Bundle extras = getIntent().getExtras();
-        int seed = extras.getInt("seed");
-        int skill = extras.getInt("skill");
-        Boolean perfect = extras.getBoolean("perfect");
-        int generation = extras.getInt("generation");
-        Log.v(TAG, "Seed: " + seed);
-        Log.v(TAG, "Skill level: " + skill);
-        Log.v(TAG, "Rooms included: " + perfect);
-        switch(generation) {
-            case 0:
-                Log.v(TAG, "Generation algorithm: DFS");
-                break;
-            case 1:
-                Log.v(TAG, "Generation algorithm: Prim");
-                break;
-            case 2:
-                Log.v(TAG, "Generation algorithm: Boruvka");
-                break;
-        }
+        seed = extras.getInt("seed");
+        skill = extras.getInt("skill");
+        perfect = extras.getBoolean("perfect");
+        generation = extras.getInt("generation");
 
         ProgressBar progressBar = (ProgressBar) findViewById(R.id.progressBar);
         Handler handler = new Handler();
@@ -154,9 +145,13 @@ public class GeneratingActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        Intent intent;
-        intent = new Intent(this, AMazeActivity.class);
+        Intent intent = new Intent(this, AMazeActivity.class);
+        intent.putExtra("seed", seed);
+        intent.putExtra("skill", skill);
+        intent.putExtra("perfect", perfect);
+        intent.putExtra("generation", generation);
         startActivity(intent);
+        finish();
     }
 
     public void startGame() {
@@ -166,24 +161,19 @@ public class GeneratingActivity extends AppCompatActivity {
             @Override
             public void run() {
                 while (driver == 0 || (!manual && config == 0)) {
-                    if(progress == 100 && driver != 0 && (manual || (!manual && config != 0))) {
-
+                    TextView driverWarning = (TextView) findViewById(R.id.driverWarning);
+                    TextView configWarning = (TextView) findViewById(R.id.configWarning);
+                    if(driver == 0) {
+                        driverWarning.setText("Please choose a driver.");
                     }
                     else {
-                        TextView driverWarning = (TextView) findViewById(R.id.driverWarning);
-                        TextView configWarning = (TextView) findViewById(R.id.configWarning);
-                        if(driver == 0) {
-                            driverWarning.setText("Please choose a driver.");
-                        }
-                        else {
-                            driverWarning.setText("");
-                        }
-                        if(!manual && config == 0) {
-                            configWarning.setText("Please choose a robot configuration.");
-                        }
-                        else {
-                            configWarning.setText("");
-                        }
+                        driverWarning.setText("");
+                    }
+                    if(!manual && config == 0) {
+                        configWarning.setText("Please choose a robot configuration.");
+                    }
+                    else {
+                        configWarning.setText("");
                     }
 
                     try {
@@ -195,9 +185,20 @@ public class GeneratingActivity extends AppCompatActivity {
                 Intent intent;
                 if(manual) {
                     intent = new Intent(getApplicationContext(), PlayManuallyActivity.class);
+                    intent.putExtra("seed", seed);
+                    intent.putExtra("skill", skill);
+                    intent.putExtra("perfect", perfect);
+                    intent.putExtra("generation", generation);
+                    intent.putExtra("driver", driver);  // 1 = manual
                 }
                 else {
                     intent = new Intent(getApplicationContext(), PlayAnimationActivity.class);
+                    intent.putExtra("seed", seed);
+                    intent.putExtra("skill", skill);
+                    intent.putExtra("perfect", perfect);
+                    intent.putExtra("generation", generation);
+                    intent.putExtra("driver", driver);  // 2 = wizard, 3 = wallfollower
+                    intent.putExtra("config", config);   // 1 = premium, 2 = mediocre, 3 = soso, 4 = shaky
                 }
                 startActivity(intent);
             }

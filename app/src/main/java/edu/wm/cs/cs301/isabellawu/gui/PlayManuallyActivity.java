@@ -14,8 +14,14 @@ import edu.wm.cs.cs301.isabellawu.R;
 
 public class PlayManuallyActivity extends AppCompatActivity {
 
-    private int steps;
+    private int path;
+    private int shortest_path;
     private int zoom;
+
+    private int seed;
+    private int skill;
+    private boolean perfect;
+    private int generation;
 
     private static final String TAG = "PlayManuallyActivity";
 
@@ -24,7 +30,14 @@ public class PlayManuallyActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_play_manually);
 
-        steps = 0;
+        Bundle extras = getIntent().getExtras();
+        seed = extras.getInt("seed");
+        skill = extras.getInt("skill");
+        perfect = extras.getBoolean("perfect");
+        generation = extras.getInt("generation");
+
+        path = 0;
+        shortest_path = 0; // set to path length of solution;
 
         ToggleButton toggleMap = (ToggleButton) findViewById(R.id.toggleMapButton_manual);
         toggleMap.setOnClickListener(view -> {
@@ -94,17 +107,21 @@ public class PlayManuallyActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        Intent intent;
-        intent = new Intent(this, AMazeActivity.class);
+        Intent intent = new Intent(this, AMazeActivity.class);
+        intent.putExtra("seed", seed);
+        intent.putExtra("skill", skill);
+        intent.putExtra("perfect", perfect);
+        intent.putExtra("generation", generation);
         startActivity(intent);
+        finish();
     }
 
     public void forward(View view) {
         // move forward 1 step
-        steps += 1;
-        Toast toast = Toast.makeText(getApplicationContext(), "Forward (step count: " + steps + ")", Toast.LENGTH_SHORT);
+        path += 1;
+        Toast toast = Toast.makeText(getApplicationContext(), "Forward (step count: " + path + ")", Toast.LENGTH_SHORT);
         toast.show();
-        Log.v(TAG, "Forward (step count: " + steps + ")");
+        Log.v(TAG, "Forward (step count: " + path + ")");
     }
 
     public void left(View view) {
@@ -122,16 +139,22 @@ public class PlayManuallyActivity extends AppCompatActivity {
     }
 
     public void go2winning(View view) {
-        // need to pass in steps, energy
-        Intent intent;
-        intent = new Intent(this, WinningActivity.class);
+        // need to pass in steps
+        Intent intent = new Intent(this, WinningActivity.class);
+        intent.putExtra("seed", seed);
+        intent.putExtra("skill", skill);
+        intent.putExtra("perfect", perfect);
+        intent.putExtra("generation", generation);
+        intent.putExtra("path", path);
+        intent.putExtra("shortest path", shortest_path);
         startActivity(intent);
     }
 
     public void go2losing(View view) {
         // need to pass in steps, energy, reason for loss
-        Intent intent;
-        intent = new Intent(this, LosingActivity.class);
+        Intent intent = new Intent(this, LosingActivity.class);
+        intent.putExtra("path", path);
+        intent.putExtra("shortest path", shortest_path);
         startActivity(intent);
     }
 }

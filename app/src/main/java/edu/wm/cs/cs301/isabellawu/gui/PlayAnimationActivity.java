@@ -18,17 +18,36 @@ import edu.wm.cs.cs301.isabellawu.R;
 
 public class PlayAnimationActivity extends AppCompatActivity {
 
+    private int config;
+    private int path;
+    private int shortest_path;
     private int zoom;
     private boolean paused;
     private int speed;
-    private int energy;
+    private int energy_used;
 
-    private static final String TAG = "PlayManuallyActivity";
+    private int seed;
+    private int skill;
+    private boolean perfect;
+    private int generation;
+
+    private static final String TAG = "PlayAnimationActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_play_animation);
+
+        Bundle extras = getIntent().getExtras();
+        seed = extras.getInt("seed");
+        skill = extras.getInt("skill");
+        perfect = extras.getBoolean("perfect");
+        generation = extras.getInt("generation");
+        config = extras.getInt("config");  // 1 = premium, 2 = mediocre, 3 = soso, 4 = shaky
+        // set sensors on robot based on config int value
+
+        path = 0;
+        shortest_path = 0; // set to path length of solution;
 
         ToggleButton toggleMap = (ToggleButton) findViewById(R.id.toggleMapButton_auto);
         toggleMap.setOnClickListener(view -> {
@@ -52,6 +71,8 @@ public class PlayAnimationActivity extends AppCompatActivity {
 
         // change this based on remaining energy
         ProgressBar energy = (ProgressBar) findViewById(R.id.energyBar);
+        energy.setProgress(3500);
+        energy_used = 0;
 
         SeekBar zoomBar = (SeekBar) findViewById(R.id.zoomSeekBar_auto);
         zoomBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
@@ -121,22 +142,38 @@ public class PlayAnimationActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        Intent intent;
-        intent = new Intent(this, AMazeActivity.class);
+        Intent intent = new Intent(this, AMazeActivity.class);
+        intent.putExtra("seed", seed);
+        intent.putExtra("skill", skill);
+        intent.putExtra("perfect", perfect);
+        intent.putExtra("generation", generation);
         startActivity(intent);
+        finish();
     }
 
     public void go2winning(View view) {
         // need to pass in steps, energy
-        Intent intent;
-        intent = new Intent(this, WinningActivity.class);
+        Intent intent = new Intent(this, WinningActivity.class);
+        intent.putExtra("seed", seed);
+        intent.putExtra("skill", skill);
+        intent.putExtra("perfect", perfect);
+        intent.putExtra("generation", generation);
+        intent.putExtra("path", path);
+        intent.putExtra("shortest path", shortest_path);
+        intent.putExtra("energy used", energy_used);
         startActivity(intent);
     }
 
     public void go2losing(View view) {
         // need to pass in steps, energy, reason for loss
-        Intent intent;
-        intent = new Intent(this, LosingActivity.class);
+        Intent intent = new Intent(this, LosingActivity.class);
+        intent.putExtra("seed", seed);
+        intent.putExtra("skill", skill);
+        intent.putExtra("perfect", perfect);
+        intent.putExtra("generation", generation);
+        intent.putExtra("path", path);
+        intent.putExtra("shortest path", shortest_path);
+        intent.putExtra("energy used", energy_used);
         startActivity(intent);
     }
 }
