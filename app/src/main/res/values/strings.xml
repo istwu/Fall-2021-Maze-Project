@@ -1,6 +1,39 @@
 <resources>
     <string name="app_name">AMazeByIsabellaWu</string>
 
+    <string name="title">Escape the Labyrinth</string>
+    <string name="skill_level">Skill level: %1$d</string>
+    <string name="include_rooms">Include rooms in maze?</string>
+    <string name="select_gen">Select generation algorithm:</string>
+    <string name="return_old_maze">Return to old maze</string>
+    <string name="generate_new_maze">Generate new maze</string>
+
+    <string name="loading_maze">Loading maze:</string>
+    <string name="choose_driver">Choose a driver:</string>
+    <string name="choose_config">Choose a robot configuration:</string>
+
+    <string name="map_on">Map on</string>
+    <string name="map_off">Map off</string>
+    <string name="solution_on">Solution on</string>
+    <string name="solution_off">Solution off</string>
+    <string name="walls_on">Walls on</string>
+    <string name="walls_off">Walls off</string>
+    <string name="zoom">Zoom:</string>
+    <string name="go2winning">Go2Winning</string>
+    <string name="go2losing">Go2Losing</string>
+    <string name="sensor_status">Sensor status:</string>
+    <string name="remaining_energy">Remaining energy:</string>
+    <string name="animation_speed">Animation speed:</string>
+
+    <string name="win">You escaped!</string>
+    <string name="loss">You failed the challenge...</string>
+    <string name="no_energy">You ran out of energy.</string>
+    <string name="crashed">You crashed into a wall.</string>
+    <string name="jump_border">You tried to jump over the outside wall.</string>
+    <string name="path_length">Path length: %1$d</string>
+    <string name="shortest_path">Shortest path: %1$d</string>
+    <string name="energy_used">Energy used: %1$d</string>
+
     <string-array name="generation_names">
         <item>DFS</item>
         <item>Prim</item>

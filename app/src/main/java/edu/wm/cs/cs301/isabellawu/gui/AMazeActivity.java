@@ -51,12 +51,13 @@ public class AMazeActivity extends AppCompatActivity {
         }
 
         TextView skillText = findViewById(R.id.skillText);
+        skillText.setText(getString(R.string.skill_level, 0));
         SeekBar skillSeekBar = findViewById(R.id.skillSeekBar);
         skillSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 skill = progress;
-                skillText.setText("" + skill);
+                skillText.setText(getString(R.string.skill_level, progress));
             }
 
             @Override

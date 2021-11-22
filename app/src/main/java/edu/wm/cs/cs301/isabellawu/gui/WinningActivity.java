@@ -36,12 +36,12 @@ public class WinningActivity extends AppCompatActivity {
         }
 
         TextView pathLength = findViewById(R.id.pathLength);
-        pathLength.setText("Path length: " + path);
+        pathLength.setText(getString(R.string.path_length, path));
         TextView shortestPath = findViewById(R.id.shortestPath);
-        shortestPath.setText("Shortest path: " + shortest_path);
+        shortestPath.setText(getString(R.string.shortest_path, shortest_path));
         TextView energyUsed = findViewById(R.id.energyUsed);
         if(extras.containsKey("energy used")) {
-            energyUsed.setText("Energy used: " + energy_used);
+            energyUsed.setText(getString(R.string.energy_used, energy_used));
         }
 
     }
