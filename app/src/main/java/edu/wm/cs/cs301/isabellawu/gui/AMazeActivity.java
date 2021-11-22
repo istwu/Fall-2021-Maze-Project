@@ -50,8 +50,8 @@ public class AMazeActivity extends AppCompatActivity {
             }
         }
 
-        TextView skillText = (TextView) findViewById(R.id.skillText);
-        SeekBar skillSeekBar = (SeekBar) findViewById(R.id.skillSeekBar);
+        TextView skillText = findViewById(R.id.skillText);
+        SeekBar skillSeekBar = findViewById(R.id.skillSeekBar);
         skillSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
@@ -74,7 +74,7 @@ public class AMazeActivity extends AppCompatActivity {
             }
         });
 
-        Switch roomSwitch = (Switch) findViewById(R.id.roomSwitch);
+        Switch roomSwitch = findViewById(R.id.roomSwitch);
         roomSwitch.setOnClickListener(view -> {
             perfect = !roomSwitch.isChecked();
             Toast toast = Toast.makeText(getApplicationContext(), "Rooms set to " + !perfect, Toast.LENGTH_SHORT);
@@ -82,7 +82,7 @@ public class AMazeActivity extends AppCompatActivity {
             Log.v(TAG, "Rooms set to " + !perfect);
         });
 
-        Spinner algoSpinner = (Spinner) findViewById(R.id.algoSpinner);
+        Spinner algoSpinner = findViewById(R.id.algoSpinner);
         algoSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(android.widget.AdapterView<?> adapterView, View view, int i, long l) {

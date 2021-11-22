@@ -40,34 +40,27 @@ public class GeneratingActivity extends AppCompatActivity {
         perfect = extras.getBoolean("perfect");
         generation = extras.getInt("generation");
 
-        ProgressBar progressBar = (ProgressBar) findViewById(R.id.progressBar);
+        ProgressBar progressBar = findViewById(R.id.progressBar);
         Handler handler = new Handler();
         // code taken from https://www.py4u.net/discuss/694340
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                while (progress < 100) {
-                    progress += 5;
-                    handler.post(new Runnable() {
-                        public void run() {
-                            progressBar.setProgress(progress);
-                        }
-                    });
-                    if (progress == 100) {
-                        startGame();
-                    }
+        new Thread(() -> {
+            while (progress < 100) {
+                progress += 5;
+                handler.post(() -> progressBar.setProgress(progress));
+                if (progress == 100) {
+                    startGame();
+                }
 
-                    try {
-                        Thread.sleep(200);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
+                try {
+                    Thread.sleep(200);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
                 }
             }
         }).start();
 
         manual = false;
-        Spinner driverSpinner = (Spinner) findViewById(R.id.driverSpinner);
+        Spinner driverSpinner = findViewById(R.id.driverSpinner);
         driverSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             // 0 = none
             // 1 = manual
@@ -109,7 +102,7 @@ public class GeneratingActivity extends AppCompatActivity {
             }
         });
 
-        Spinner configSpinner = (Spinner) findViewById(R.id.configSpinner);
+        Spinner configSpinner = findViewById(R.id.configSpinner);
         configSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             // 0 = none
             // 1 = premium
@@ -157,51 +150,48 @@ public class GeneratingActivity extends AppCompatActivity {
     public void startGame() {
         // check if progress bar is at 100%
         // check if driver + config have been selected
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                while (driver == 0 || (!manual && config == 0)) {
-                    TextView driverWarning = (TextView) findViewById(R.id.driverWarning);
-                    TextView configWarning = (TextView) findViewById(R.id.configWarning);
-                    if(driver == 0) {
-                        driverWarning.setText("Please choose a driver.");
-                    }
-                    else {
-                        driverWarning.setText("");
-                    }
-                    if(!manual && config == 0) {
-                        configWarning.setText("Please choose a robot configuration.");
-                    }
-                    else {
-                        configWarning.setText("");
-                    }
-
-                    try {
-                        Thread.sleep(100);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                }
-                Intent intent;
-                if(manual) {
-                    intent = new Intent(getApplicationContext(), PlayManuallyActivity.class);
-                    intent.putExtra("seed", seed);
-                    intent.putExtra("skill", skill);
-                    intent.putExtra("perfect", perfect);
-                    intent.putExtra("generation", generation);
-                    intent.putExtra("driver", driver);  // 1 = manual
+        new Thread(() -> {
+            while (driver == 0 || (!manual && config == 0)) {
+                TextView driverWarning = (TextView) findViewById(R.id.driverWarning);
+                TextView configWarning = (TextView) findViewById(R.id.configWarning);
+                if(driver == 0) {
+                    driverWarning.setText("Please choose a driver.");
                 }
                 else {
-                    intent = new Intent(getApplicationContext(), PlayAnimationActivity.class);
-                    intent.putExtra("seed", seed);
-                    intent.putExtra("skill", skill);
-                    intent.putExtra("perfect", perfect);
-                    intent.putExtra("generation", generation);
-                    intent.putExtra("driver", driver);  // 2 = wizard, 3 = wallfollower
-                    intent.putExtra("config", config);   // 1 = premium, 2 = mediocre, 3 = soso, 4 = shaky
+                    driverWarning.setText("");
                 }
-                startActivity(intent);
+                if(!manual && config == 0) {
+                    configWarning.setText("Please choose a robot configuration.");
+                }
+                else {
+                    configWarning.setText("");
+                }
+
+                try {
+                    Thread.sleep(100);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
             }
+            Intent intent;
+            if(manual) {
+                intent = new Intent(getApplicationContext(), PlayManuallyActivity.class);
+                intent.putExtra("seed", seed);
+                intent.putExtra("skill", skill);
+                intent.putExtra("perfect", perfect);
+                intent.putExtra("generation", generation);
+                intent.putExtra("driver", driver);  // 1 = manual
+            }
+            else {
+                intent = new Intent(getApplicationContext(), PlayAnimationActivity.class);
+                intent.putExtra("seed", seed);
+                intent.putExtra("skill", skill);
+                intent.putExtra("perfect", perfect);
+                intent.putExtra("generation", generation);
+                intent.putExtra("driver", driver);  // 2 = wizard, 3 = wallfollower
+                intent.putExtra("config", config);   // 1 = premium, 2 = mediocre, 3 = soso, 4 = shaky
+            }
+            startActivity(intent);
         }).start();
 
 

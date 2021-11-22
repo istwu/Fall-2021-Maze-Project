@@ -39,7 +39,7 @@ public class PlayManuallyActivity extends AppCompatActivity {
         path = 0;
         shortest_path = 0; // set to path length of solution;
 
-        ToggleButton toggleMap = (ToggleButton) findViewById(R.id.toggleMapButton_manual);
+        ToggleButton toggleMap = findViewById(R.id.toggleMapButton_manual);
         toggleMap.setOnClickListener(view -> {
             if(toggleMap.isChecked()) {
                 Toast toast = Toast.makeText(getApplicationContext(), "Map on", Toast.LENGTH_SHORT);
@@ -53,7 +53,7 @@ public class PlayManuallyActivity extends AppCompatActivity {
             }
         });
 
-        ToggleButton toggleSolution = (ToggleButton) findViewById(R.id.toggleSolutionButton);
+        ToggleButton toggleSolution = findViewById(R.id.toggleSolutionButton);
         toggleSolution.setOnClickListener(view -> {
             if(toggleSolution.isChecked()) {
                 Toast toast = Toast.makeText(getApplicationContext(), "Solution on", Toast.LENGTH_SHORT);
@@ -67,7 +67,7 @@ public class PlayManuallyActivity extends AppCompatActivity {
             }
         });
 
-        ToggleButton toggleWalls = (ToggleButton) findViewById(R.id.toggleWallsButton);
+        ToggleButton toggleWalls = findViewById(R.id.toggleWallsButton);
         toggleWalls.setOnClickListener(view -> {
             if(toggleWalls.isChecked()) {
                 Toast toast = Toast.makeText(getApplicationContext(), "Walls on", Toast.LENGTH_SHORT);
@@ -81,7 +81,7 @@ public class PlayManuallyActivity extends AppCompatActivity {
             }
         });
 
-        SeekBar zoomBar = (SeekBar) findViewById(R.id.zoomSeekBar_manual);
+        SeekBar zoomBar = findViewById(R.id.zoomSeekBar_manual);
         zoomBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {

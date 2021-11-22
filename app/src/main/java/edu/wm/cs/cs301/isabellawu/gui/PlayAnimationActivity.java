@@ -3,7 +3,6 @@ package edu.wm.cs.cs301.isabellawu.gui;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
-import android.media.Image;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -49,7 +48,7 @@ public class PlayAnimationActivity extends AppCompatActivity {
         path = 0;
         shortest_path = 0; // set to path length of solution;
 
-        ToggleButton toggleMap = (ToggleButton) findViewById(R.id.toggleMapButton_auto);
+        ToggleButton toggleMap = findViewById(R.id.toggleMapButton_auto);
         toggleMap.setOnClickListener(view -> {
             if(toggleMap.isChecked()) {
                 Toast toast = Toast.makeText(getApplicationContext(), "Map on", Toast.LENGTH_SHORT);
@@ -64,17 +63,17 @@ public class PlayAnimationActivity extends AppCompatActivity {
         });
 
         // change the color of these depending on sensor status
-        ImageView sensor_forward = (ImageView) findViewById(R.id.sensor_forward);
-        ImageView sensor_left = (ImageView) findViewById(R.id.sensor_left);
-        ImageView sensor_right = (ImageView) findViewById(R.id.sensor_right);
-        ImageView sensor_backward = (ImageView) findViewById(R.id.sensor_backward);
+        ImageView sensor_forward = findViewById(R.id.sensor_forward);
+        ImageView sensor_left = findViewById(R.id.sensor_left);
+        ImageView sensor_right = findViewById(R.id.sensor_right);
+        ImageView sensor_backward = findViewById(R.id.sensor_backward);
 
         // change this based on remaining energy
-        ProgressBar energy = (ProgressBar) findViewById(R.id.energyBar);
+        ProgressBar energy = findViewById(R.id.energyBar);
         energy.setProgress(3500);
         energy_used = 0;
 
-        SeekBar zoomBar = (SeekBar) findViewById(R.id.zoomSeekBar_auto);
+        SeekBar zoomBar = findViewById(R.id.zoomSeekBar_auto);
         zoomBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
@@ -96,28 +95,25 @@ public class PlayAnimationActivity extends AppCompatActivity {
             }
         });
 
-        ImageButton pauseplay = (ImageButton) findViewById(R.id.pause_play);
-        pauseplay.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(!paused) {
-                    paused = true;
-                    pauseplay.setImageResource(R.drawable.mr_media_play_light);
-                    Toast toast = Toast.makeText(getApplicationContext(), "Pausing animation", Toast.LENGTH_SHORT);
-                    toast.show();
-                    Log.v(TAG, "Pausing animation");
-                }
-                else {
-                    paused = false;
-                    pauseplay.setImageResource(R.drawable.mr_media_pause_light);
-                    Toast toast = Toast.makeText(getApplicationContext(), "Playing animation", Toast.LENGTH_SHORT);
-                    toast.show();
-                    Log.v(TAG, "Playing animation");
-                }
+        ImageButton pauseplay = findViewById(R.id.pause_play);
+        pauseplay.setOnClickListener(view -> {
+            if(!paused) {
+                paused = true;
+                pauseplay.setImageResource(R.drawable.mr_media_play_light);
+                Toast toast = Toast.makeText(getApplicationContext(), "Pausing animation", Toast.LENGTH_SHORT);
+                toast.show();
+                Log.v(TAG, "Pausing animation");
+            }
+            else {
+                paused = false;
+                pauseplay.setImageResource(R.drawable.mr_media_pause_light);
+                Toast toast = Toast.makeText(getApplicationContext(), "Playing animation", Toast.LENGTH_SHORT);
+                toast.show();
+                Log.v(TAG, "Playing animation");
             }
         });
 
-        SeekBar animationSpeed = (SeekBar) findViewById(R.id.speedSeekBar);
+        SeekBar animationSpeed = findViewById(R.id.speedSeekBar);
         animationSpeed.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {

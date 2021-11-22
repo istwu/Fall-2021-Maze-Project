@@ -35,14 +35,14 @@ public class LosingActivity extends AppCompatActivity {
             energy_used = extras.getInt("energy used");
         }
 
-        TextView losing = (TextView) findViewById(R.id.losing);
+        TextView losing = findViewById(R.id.losing);
         // set text of losing based on reason for loss
 
-        TextView pathLength = (TextView) findViewById(R.id.pathLength);
+        TextView pathLength = findViewById(R.id.pathLength);
         pathLength.setText("Path length: " + path);
-        TextView shortestPath = (TextView) findViewById(R.id.shortestPath);
+        TextView shortestPath = findViewById(R.id.shortestPath);
         shortestPath.setText("Shortest path: " + shortest_path);
-        TextView energyUsed = (TextView) findViewById(R.id.energyUsed);
+        TextView energyUsed = findViewById(R.id.energyUsed);
         if(extras.containsKey("energy used")) {
             energyUsed.setText("Energy used: " + energy_used);
         }
