@@ -8,6 +8,9 @@ import android.widget.TextView;
 
 import edu.wm.cs.cs301.isabellawu.R;
 
+/**
+ * @author Isabella Wu
+ */
 public class WinningActivity extends AppCompatActivity {
 
     private int path;
@@ -19,6 +22,12 @@ public class WinningActivity extends AppCompatActivity {
     private boolean perfect;
     private int generation;
 
+    /**
+     * Instantiates TextViews to show the user has won, their
+     * path length, and the solution path length. If the user had
+     * been using a robot to go through the maze, also displays
+     * the amount of energy used.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,6 +55,11 @@ public class WinningActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * Passes the seed, skill, perfect, and generation variables back
+     * to AMazeActivity to be saved, then closes the activity, returning
+     * the user back to the title screen.
+     */
     @Override
     public void onBackPressed() {
         Intent intent = new Intent(this, AMazeActivity.class);

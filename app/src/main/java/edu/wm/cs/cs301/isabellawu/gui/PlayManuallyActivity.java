@@ -12,6 +12,9 @@ import android.widget.ToggleButton;
 
 import edu.wm.cs.cs301.isabellawu.R;
 
+/**
+ * @author Isabella Wu
+ */
 public class PlayManuallyActivity extends AppCompatActivity {
 
     private int path;
@@ -25,6 +28,13 @@ public class PlayManuallyActivity extends AppCompatActivity {
 
     private static final String TAG = "PlayManuallyActivity";
 
+    /**
+     * Displays the maze in the center of the screen.
+     * Instantiates three ToggleButtons to turn on and off the map,
+     * the maze solution, and the maze walls, creates a SeekBar to
+     * zoom in and out of the maze, and three arrow buttons used to
+     * navigate through the maze.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -83,11 +93,18 @@ public class PlayManuallyActivity extends AppCompatActivity {
 
         SeekBar zoomBar = findViewById(R.id.zoomSeekBar_manual);
         zoomBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            /**
+             * Sets the zoom variable to the value from the SeekBar.
+             */
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
                 zoom = i;
             }
 
+            /**
+             * Displays a Toast message to inform user that the SeekBar is
+             * receiving their input.
+             */
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
                 Toast toast = Toast.makeText(getApplicationContext(), "Changing maze size", Toast.LENGTH_SHORT);
@@ -95,6 +112,10 @@ public class PlayManuallyActivity extends AppCompatActivity {
                 Log.v(TAG, "Changing maze size");
             }
 
+            /**
+             * Displays a Toast message to inform user that the SeekBar stopped
+             * receiving their input.
+             */
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
                 Toast toast = Toast.makeText(getApplicationContext(), "Maze size set to " + zoom, Toast.LENGTH_SHORT);
@@ -105,6 +126,11 @@ public class PlayManuallyActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * Passes the seed, skill, perfect, and generation variables back
+     * to AMazeActivity to be saved, then closes the activity, returning
+     * the user back to the title screen.
+     */
     @Override
     public void onBackPressed() {
         Intent intent = new Intent(this, AMazeActivity.class);
@@ -116,6 +142,10 @@ public class PlayManuallyActivity extends AppCompatActivity {
         finish();
     }
 
+    /**
+     * Moves the player forward one step in the maze, and increments
+     * the step counter by 1.
+     */
     public void forward(View view) {
         // move forward 1 step
         path += 1;
@@ -124,6 +154,9 @@ public class PlayManuallyActivity extends AppCompatActivity {
         Log.v(TAG, "Forward (step count: " + path + ")");
     }
 
+    /**
+     * Makes the player turn left in the maze.
+     */
     public void left(View view) {
         // rotate left
         Toast toast = Toast.makeText(getApplicationContext(), "Left", Toast.LENGTH_SHORT);
@@ -131,6 +164,9 @@ public class PlayManuallyActivity extends AppCompatActivity {
         Log.v(TAG, "Left");
     }
 
+    /**
+     * Makes the player turn right in the maze.
+     */
     public void right(View view) {
         // rotate right
         Toast toast = Toast.makeText(getApplicationContext(), "Right", Toast.LENGTH_SHORT);
@@ -138,6 +174,10 @@ public class PlayManuallyActivity extends AppCompatActivity {
         Log.v(TAG, "Right");
     }
 
+    /**
+     * Takes the user to the winning screen, passing in the user's
+     * path length and the solution path length through an intent.
+     */
     public void go2winning(View view) {
         // need to pass in steps
         Intent intent = new Intent(this, WinningActivity.class);
@@ -150,9 +190,17 @@ public class PlayManuallyActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    /**
+     * Takes the user to the losing screen, passing in the user's
+     * path length and the solution path length through an intent.
+     */
     public void go2losing(View view) {
         // need to pass in steps, energy, reason for loss
         Intent intent = new Intent(this, LosingActivity.class);
+        intent.putExtra("seed", seed);
+        intent.putExtra("skill", skill);
+        intent.putExtra("perfect", perfect);
+        intent.putExtra("generation", generation);
         intent.putExtra("path", path);
         intent.putExtra("shortest path", shortest_path);
         startActivity(intent);

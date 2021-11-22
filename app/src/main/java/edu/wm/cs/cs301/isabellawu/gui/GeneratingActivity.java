@@ -15,6 +15,9 @@ import android.widget.Toast;
 
 import edu.wm.cs.cs301.isabellawu.R;
 
+/**
+ * @author Isabella Wu
+ */
 public class GeneratingActivity extends AppCompatActivity {
 
     private int progress;
@@ -29,6 +32,14 @@ public class GeneratingActivity extends AppCompatActivity {
 
     private static final String TAG = "GeneratingActivity";
 
+    /**
+     * Instantiates a ProgressBar to display maze generation loading
+     * progress, and two Spinners to select between drivers (Manual, Wizard,
+     * WallFollower) and robot configurations (Premium, Mediocre, So-so,
+     * Shaky). When the progress reaches 100% and the driver/config are
+     * properly selected, starts either PlayManuallyActivity or
+     * PlayAnimationActivity.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,6 +77,12 @@ public class GeneratingActivity extends AppCompatActivity {
             // 1 = manual
             // 2 = wizard
             // 3 = wallfollower
+            /**
+             * Sets the driver variable to an int corresponding to the selected driver,
+             * and the manual boolean variable to either true or false depending on
+             * whether or not the Manual option in the spinner is selected.
+             * Then, displays a Toast informing the user of their choice.
+             */
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 driver = i;
@@ -97,6 +114,9 @@ public class GeneratingActivity extends AppCompatActivity {
                 Log.v(TAG, "Driver set to " + d);
             }
 
+            /**
+             * Empty method.
+             */
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
             }
@@ -109,6 +129,10 @@ public class GeneratingActivity extends AppCompatActivity {
             // 2 = mediocre
             // 3 = soso
             // 4 = shaky
+            /**
+             * Sets the config variable to an int corresponding to the selected
+             * configuration. Then, displays a Toast informing the user of their choice.
+             */
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 config = i;
@@ -129,6 +153,9 @@ public class GeneratingActivity extends AppCompatActivity {
                 Log.v(TAG, "Robot configuration set to " + c);
             }
 
+            /**
+             * Empty method.
+             */
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
             }
@@ -136,6 +163,11 @@ public class GeneratingActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * Passes the seed, skill, perfect, and generation variables back
+     * to AMazeActivity to be saved, then closes the activity, returning
+     * the user back to the title screen.
+     */
     @Override
     public void onBackPressed() {
         Intent intent = new Intent(this, AMazeActivity.class);
@@ -147,6 +179,15 @@ public class GeneratingActivity extends AppCompatActivity {
         finish();
     }
 
+    /**
+     * Called once the progress bar reaches 100%. If a driver is not
+     * selected, displays a warning message in a TextView asking for the user
+     * to select a driver. If a robot is selected as a driver and no robot
+     * configuration is selected, displays another warning message asking
+     * for the user to select a configuration. Once both driver and configuration
+     * have been chosen, starts either PlayManuallyActivity or PlayAnimationActivity
+     * depending on the driver.
+     */
     public void startGame() {
         // check if progress bar is at 100%
         // check if driver + config have been selected

@@ -18,6 +18,9 @@ import java.util.Random;
 
 import edu.wm.cs.cs301.isabellawu.R;
 
+/**
+ * @author Isabella Wu
+ */
 public class AMazeActivity extends AppCompatActivity {
 
     private int seed;
@@ -28,6 +31,13 @@ public class AMazeActivity extends AppCompatActivity {
 
     private static final String TAG = "AMazeActivity";
 
+    /**
+     * Instantiates a SeekBar for skill level, a switch to toggle rooms in
+     * the maze, a Spinner to choose between generation algorithms
+     * (DFS, Prim, Boruvka), and buttons to either re-generate a maze
+     * using previous parameters (seed, skill level, rooms, generation algorithm)
+     * or to generate a new maze based on user input.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,12 +64,19 @@ public class AMazeActivity extends AppCompatActivity {
         skillText.setText(getString(R.string.skill_level, 0));
         SeekBar skillSeekBar = findViewById(R.id.skillSeekBar);
         skillSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            /**
+             * Changes the text on the screen to display the skill level.
+             */
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 skill = progress;
                 skillText.setText(getString(R.string.skill_level, progress));
             }
 
+            /**
+             * Displays a Toast message to inform user that the SeekBar is
+             * receiving their input.
+             */
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
                 Toast toast = Toast.makeText(getApplicationContext(), "Setting difficulty", Toast.LENGTH_SHORT);
@@ -67,6 +84,10 @@ public class AMazeActivity extends AppCompatActivity {
                 Log.v(TAG, "Setting difficulty");
             }
 
+            /**
+             * Displays a Toast message to inform user that the SeekBar stopped
+             * receiving their input.
+             */
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
                 Toast toast = Toast.makeText(getApplicationContext(), "Difficulty set to " + skill, Toast.LENGTH_SHORT);
@@ -85,6 +106,10 @@ public class AMazeActivity extends AppCompatActivity {
 
         Spinner algoSpinner = findViewById(R.id.algoSpinner);
         algoSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            /**
+             * Sets the generation instance variable to an int depending
+             * on the generation algorithm chosen by the user.
+             */
             @Override
             public void onItemSelected(android.widget.AdapterView<?> adapterView, View view, int i, long l) {
                 // i = position
@@ -104,12 +129,19 @@ public class AMazeActivity extends AppCompatActivity {
                 Log.v(TAG, "Generation algorithm set to " + algo);
             }
 
+            /**
+             * Empty method.
+             */
             @Override
             public void onNothingSelected(android.widget.AdapterView<?> adapterView) {
             }
         });
     }
 
+    /**
+     * Starts GeneratingActivity using the values stored for the
+     * previously generated maze.
+     */
     public void getOldMaze(View view) {
         Bundle extras = getIntent().getExtras();
         if(extras == null) {
@@ -141,6 +173,10 @@ public class AMazeActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Randomly generates a seed and starts GeneratingActivity
+     * using the values set by the user.
+     */
     public void generateNewMaze(View view) {
         Random random = new Random();
         seed = random.nextInt();

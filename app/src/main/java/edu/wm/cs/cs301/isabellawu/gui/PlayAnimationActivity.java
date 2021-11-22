@@ -15,6 +15,9 @@ import android.widget.ToggleButton;
 
 import edu.wm.cs.cs301.isabellawu.R;
 
+/**
+ * @author Isabella Wu
+ */
 public class PlayAnimationActivity extends AppCompatActivity {
 
     private int config;
@@ -32,6 +35,15 @@ public class PlayAnimationActivity extends AppCompatActivity {
 
     private static final String TAG = "PlayAnimationActivity";
 
+    /**
+     * Displays the maze in the center of the screen.
+     * Instantiates one ToggleButton to turn on and off the map,
+     * the maze solution, and the maze walls, creates a SeekBar to
+     * zoom in and out of the maze, and displays a ProgressBar to
+     * show the robot's remaining energy. Also instantiates a
+     * button to pause/play the animation, and a SeekBar to
+     * adjust the animation speed.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -75,11 +87,18 @@ public class PlayAnimationActivity extends AppCompatActivity {
 
         SeekBar zoomBar = findViewById(R.id.zoomSeekBar_auto);
         zoomBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            /**
+             * Sets the zoom variable to the value from the SeekBar.
+             */
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
                 zoom = i;
             }
 
+            /**
+             * Displays a Toast message to inform user that the SeekBar is
+             * receiving their input.
+             */
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
                 Toast toast = Toast.makeText(getApplicationContext(), "Changing maze size", Toast.LENGTH_SHORT);
@@ -87,6 +106,10 @@ public class PlayAnimationActivity extends AppCompatActivity {
                 Log.v(TAG, "Changing maze size");
             }
 
+            /**
+             * Displays a Toast message to inform user that the SeekBar stopped
+             * receiving their input.
+             */
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
                 Toast toast = Toast.makeText(getApplicationContext(), "Maze size set to " + zoom, Toast.LENGTH_SHORT);
@@ -115,11 +138,18 @@ public class PlayAnimationActivity extends AppCompatActivity {
 
         SeekBar animationSpeed = findViewById(R.id.speedSeekBar);
         animationSpeed.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            /**
+             * Sets the speed variable to the value from the SeekBar.
+             */
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
                 speed = i;
             }
 
+            /**
+             * Displays a Toast message to inform user that the SeekBar is
+             * receiving their input.
+             */
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
                 Toast toast = Toast.makeText(getApplicationContext(), "Changing speed", Toast.LENGTH_SHORT);
@@ -127,6 +157,10 @@ public class PlayAnimationActivity extends AppCompatActivity {
                 Log.v(TAG, "Changing speed");
             }
 
+            /**
+             * Displays a Toast message to inform user that the SeekBar stopped
+             * receiving their input.
+             */
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
                 Toast toast = Toast.makeText(getApplicationContext(), "Speed set to " + speed, Toast.LENGTH_SHORT);
@@ -136,6 +170,11 @@ public class PlayAnimationActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Passes the seed, skill, perfect, and generation variables back
+     * to AMazeActivity to be saved, then closes the activity, returning
+     * the user back to the title screen.
+     */
     @Override
     public void onBackPressed() {
         Intent intent = new Intent(this, AMazeActivity.class);
@@ -147,6 +186,10 @@ public class PlayAnimationActivity extends AppCompatActivity {
         finish();
     }
 
+    /**
+     * Takes the user to the winning screen, passing in the user's
+     * path length and the solution path length through an intent.
+     */
     public void go2winning(View view) {
         // need to pass in steps, energy
         Intent intent = new Intent(this, WinningActivity.class);
@@ -160,6 +203,10 @@ public class PlayAnimationActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    /**
+     * Takes the user to the losing screen, passing in the user's
+     * path length and the solution path length through an intent.
+     */
     public void go2losing(View view) {
         // need to pass in steps, energy, reason for loss
         Intent intent = new Intent(this, LosingActivity.class);
