@@ -196,13 +196,13 @@ public class GeneratingActivity extends AppCompatActivity {
                 TextView driverWarning = (TextView) findViewById(R.id.driverWarning);
                 TextView configWarning = (TextView) findViewById(R.id.configWarning);
                 if(driver == 0) {
-                    driverWarning.setText("Please choose a driver.");
+                    driverWarning.setText(getString(R.string.driver_warning));
                 }
                 else {
                     driverWarning.setText("");
                 }
                 if(!manual && config == 0) {
-                    configWarning.setText("Please choose a robot configuration.");
+                    configWarning.setText(getString(R.string.config_warning));
                 }
                 else {
                     configWarning.setText("");

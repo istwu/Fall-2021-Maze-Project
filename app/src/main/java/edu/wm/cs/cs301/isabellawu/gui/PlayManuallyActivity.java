@@ -180,6 +180,9 @@ public class PlayManuallyActivity extends AppCompatActivity {
      */
     public void go2winning(View view) {
         // need to pass in steps
+        Toast toast = Toast.makeText(getApplicationContext(), "Moving to winning screen", Toast.LENGTH_SHORT);
+        toast.show();
+        Log.v(TAG, "Moving to winning screen");
         Intent intent = new Intent(this, WinningActivity.class);
         intent.putExtra("seed", seed);
         intent.putExtra("skill", skill);
@@ -195,6 +198,9 @@ public class PlayManuallyActivity extends AppCompatActivity {
      * path length and the solution path length through an intent.
      */
     public void go2losing(View view) {
+        Toast toast = Toast.makeText(getApplicationContext(), "Moving to losing screen", Toast.LENGTH_SHORT);
+        toast.show();
+        Log.v(TAG, "Moving to losing screen");
         // need to pass in steps, energy, reason for loss
         Intent intent = new Intent(this, LosingActivity.class);
         intent.putExtra("seed", seed);

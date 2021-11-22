@@ -45,7 +45,7 @@ public class LosingActivity extends AppCompatActivity {
         }
 
         TextView losing = findViewById(R.id.losing);
-        // set text of losing based on reason for loss
+        // set text of losing based on reason for loss (placeholder)
         losing.setText(getString(R.string.no_energy));
 
         TextView pathLength = findViewById(R.id.pathLength);

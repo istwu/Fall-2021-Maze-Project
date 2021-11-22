@@ -11,6 +11,8 @@
     <string name="loading_maze">Loading maze:</string>
     <string name="choose_driver">Choose a driver:</string>
     <string name="choose_config">Choose a robot configuration:</string>
+    <string name="driver_warning">Please choose a driver.</string>
+    <string name="config_warning">Please choose a robot configuration.</string>
 
     <string name="map_on">Map on</string>
     <string name="map_off">Map off</string>
