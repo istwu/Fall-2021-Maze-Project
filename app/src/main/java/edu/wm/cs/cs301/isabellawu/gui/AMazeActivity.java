@@ -12,6 +12,7 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.Dictionary;
 import java.util.Random;
 
 import edu.wm.cs.cs301.isabellawu.R;
@@ -22,7 +23,7 @@ public class AMazeActivity extends AppCompatActivity {
     private int skill;
     private boolean perfect;
     private int generation; // 0 = DFS, 1 = Prim, 2 = Boruvka
-    private boolean revisit;
+    private Dictionary prev_values;
 
     private static final String TAG = "AMazeActivity";
 
@@ -30,6 +31,22 @@ public class AMazeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        Bundle extras = getIntent().getExtras();
+        if(extras != null) {
+            if (extras.containsKey("seed")) {
+                prev_values.put("seed", extras.getInt("seed"));
+            }
+            if (extras.containsKey("skill")) {
+                prev_values.put("skill", extras.getInt("skill"));
+            }
+            if (extras.containsKey("perfect")) {
+                prev_values.put("perfect", extras.getBoolean("perfect"));
+            }
+            if (extras.containsKey("generation")) {
+                prev_values.put("generation", extras.getInt("generation"));
+            }
+        }
 
         TextView skillText = (TextView) findViewById(R.id.skillText);
         SeekBar skillSeekBar = (SeekBar) findViewById(R.id.skillSeekBar);
@@ -91,14 +108,30 @@ public class AMazeActivity extends AppCompatActivity {
     }
 
     public void getOldMaze(View view) {
-        Intent intent = new Intent(this, GeneratingActivity.class);
-        startActivity(intent);
+        Bundle extras = getIntent().getExtras();
+        if(extras == null) {
+            Toast toast = Toast.makeText(getApplicationContext(), "No previous maze to explore", Toast.LENGTH_SHORT);
+            toast.show();
+            Log.v(TAG, "No previous maze to explore");
+        }
+        else {
+            Intent intent = new Intent(this, GeneratingActivity.class);
+            intent.putExtra("seed", (int) prev_values.get("seed"));
+            intent.putExtra("skill", (int) prev_values.get("skill"));
+            intent.putExtra("perfect", (boolean) prev_values.get("perfect"));
+            intent.putExtra("generation", (int) prev_values.get("generation"));
+            startActivity(intent);
+        }
     }
 
     public void generateNewMaze(View view) {
         Random random = new Random();
         seed = random.nextInt();
         Intent intent = new Intent(this, GeneratingActivity.class);
+        intent.putExtra("seed", seed);
+        intent.putExtra("skill", skill);
+        intent.putExtra("perfect", perfect);
+        intent.putExtra("generation", generation);
         startActivity(intent);
     }
 }

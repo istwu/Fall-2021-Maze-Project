@@ -102,9 +102,9 @@ public class PlayManuallyActivity extends AppCompatActivity {
     public void forward(View view) {
         // move forward 1 step
         steps += 1;
-        Toast toast = Toast.makeText(getApplicationContext(), "Forward", Toast.LENGTH_SHORT);
+        Toast toast = Toast.makeText(getApplicationContext(), "Forward (step count: " + steps + ")", Toast.LENGTH_SHORT);
         toast.show();
-        Log.v(TAG, "Forward, step count = " + steps);
+        Log.v(TAG, "Forward (step count: " + steps + ")");
     }
 
     public void left(View view) {

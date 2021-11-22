@@ -4,11 +4,13 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import edu.wm.cs.cs301.isabellawu.R;
@@ -27,9 +29,51 @@ public class GeneratingActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_generating);
 
+        Bundle extras = getIntent().getExtras();
+        int seed = extras.getInt("seed");
+        int skill = extras.getInt("skill");
+        Boolean perfect = extras.getBoolean("perfect");
+        int generation = extras.getInt("generation");
+        Log.v(TAG, "Seed: " + seed);
+        Log.v(TAG, "Skill level: " + skill);
+        Log.v(TAG, "Rooms included: " + perfect);
+        switch(generation) {
+            case 0:
+                Log.v(TAG, "Generation algorithm: DFS");
+                break;
+            case 1:
+                Log.v(TAG, "Generation algorithm: Prim");
+                break;
+            case 2:
+                Log.v(TAG, "Generation algorithm: Boruvka");
+                break;
+        }
+
         ProgressBar progressBar = (ProgressBar) findViewById(R.id.progressBar);
-        progressBar.setProgress(100);
-        progress = progressBar.getProgress();
+        Handler handler = new Handler();
+        // code taken from https://www.py4u.net/discuss/694340
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while (progress < 100) {
+                    progress += 5;
+                    handler.post(new Runnable() {
+                        public void run() {
+                            progressBar.setProgress(progress);
+                        }
+                    });
+                    if (progress == 100) {
+                        startGame();
+                    }
+
+                    try {
+                        Thread.sleep(200);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }).start();
 
         manual = false;
         Spinner driverSpinner = (Spinner) findViewById(R.id.driverSpinner);
@@ -115,34 +159,51 @@ public class GeneratingActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public void startGame(View view) {
+    public void startGame() {
         // check if progress bar is at 100%
         // check if driver + config have been selected
-        if(progress == 100 && driver != 0 && (manual || (!manual && config != 0))) {
-            Intent intent;
-            if(manual) {
-                intent = new Intent(this, PlayManuallyActivity.class);
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while (driver == 0 || (!manual && config == 0)) {
+                    if(progress == 100 && driver != 0 && (manual || (!manual && config != 0))) {
+
+                    }
+                    else {
+                        TextView driverWarning = (TextView) findViewById(R.id.driverWarning);
+                        TextView configWarning = (TextView) findViewById(R.id.configWarning);
+                        if(driver == 0) {
+                            driverWarning.setText("Please choose a driver.");
+                        }
+                        else {
+                            driverWarning.setText("");
+                        }
+                        if(!manual && config == 0) {
+                            configWarning.setText("Please choose a robot configuration.");
+                        }
+                        else {
+                            configWarning.setText("");
+                        }
+                    }
+
+                    try {
+                        Thread.sleep(100);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+                Intent intent;
+                if(manual) {
+                    intent = new Intent(getApplicationContext(), PlayManuallyActivity.class);
+                }
+                else {
+                    intent = new Intent(getApplicationContext(), PlayAnimationActivity.class);
+                }
+                startActivity(intent);
             }
-            else {
-                intent = new Intent(this, PlayAnimationActivity.class);
-            }
-            startActivity(intent);
-        }
-        else {
-            if(progress != 100) {
-                Log.v(TAG, "" + progress);
-                Toast toast = Toast.makeText(getApplicationContext(), "Maze not finished loading.", Toast.LENGTH_SHORT);
-                toast.show();
-            }
-            if(driver == 0) {
-                Toast toast = Toast.makeText(getApplicationContext(), "Need to choose a driver.", Toast.LENGTH_SHORT);
-                toast.show();
-            }
-            if(!manual && config == 0) {
-                Toast toast = Toast.makeText(getApplicationContext(), "Need to set robot configuration.", Toast.LENGTH_SHORT);
-                toast.show();
-            }
-        }
+        }).start();
+
+
 
     }
 }

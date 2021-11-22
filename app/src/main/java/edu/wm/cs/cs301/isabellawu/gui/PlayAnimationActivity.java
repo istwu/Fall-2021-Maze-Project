@@ -44,11 +44,13 @@ public class PlayAnimationActivity extends AppCompatActivity {
             }
         });
 
+        // change the color of these depending on sensor status
         ImageView sensor_forward = (ImageView) findViewById(R.id.sensor_forward);
         ImageView sensor_left = (ImageView) findViewById(R.id.sensor_left);
         ImageView sensor_right = (ImageView) findViewById(R.id.sensor_right);
         ImageView sensor_backward = (ImageView) findViewById(R.id.sensor_backward);
 
+        // change this based on remaining energy
         ProgressBar energy = (ProgressBar) findViewById(R.id.energyBar);
 
         SeekBar zoomBar = (SeekBar) findViewById(R.id.zoomSeekBar_auto);
