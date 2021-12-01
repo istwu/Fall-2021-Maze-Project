@@ -9,7 +9,7 @@
     <ToggleButton
         android:id="@+id/toggleMapButton_manual"
         android:layout_width="112dp"
-        android:layout_height="60dp"
+        android:layout_height="52dp"
         android:textOff="@string/map_off"
         android:textOn="@string/map_on"
         app:layout_constraintEnd_toStartOf="@+id/toggleSolutionButton"
@@ -20,7 +20,7 @@
     <ToggleButton
         android:id="@+id/toggleSolutionButton"
         android:layout_width="112dp"
-        android:layout_height="60dp"
+        android:layout_height="52dp"
         android:layout_marginTop="20dp"
         android:textOff="@string/solution_off"
         android:textOn="@string/solution_on"
@@ -32,7 +32,7 @@
     <ToggleButton
         android:id="@+id/toggleWallsButton"
         android:layout_width="112dp"
-        android:layout_height="60dp"
+        android:layout_height="52dp"
         android:textOff="@string/walls_off"
         android:textOn="@string/walls_on"
         app:layout_constraintEnd_toEndOf="parent"
@@ -52,10 +52,21 @@
         app:layout_constraintTop_toBottomOf="@+id/textView19" />
 
     <TextView
+        android:id="@+id/textView19"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="@string/zoom"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toggleSolutionButton" />
+
+    <TextView
         android:id="@+id/textView13"
         android:layout_width="33dp"
         android:layout_height="37dp"
-        android:layout_marginTop="112dp"
+        android:layout_marginTop="104dp"
         android:text="+"
         android:textAlignment="viewStart"
         android:textSize="34sp"
@@ -69,7 +80,7 @@
         android:id="@+id/textView12"
         android:layout_width="40dp"
         android:layout_height="37dp"
-        android:layout_marginTop="104dp"
+        android:layout_marginTop="96dp"
         android:text="-"
         android:textAlignment="viewEnd"
         android:textSize="48sp"
@@ -90,24 +101,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/go2losing_manual"
-        app:layout_constraintVertical_bias="0.396"
-        app:srcCompat="@drawable/ic_group_collapse_00"
-        app:tint="#000000"
-        tools:ignore="SpeakableTextPresentCheck" />
-
-    <ImageButton
-        android:id="@+id/leftButton"
-        android:layout_width="64dp"
-        android:layout_height="64dp"
-        android:layout_marginStart="108dp"
-        android:layout_marginBottom="60dp"
-        android:minWidth="48dp"
-        android:onClick="left"
-        android:rotation="-90"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/forwardButton"
+        app:layout_constraintTop_toBottomOf="@+id/mazePanel"
         app:layout_constraintVertical_bias="0.0"
         app:srcCompat="@drawable/ic_group_collapse_00"
         app:tint="#000000"
@@ -130,37 +124,31 @@
         app:tint="#000000"
         tools:ignore="SpeakableTextPresentCheck" />
 
-    <Button
-        android:id="@+id/go2winnning_manual"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="68dp"
-        android:onClick="go2winning"
-        android:text="@string/go2winning"
+    <ImageButton
+        android:id="@+id/leftButton"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:layout_marginStart="108dp"
+        android:layout_marginBottom="60dp"
+        android:minWidth="48dp"
+        android:onClick="left"
+        android:rotation="-90"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/forwardButton"
+        app:layout_constraintVertical_bias="0.0"
+        app:srcCompat="@drawable/ic_group_collapse_00"
+        app:tint="#000000"
+        tools:ignore="SpeakableTextPresentCheck" />
+
+    <edu.wm.cs.cs301.isabellawu.gui.MazePanel
+        android:id="@+id/mazePanel"
+        android:layout_width="320dp"
+        android:layout_height="320dp"
+        android:layout_marginTop="12dp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.494"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/zoomSeekBar_manual" />
-
-    <Button
-        android:id="@+id/go2losing_manual"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:onClick="go2losing"
-        android:text="@string/go2losing"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/go2winnning_manual" />
-
-    <TextView
-        android:id="@+id/textView19"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="@string/zoom"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toggleSolutionButton" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
