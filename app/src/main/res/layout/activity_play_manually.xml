@@ -7,6 +7,17 @@
     tools:context=".gui.PlayManuallyActivity">
 
     <ToggleButton
+        android:id="@+id/toggleWallsButton"
+        android:layout_width="112dp"
+        android:layout_height="52dp"
+        android:textOff="@string/walls_off"
+        android:textOn="@string/walls_on"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.578"
+        app:layout_constraintStart_toEndOf="@+id/toggleSolutionButton"
+        app:layout_constraintTop_toTopOf="@+id/toggleSolutionButton" />
+
+    <ToggleButton
         android:id="@+id/toggleMapButton_manual"
         android:layout_width="112dp"
         android:layout_height="52dp"
@@ -21,24 +32,13 @@
         android:id="@+id/toggleSolutionButton"
         android:layout_width="112dp"
         android:layout_height="52dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="16dp"
         android:textOff="@string/solution_off"
         android:textOn="@string/solution_on"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
-    <ToggleButton
-        android:id="@+id/toggleWallsButton"
-        android:layout_width="112dp"
-        android:layout_height="52dp"
-        android:textOff="@string/walls_off"
-        android:textOn="@string/walls_on"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.578"
-        app:layout_constraintStart_toEndOf="@+id/toggleSolutionButton"
-        app:layout_constraintTop_toTopOf="@+id/toggleSolutionButton" />
 
     <SeekBar
         android:id="@+id/zoomSeekBar_manual"
@@ -66,7 +66,7 @@
         android:id="@+id/textView13"
         android:layout_width="33dp"
         android:layout_height="37dp"
-        android:layout_marginTop="104dp"
+        android:layout_marginTop="92dp"
         android:text="+"
         android:textAlignment="viewStart"
         android:textSize="34sp"
@@ -80,13 +80,13 @@
         android:id="@+id/textView12"
         android:layout_width="40dp"
         android:layout_height="37dp"
-        android:layout_marginTop="96dp"
+        android:layout_marginTop="80dp"
         android:text="-"
         android:textAlignment="viewEnd"
         android:textSize="48sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toStartOf="@+id/zoomSeekBar_manual"
-        app:layout_constraintHorizontal_bias="0.272"
+        app:layout_constraintHorizontal_bias="0.727"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

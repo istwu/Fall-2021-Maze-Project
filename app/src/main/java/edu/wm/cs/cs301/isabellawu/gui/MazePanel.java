@@ -27,7 +27,7 @@ import android.graphics.Color;
  * @author Peter Kemper
  *
  */
-public class MazePanel extends View {
+public class MazePanel extends View implements P5PanelF21 {
 	private static final long serialVersionUID = 2787329533730973905L;
 	/* Panel operates a double buffer see
 	 * http://www.codeproject.com/Articles/2136/Double-buffer-in-standard-Java-AWT
@@ -54,7 +54,6 @@ public class MazePanel extends View {
 		setFocusable(false);
 //		bufferImage = null; // bufferImage initialized separately and later
 //		graphics = null;	// same for graphics
-
 	}
 
 	public MazePanel(Context context, AttributeSet attrs) {
@@ -83,50 +82,50 @@ public class MazePanel extends View {
 	}
 
 	// --------------------------------------------- //
-//
-////	@Override
-//	public void update(Graphics g) {
+
+//	@Override
+	public void update(Graphics g) {
 //		paint(g);
-//	}
-//	/**
-//	 * Method to draw the buffer image on a graphics object that is
-//	 * obtained from the superclass.
-//	 * Warning: do not override getGraphics() or drawing might fail.
-//	 */
-//	public void update() {
+	}
+	/**
+	 * Method to draw the buffer image on a graphics object that is
+	 * obtained from the superclass.
+	 * Warning: do not override getGraphics() or drawing might fail.
+	 */
+	public void update() {
 //		paint(getGraphics());
-//	}
-//
-//
-//	/**
-//	 * Draws the buffer image to the given graphics object.
-//	 * This method is called when this panel should redraw itself.
-//	 * The given graphics object is the one that actually shows
-//	 * on the screen.
-//	 */
-////	@Override
-//	public void paint(Graphics g) {
+	}
+
+
+	/**
+	 * Draws the buffer image to the given graphics object.
+	 * This method is called when this panel should redraw itself.
+	 * The given graphics object is the one that actually shows
+	 * on the screen.
+	 */
+//	@Override
+	public void paint(Graphics g) {
 //		if (null == g) {
 //			System.out.println("MazePanel.paint: no graphics object, skipping drawImage operation");
 //		}
 //		else {
 //			g.drawImage(bufferImage,0,0,null);
 //		}
-//	}
-//
-//	/**
-//	 * Obtains a graphics object that can be used for drawing.
-//	 * This MazePanel object internally stores the graphics object
-//	 * and will return the same graphics object over multiple method calls.
-//	 * The graphics object acts like a notepad where all clients draw
-//	 * on to store their contribution to the overall image that is to be
-//	 * delivered later.
-//	 * To make the drawing visible on screen, one needs to trigger
-//	 * a call of the paint method, which happens
-//	 * when calling the update method.
-//	 * @return graphics object to draw on, null if impossible to obtain image
-//	 */
-//	public Graphics getBufferGraphics() {
+	}
+
+	/**
+	 * Obtains a graphics object that can be used for drawing.
+	 * This MazePanel object internally stores the graphics object
+	 * and will return the same graphics object over multiple method calls.
+	 * The graphics object acts like a notepad where all clients draw
+	 * on to store their contribution to the overall image that is to be
+	 * delivered later.
+	 * To make the drawing visible on screen, one needs to trigger
+	 * a call of the paint method, which happens
+	 * when calling the update method.
+	 * @return graphics object to draw on, null if impossible to obtain image
+	 */
+	public Graphics getBufferGraphics() {
 //		// if necessary instantiate and store a graphics object for later use
 //		if (null == graphics) {
 //			if (null == bufferImage) {
@@ -153,46 +152,44 @@ public class MazePanel extends View {
 //			}
 //		}
 //		return graphics;
-//	}
-//
-////	@Override
-//	public void commit() {
+	}
+
+	@Override
+	public void commit() {
 //		update();
-//	}
-//
-////	@Override
-//	public boolean isOperational() {
+	}
+
+	@Override
+	public boolean isOperational() {
 //		return (graphics != null);
+	}
+
+	@Override
+	public void setColor(int rgb) {
+//		graphics.setColor(new Color(rgb));
+	}
+
+//	/**
+//	 * Sets the color for future drawing requests. The color setting
+//	 * will remain in effect till this method is called again and
+//	 * with a different color. Accounts for an alpha value.
+//	 * Substitute for Graphics.setColor method.
+//	 * @param r red value in the range 0.0 - 1.0
+//	 * @param g green value in the range 0.0 - 1.0
+//	 * @param b blue value in the range 0.0 - 1.0
+//	 * @param a alpha value in the range 0.0 - 1.0
+//	 */
+//	public void setColor(float r, float g, float b, float a) {
+//		graphics.setColor(new Color(r, g, b, a));
 //	}
-//
-////	@Override
-//	public void setColor(int rgb) {
-////		graphics.setColor(new Color(rgb));
-//		paint.setColor(rgb);
-//	}
-//
-////	/**
-////	 * Sets the color for future drawing requests. The color setting
-////	 * will remain in effect till this method is called again and
-////	 * with a different color. Accounts for an alpha value.
-////	 * Substitute for Graphics.setColor method.
-////	 * @param r red value in the range 0.0 - 1.0
-////	 * @param g green value in the range 0.0 - 1.0
-////	 * @param b blue value in the range 0.0 - 1.0
-////	 * @param a alpha value in the range 0.0 - 1.0
-////	 */
-////	public void setColor(float r, float g, float b, float a) {
-////		graphics.setColor(new Color(r, g, b, a));
-////	}
-//
-////	@Override
-//	public int getColor() {
-////		return graphics.getColor().getRGB();
-//		return paint.getColor();
-//	}
-//
-////	@Override
-//	public void addBackground(float percentToExit) {
+
+	@Override
+	public int getColor() {
+//		return graphics.getColor().getRGB();
+	}
+
+	@Override
+	public void addBackground(float percentToExit) {
 //		Color greenWM = Color.decode("#115740");
 //		Color goldWM = Color.decode("#916f41");
 //		Color yellowWM = Color.decode("#FFFF99");
@@ -200,31 +197,28 @@ public class MazePanel extends View {
 //		// black rectangle in upper half of screen
 //		// graphics.setColor(Color.black);
 //		// dynamic color setting:
-////		graphics.setColor(blend(yellowWM, goldWM, percentToExit));
-////		graphics.fillRect(0, 0, Constants.VIEW_WIDTH, Constants.VIEW_HEIGHT/2);
-//		paint.setColor(blend(yellowWM, goldWM, percentToExit));
-//		canvas.drawRect(0, 0, Constants.VIEW_WIDTH, Constants.VIEW_HEIGHT/2, paint);
+//		graphics.setColor(blend(yellowWM, goldWM, percentToExit));
+//		graphics.fillRect(0, 0, Constants.VIEW_WIDTH, Constants.VIEW_HEIGHT/2);
 //		// grey rectangle in lower half of screen
 //		// graphics.setColor(Color.darkGray);
 //		// dynamic color setting:
 //		graphics.setColor(blend(Color.lightGray, greenWM, percentToExit));
 //		graphics.fillRect(0, Constants.VIEW_HEIGHT/2, Constants.VIEW_WIDTH, Constants.VIEW_HEIGHT/2);
-//	}
-//
-//	/**
-//	 * Calculates the weighted average of the two given colors.
-//	 * The weight for the first color is expected to be between
-//	 * 0 and 1. The weight for the other color is then 1-weight0.
-//	 * The result is the weighted average of the red, green, and
-//	 * blue components of the colors. The resulting alpha value
-//	 * for transparency is the max of the alpha values of both colors.
-//	 * @param fstColor is the first color
-//	 * @param sndColor is the second color
-//	 * @param weightFstColor is the weight of fstColor, {@code 0.0 <= weightFstColor <= 1.0}
-//	 * @return blend of both colors as weighted average of their rgb values
-//	 */
-////	private Color blend(Color fstColor, Color sndColor, double weightFstColor) {
-//	private int blend(Color fstColor, Color sndColor, double weightFstColor) {
+	}
+
+	/**
+	 * Calculates the weighted average of the two given colors.
+	 * The weight for the first color is expected to be between
+	 * 0 and 1. The weight for the other color is then 1-weight0.
+	 * The result is the weighted average of the red, green, and
+	 * blue components of the colors. The resulting alpha value
+	 * for transparency is the max of the alpha values of both colors.
+	 * @param fstColor is the first color
+	 * @param sndColor is the second color
+	 * @param weightFstColor is the weight of fstColor, {@code 0.0 <= weightFstColor <= 1.0}
+	 * @return blend of both colors as weighted average of their rgb values
+	 */
+	private Color blend(Color fstColor, Color sndColor, double weightFstColor) {
 //		if (weightFstColor < 0.1)
 //			return sndColor;
 //		if (weightFstColor > 0.95)
@@ -235,40 +229,40 @@ public class MazePanel extends View {
 //		double a = Math.max(fstColor.getAlpha(), sndColor.getAlpha());
 //
 //		return new Color((int) r, (int) g, (int) b, (int) a);
-//	}
-//
-////	@Override
-//	public void addFilledRectangle(int x, int y, int width, int height) {
+	}
+
+	@Override
+	public void addFilledRectangle(int x, int y, int width, int height) {
 //		graphics.fillRect(x, y, width, height);
-//	}
-//
-////	@Override
-//	public void addFilledPolygon(int[] xPoints, int[] yPoints, int nPoints) {
+	}
+
+	@Override
+	public void addFilledPolygon(int[] xPoints, int[] yPoints, int nPoints) {
 //		graphics.fillPolygon(xPoints, yPoints, nPoints);
-//	}
-//
-////	@Override
-//	public void addPolygon(int[] xPoints, int[] yPoints, int nPoints) {
+	}
+
+	@Override
+	public void addPolygon(int[] xPoints, int[] yPoints, int nPoints) {
 //		graphics.drawPolygon(xPoints, yPoints, nPoints);
-//	}
-//
-////	@Override
-//	public void addLine(int startX, int startY, int endX, int endY) {
+	}
+
+	@Override
+	public void addLine(int startX, int startY, int endX, int endY) {
 //		graphics.drawLine(startX, startY, endX, endY);
-//	}
-//
-////	@Override
-//	public void addFilledOval(int x, int y, int width, int height) {
+	}
+
+	@Override
+	public void addFilledOval(int x, int y, int width, int height) {
 //		graphics.fillOval(x, y, width, height);
-//	}
-//
-////	@Override
-//	public void addArc(int x, int y, int width, int height, int startAngle, int arcAngle) {
+	}
+
+	@Override
+	public void addArc(int x, int y, int width, int height, int startAngle, int arcAngle) {
 //		graphics.drawArc(x, y, width, height, startAngle, arcAngle);
-//	}
-//
-////	@Override
-//	public void addMarker(float x, float y, String str) {
+	}
+
+	@Override
+	public void addMarker(float x, float y, String str) {
 //		GlyphVector gv = Font.decode("Serif-PLAIN-16").createGlyphVector(graphics.getFontRenderContext(), str);
 //		Rectangle2D rect = gv.getVisualBounds();
 //		// need to update x, y by half of rectangle width, height
@@ -277,10 +271,10 @@ public class MazePanel extends View {
 //		y += rect.getHeight() / 2;
 //
 //		graphics.drawGlyphVector(gv, x, y);
-//	}
-//
-////	@Override
-//	public void setRenderingHint(P5RenderingHints hintKey, P5RenderingHints hintValue) {
+	}
+
+	@Override
+	public void setRenderingHint(P5RenderingHints hintKey, P5RenderingHints hintValue) {
 //		RenderingHints.Key key = null;
 //		Object val = null;
 //		switch(hintKey) {
@@ -305,6 +299,6 @@ public class MazePanel extends View {
 //
 //		java.util.Map<RenderingHints.Key, Object> hints = Map.of(key, val);
 //		graphics.addRenderingHints(hints);
-//	}
+	}
 
 }
