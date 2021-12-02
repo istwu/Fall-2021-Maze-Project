@@ -3,6 +3,7 @@ package edu.wm.cs.cs301.isabellawu.gui;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.Typeface;
@@ -20,8 +21,6 @@ import android.view.View;
 //import java.awt.font.GlyphVector;
 //import java.awt.geom.Rectangle2D;
 //import java.util.Map;
-
-import android.graphics.Color;
 
 /**
  * Add functionality for double buffering to an AWT Panel class.
@@ -71,13 +70,15 @@ public class MazePanel extends View implements P5PanelF21 {
 		bitmap = Bitmap.createBitmap(Constants.VIEW_WIDTH, Constants.VIEW_HEIGHT, Bitmap.Config.ARGB_8888);
 		canvas = new Canvas(bitmap);
 		paint = new Paint();
-		paint.setColor(0xffff0000);
 	}
 
 	@Override
-	public void onDraw(Canvas canvas) {
-		super.onDraw(canvas);
-		canvas.drawRect(0, 0, Constants.VIEW_WIDTH, Constants.VIEW_HEIGHT, paint);
+	public void onDraw(Canvas UIcanvas) {
+		// draw private bitmap on canvas passed in
+		super.onDraw(UIcanvas);
+//		paint.setColor(0xffff0000);
+//		UIcanvas.drawRect(0, 0, 1200, 1200, paint);
+		UIcanvas.drawBitmap(bitmap, 0, 0, paint);
 	}
 
 	@Override
@@ -87,11 +88,26 @@ public class MazePanel extends View implements P5PanelF21 {
 		setMeasuredDimension(w, w);
 	}
 
+	private void myTestImage(Canvas c) {
+		// 1 red ball, 1 green ball, 1 yellow rectangle, 1 blue polygon, plus
+		// a few lines for good measure on the parameter canvas c
+
+		paint.setColor(Color.RED);
+		c.drawCircle(12, 12 , 6, paint);
+		paint.setColor(Color.GREEN);
+		c.drawCircle(100, 100, 20, paint);
+		paint.setColor(Color.YELLOW);
+		addFilledRectangle(36, 36, 20, 12);
+		int[] x = new int[5];
+		int[] y = new int[5];
+	}
+
 	// --------------------------------------------- //
 
 //	@Override
-	public void update(Canvas g) {
+	public void update(Canvas c) {
 //		paint(g);
+		paint(c);
 	}
 	/**
 	 * Method to draw the buffer image on a graphics object that is
@@ -100,8 +116,8 @@ public class MazePanel extends View implements P5PanelF21 {
 	 */
 	public void update() {
 //		paint(getGraphics());
+		paint(canvas);
 	}
-
 
 	/**
 	 * Draws the buffer image to the given graphics object.
@@ -110,13 +126,20 @@ public class MazePanel extends View implements P5PanelF21 {
 	 * on the screen.
 	 */
 //	@Override
-	public void paint(Canvas g) {
+	public void paint(Canvas c) {
 //		if (null == g) {
 //			System.out.println("MazePanel.paint: no graphics object, skipping drawImage operation");
 //		}
 //		else {
 //			g.drawImage(bufferImage,0,0,null);
 //		}
+
+		if (null == c) {
+			Log.v(TAG, "MazePanel.paint: no canvas object, skipping drawImage operation");
+		}
+		else {
+			invalidate();
+		}
 	}
 
 	/**
@@ -158,12 +181,39 @@ public class MazePanel extends View implements P5PanelF21 {
 //			}
 //		}
 //		return graphics;
+
+		// if necessary instantiate and store a graphics object for later use
+//		if (null == canvas) {
+//			if (null == bitmap) {
+//				bitmap = Bitmap.createBitmap(Constants.VIEW_WIDTH, Constants.VIEW_HEIGHT, Bitmap.Config.ARGB_8888);
+//				if (null == bitmap)
+//				{
+//					System.out.println("Error: creation of buffered image failed, presumedly container not displayable");
+//					return null; // still no buffer image, give up
+//				}
+//			}
+//			canvas = (Graphics2D) bufferImage.getGraphics();
+//			if (null == canvas) {
+//				System.out.println("Error: creation of graphics for buffered image failed, presumedly container not displayable");
+//			}
+//			else {
+//				// System.out.println("MazePanel: Using Rendering Hint");
+//				// For drawing in FirstPersonDrawer, setting rendering hint
+//				// became necessary when lines of polygons
+//				// that were not horizontal or vertical looked ragged
+//				setRenderingHint(RenderingHints.KEY_ANTIALIASING,
+//						RenderingHints.VALUE_ANTIALIAS_ON);
+//				setRenderingHint(RenderingHints.KEY_INTERPOLATION,
+//						RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+//			}
+//		}
+		Log.v(TAG, "getBufferGraphics() not yet implemented.");
 		return null;
 	}
 
 	@Override
 	public void commit() {
-//		update();
+		update();
 	}
 
 	@Override
@@ -217,13 +267,17 @@ public class MazePanel extends View implements P5PanelF21 {
 //		graphics.setColor(blend(Color.lightGray, greenWM, percentToExit));
 //		graphics.fillRect(0, Constants.VIEW_HEIGHT/2, Constants.VIEW_WIDTH, Constants.VIEW_HEIGHT/2);
 
- 		int greenWM = Color.parseColor("#115740");
+// 		Color greenWM = Color.valueOf(0x115740);
+//		Color goldWM = Color.valueOf(0x916f41);
+//		Color yellowWM = Color.valueOf(0xFFFF99);
+		int greenWM = Color.parseColor("#115740");
 		int goldWM = Color.parseColor("#916f41");
 		int yellowWM = Color.parseColor("#FFFF99");
 
 		// black rectangle in upper half of screen
 		// graphics.setColor(Color.black);
 		// dynamic color setting:
+		paint.setStyle(Paint.Style.FILL);
 		paint.setColor(blend(yellowWM, goldWM, percentToExit));
 		canvas.drawRect(0, 0, Constants.VIEW_WIDTH, Constants.VIEW_HEIGHT/2, paint);
 		// grey rectangle in lower half of screen
@@ -268,9 +322,7 @@ public class MazePanel extends View implements P5PanelF21 {
 		double b = weightFstColor * Color.blue(fstColor) + (1-weightFstColor) * Color.blue(sndColor);
 		double a = Math.max(Color.alpha(fstColor), Color.alpha(sndColor));
 
-//		return new Color((int) r, (int) g, (int) b, (int) a);
-//		return Color.parseColor(new Color((int) r, (int) g, (int) b, (int) a));
-		return 0;
+		return Color.argb((int) r, (int) g, (int) b, (int) a);
 	}
 
 	@Override
@@ -307,6 +359,7 @@ public class MazePanel extends View implements P5PanelF21 {
 	@Override
 	public void addLine(int startX, int startY, int endX, int endY) {
 //		graphics.drawLine(startX, startY, endX, endY);
+		paint.setStyle(Paint.Style.STROKE);
 		canvas.drawLine(startX, startY, endX, endY, paint);
 	}
 
@@ -320,6 +373,7 @@ public class MazePanel extends View implements P5PanelF21 {
 	@Override
 	public void addArc(int x, int y, int width, int height, int startAngle, int arcAngle) {
 //		graphics.drawArc(x, y, width, height, startAngle, arcAngle);
+		paint.setStyle(Paint.Style.STROKE);
 		canvas.drawArc(x, y, width, height, startAngle, arcAngle, true, paint);	// usecenter = true
 	}
 

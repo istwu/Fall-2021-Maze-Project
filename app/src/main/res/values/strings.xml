@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">AMazeByIsabellaWu</string>
 
-    <string name="title">Escape the Labyrinth</string>
+    <string name="title">Escape the ISC</string>
     <string name="skill_level">Skill level: %1$d</string>
     <string name="include_rooms">Include rooms in maze?</string>
     <string name="select_gen">Select generation algorithm:</string>
@@ -29,8 +29,8 @@
     <string name="remaining_energy">Remaining energy:</string>
     <string name="animation_speed">Animation speed:</string>
 
-    <string name="win">You escaped!</string>
-    <string name="loss">You failed the challenge...</string>
+    <string name="win">You escaped the ISC!</string>
+    <string name="loss">You got locked in...</string>
     <string name="no_energy">You ran out of energy.</string>
     <string name="crashed">You crashed into a wall.</string>
     <string name="jump_border">You tried to jump over the outside wall.</string>
