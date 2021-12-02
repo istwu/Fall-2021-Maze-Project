@@ -9,7 +9,7 @@
     <ToggleButton
         android:id="@+id/toggleWallsButton"
         android:layout_width="112dp"
-        android:layout_height="52dp"
+        android:layout_height="54dp"
         android:textOff="@string/walls_off"
         android:textOn="@string/walls_on"
         app:layout_constraintEnd_toEndOf="parent"
@@ -20,7 +20,7 @@
     <ToggleButton
         android:id="@+id/toggleMapButton_manual"
         android:layout_width="112dp"
-        android:layout_height="52dp"
+        android:layout_height="54dp"
         android:textOff="@string/map_off"
         android:textOn="@string/map_on"
         app:layout_constraintEnd_toStartOf="@+id/toggleSolutionButton"
@@ -31,7 +31,7 @@
     <ToggleButton
         android:id="@+id/toggleSolutionButton"
         android:layout_width="112dp"
-        android:layout_height="52dp"
+        android:layout_height="54dp"
         android:layout_marginTop="16dp"
         android:textOff="@string/solution_off"
         android:textOn="@string/solution_on"

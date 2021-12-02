@@ -54,16 +54,20 @@ public class MazePanel extends View implements P5PanelF21 {
 	 */
 	public MazePanel(Context context) {
 		super(context);
+		Log.v(TAG, "Constructor 1");
 		init();
 		setFocusable(false);
 //		bufferImage = null; // bufferImage initialized separately and later
 //		graphics = null;	// same for graphics
+		myTestImage(canvas);
 	}
 
 	public MazePanel(Context context, AttributeSet attrs) {
 		super(context, attrs);
+		Log.v(TAG, "Constructor 2");
 		init();
 		setFocusable(false);
+		myTestImage(canvas);
 	}
 
 	public void init() {
@@ -78,7 +82,9 @@ public class MazePanel extends View implements P5PanelF21 {
 		super.onDraw(UIcanvas);
 //		paint.setColor(0xffff0000);
 //		UIcanvas.drawRect(0, 0, 1200, 1200, paint);
-		UIcanvas.drawBitmap(bitmap, 0, 0, paint);
+//		myTestImage(UIcanvas);
+
+//		UIcanvas.drawBitmap(bitmap, 0, 0, paint);
 	}
 
 	@Override
@@ -89,20 +95,51 @@ public class MazePanel extends View implements P5PanelF21 {
 	}
 
 	private void myTestImage(Canvas c) {
-		// 1 red ball, 1 green ball, 1 yellow rectangle, 1 blue polygon, plus
-		// a few lines for good measure on the parameter canvas c
-
+		Log.v(TAG, "Running myTestImage()");
+		// red ball
+		paint.setStyle(Paint.Style.FILL);
 		paint.setColor(Color.RED);
-		c.drawCircle(12, 12 , 6, paint);
+		c.drawCircle(100, 100 , 100, paint);
+		// green ball
 		paint.setColor(Color.GREEN);
-		c.drawCircle(100, 100, 20, paint);
+		c.drawCircle(180, 320, 40, paint);
+		// yellow rectangle
 		paint.setColor(Color.YELLOW);
-		addFilledRectangle(36, 36, 20, 12);
-		int[] x = new int[5];
-		int[] y = new int[5];
+		c.drawRect(400, 200, 800, 600, paint);
+		// blue polygon
+		int[] x = {240, 490, 603, 520};
+		int[] y = {580, 684, 302, 438};
+		Path polygon = new Path();
+		for(int i = 0; i < 4; i++) {
+			polygon.lineTo(x[i], y[i]);
+		}
+		polygon.lineTo(x[0], y[0]);
+		paint.setColor(Color.BLUE);
+		c.drawPath(polygon, paint);
+		// lines
+		paint.setStyle(Paint.Style.STROKE);
+		paint.setColor(Color.BLACK);
+		c.drawLine(160, 800, 200, 1000, paint);
+		c.drawLine(300, 900, 600, 800, paint);
 	}
 
 	// --------------------------------------------- //
+// 	STATEPLAYING DRAW METHOD:
+//	protected void draw() {
+//		if (panel == null) {
+//			printWarning();
+//			return;
+//		}
+//		// draw the first person view and the map view if wanted
+//		firstPersonView.draw(panel, px, py, walkStep, angle,
+//				getPercentageForDistanceToExit()) ;
+//		if (isInMapMode()) {
+//			mapView.draw(panel, px, py, angle, walkStep,
+//					isInShowMazeMode(),isInShowSolutionMode()) ;
+//		}
+//		// update the screen with the buffer graphics
+//		panel.update() ;
+//	}
 
 //	@Override
 	public void update(Canvas c) {
@@ -116,7 +153,20 @@ public class MazePanel extends View implements P5PanelF21 {
 	 */
 	public void update() {
 //		paint(getGraphics());
-		paint(canvas);
+//		paint(canvas);
+		if (canvas == null) {
+			System.out.println("StatePlaying.start: warning: no panel, dry-run game without graphics!");
+			return;
+		}
+//		// draw the first person view and the map view if wanted
+//		firstPersonView.draw(panel, px, py, walkStep, angle,
+//				getPercentageForDistanceToExit()) ;
+//		if (isInMapMode()) {
+//			mapView.draw(panel, px, py, angle, walkStep,
+//					isInShowMazeMode(),isInShowSolutionMode()) ;
+//		}
+		// update the screen with the buffer graphics
+		invalidate();
 	}
 
 	/**
