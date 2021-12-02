@@ -16,6 +16,8 @@
 
     <string name="map_on">Map on</string>
     <string name="map_off">Map off</string>
+    <string name="minus">-</string>
+    <string name="plus">+</string>
     <string name="solution_on">Solution on</string>
     <string name="solution_off">Solution off</string>
     <string name="walls_on">Walls on</string>

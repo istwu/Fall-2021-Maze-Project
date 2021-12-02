@@ -4,7 +4,10 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.graphics.Path;
+import android.graphics.Typeface;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 
 //import java.awt.Color;
@@ -45,6 +48,8 @@ public class MazePanel extends View implements P5PanelF21 {
 	private Bitmap bitmap;
 	private Paint paint;
 
+	private static final String TAG = "MazePanel";
+
 	/**
 	 * Constructor. Object is not focusable.
 	 */
@@ -63,7 +68,8 @@ public class MazePanel extends View implements P5PanelF21 {
 	}
 
 	public void init() {
-		canvas = new Canvas();
+		bitmap = Bitmap.createBitmap(Constants.VIEW_WIDTH, Constants.VIEW_HEIGHT, Bitmap.Config.ARGB_8888);
+		canvas = new Canvas(bitmap);
 		paint = new Paint();
 		paint.setColor(0xffff0000);
 	}
@@ -71,7 +77,7 @@ public class MazePanel extends View implements P5PanelF21 {
 	@Override
 	public void onDraw(Canvas canvas) {
 		super.onDraw(canvas);
-		canvas.drawRect(0, 0, 200, 200, paint);
+		canvas.drawRect(0, 0, Constants.VIEW_WIDTH, Constants.VIEW_HEIGHT, paint);
 	}
 
 	@Override
@@ -84,7 +90,7 @@ public class MazePanel extends View implements P5PanelF21 {
 	// --------------------------------------------- //
 
 //	@Override
-	public void update(Graphics g) {
+	public void update(Canvas g) {
 //		paint(g);
 	}
 	/**
@@ -104,7 +110,7 @@ public class MazePanel extends View implements P5PanelF21 {
 	 * on the screen.
 	 */
 //	@Override
-	public void paint(Graphics g) {
+	public void paint(Canvas g) {
 //		if (null == g) {
 //			System.out.println("MazePanel.paint: no graphics object, skipping drawImage operation");
 //		}
@@ -125,7 +131,7 @@ public class MazePanel extends View implements P5PanelF21 {
 	 * when calling the update method.
 	 * @return graphics object to draw on, null if impossible to obtain image
 	 */
-	public Graphics getBufferGraphics() {
+	public Canvas getBufferGraphics() {
 //		// if necessary instantiate and store a graphics object for later use
 //		if (null == graphics) {
 //			if (null == bufferImage) {
@@ -152,6 +158,7 @@ public class MazePanel extends View implements P5PanelF21 {
 //			}
 //		}
 //		return graphics;
+		return null;
 	}
 
 	@Override
@@ -162,11 +169,15 @@ public class MazePanel extends View implements P5PanelF21 {
 	@Override
 	public boolean isOperational() {
 //		return (graphics != null);
+		return canvas != null;
 	}
+
+	// ---------- COLOR METHODS ---------- //
 
 	@Override
 	public void setColor(int rgb) {
 //		graphics.setColor(new Color(rgb));
+		paint.setColor(rgb);
 	}
 
 //	/**
@@ -186,6 +197,7 @@ public class MazePanel extends View implements P5PanelF21 {
 	@Override
 	public int getColor() {
 //		return graphics.getColor().getRGB();
+		return paint.getColor();
 	}
 
 	@Override
@@ -204,6 +216,21 @@ public class MazePanel extends View implements P5PanelF21 {
 //		// dynamic color setting:
 //		graphics.setColor(blend(Color.lightGray, greenWM, percentToExit));
 //		graphics.fillRect(0, Constants.VIEW_HEIGHT/2, Constants.VIEW_WIDTH, Constants.VIEW_HEIGHT/2);
+
+ 		int greenWM = Color.parseColor("#115740");
+		int goldWM = Color.parseColor("#916f41");
+		int yellowWM = Color.parseColor("#FFFF99");
+
+		// black rectangle in upper half of screen
+		// graphics.setColor(Color.black);
+		// dynamic color setting:
+		paint.setColor(blend(yellowWM, goldWM, percentToExit));
+		canvas.drawRect(0, 0, Constants.VIEW_WIDTH, Constants.VIEW_HEIGHT/2, paint);
+		// grey rectangle in lower half of screen
+		// graphics.setColor(Color.darkGray);
+		// dynamic color setting:
+		paint.setColor(blend(Color.parseColor("lightgray"), greenWM, percentToExit));
+		canvas.drawRect(0, Constants.VIEW_HEIGHT/2, Constants.VIEW_WIDTH, Constants.VIEW_HEIGHT/2, paint);
 	}
 
 	/**
@@ -218,7 +245,7 @@ public class MazePanel extends View implements P5PanelF21 {
 	 * @param weightFstColor is the weight of fstColor, {@code 0.0 <= weightFstColor <= 1.0}
 	 * @return blend of both colors as weighted average of their rgb values
 	 */
-	private Color blend(Color fstColor, Color sndColor, double weightFstColor) {
+//	private Color blend(Color fstColor, Color sndColor, double weightFstColor) {
 //		if (weightFstColor < 0.1)
 //			return sndColor;
 //		if (weightFstColor > 0.95)
@@ -229,36 +256,71 @@ public class MazePanel extends View implements P5PanelF21 {
 //		double a = Math.max(fstColor.getAlpha(), sndColor.getAlpha());
 //
 //		return new Color((int) r, (int) g, (int) b, (int) a);
+//	}
+
+	private int blend(int fstColor, int sndColor, double weightFstColor) {
+		if (weightFstColor < 0.1)
+			return sndColor;
+		if (weightFstColor > 0.95)
+			return fstColor;
+		double r = weightFstColor * Color.red(fstColor) + (1-weightFstColor) * Color.red(sndColor);
+		double g = weightFstColor * Color.green(fstColor) + (1-weightFstColor) * Color.green(sndColor);
+		double b = weightFstColor * Color.blue(fstColor) + (1-weightFstColor) * Color.blue(sndColor);
+		double a = Math.max(Color.alpha(fstColor), Color.alpha(sndColor));
+
+//		return new Color((int) r, (int) g, (int) b, (int) a);
+//		return Color.parseColor(new Color((int) r, (int) g, (int) b, (int) a));
+		return 0;
 	}
 
 	@Override
 	public void addFilledRectangle(int x, int y, int width, int height) {
 //		graphics.fillRect(x, y, width, height);
+		paint.setStyle(Paint.Style.FILL);
+		canvas.drawRect(x, y, width, height, paint);
 	}
 
 	@Override
 	public void addFilledPolygon(int[] xPoints, int[] yPoints, int nPoints) {
 //		graphics.fillPolygon(xPoints, yPoints, nPoints);
+		paint.setStyle(Paint.Style.FILL);
+		Path polygon = new Path();
+		for(int i = 0; i < nPoints; i++) {
+			polygon.lineTo(xPoints[i], yPoints[i]);
+		}
+		polygon.lineTo(xPoints[0], yPoints[0]);
+		canvas.drawPath(polygon, paint);
 	}
 
 	@Override
 	public void addPolygon(int[] xPoints, int[] yPoints, int nPoints) {
 //		graphics.drawPolygon(xPoints, yPoints, nPoints);
+		paint.setStyle(Paint.Style.STROKE);
+		Path polygon = new Path();
+		for(int i = 0; i < nPoints; i++) {
+			polygon.lineTo(xPoints[i], yPoints[i]);
+		}
+		polygon.lineTo(xPoints[0], yPoints[0]);
+		canvas.drawPath(polygon, paint);
 	}
 
 	@Override
 	public void addLine(int startX, int startY, int endX, int endY) {
 //		graphics.drawLine(startX, startY, endX, endY);
+		canvas.drawLine(startX, startY, endX, endY, paint);
 	}
 
 	@Override
 	public void addFilledOval(int x, int y, int width, int height) {
 //		graphics.fillOval(x, y, width, height);
+		paint.setStyle(Paint.Style.FILL);
+		canvas.drawOval(x, y, width, height, paint);
 	}
 
 	@Override
 	public void addArc(int x, int y, int width, int height, int startAngle, int arcAngle) {
 //		graphics.drawArc(x, y, width, height, startAngle, arcAngle);
+		canvas.drawArc(x, y, width, height, startAngle, arcAngle, true, paint);	// usecenter = true
 	}
 
 	@Override
@@ -271,6 +333,9 @@ public class MazePanel extends View implements P5PanelF21 {
 //		y += rect.getHeight() / 2;
 //
 //		graphics.drawGlyphVector(gv, x, y);
+
+		paint.setTypeface(Typeface.create("Serif-PLAIN-16", Typeface.NORMAL));
+		canvas.drawText(str, x, y, paint);
 	}
 
 	@Override
@@ -299,6 +364,8 @@ public class MazePanel extends View implements P5PanelF21 {
 //
 //		java.util.Map<RenderingHints.Key, Object> hints = Map.of(key, val);
 //		graphics.addRenderingHints(hints);
+
+		Log.v(TAG, "setRenderingHint() not yet implemented");
 	}
 
 }
