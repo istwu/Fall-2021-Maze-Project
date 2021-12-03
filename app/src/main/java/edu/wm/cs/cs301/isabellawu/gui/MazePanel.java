@@ -11,22 +11,11 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
 
-//import java.awt.Color;
-//import java.awt.Font;
-//import java.awt.Graphics;
-//import java.awt.Graphics2D;
-//import java.awt.Image;
-//import java.awt.Panel;
-//import java.awt.RenderingHints;
-//import java.awt.font.GlyphVector;
-//import java.awt.geom.Rectangle2D;
-//import java.util.Map;
-
 /**
  * Add functionality for double buffering to an AWT Panel class.
  * Used for drawing a maze.
  *
- * @author Peter Kemper
+ * @author Isabella Wu
  *
  */
 public class MazePanel extends View implements P5PanelF21 {
@@ -84,7 +73,7 @@ public class MazePanel extends View implements P5PanelF21 {
 //		UIcanvas.drawRect(0, 0, 1200, 1200, paint);
 //		myTestImage(UIcanvas);
 
-//		UIcanvas.drawBitmap(bitmap, 0, 0, paint);
+		UIcanvas.drawBitmap(bitmap, 0, 0, paint);
 	}
 
 	@Override
@@ -121,25 +110,10 @@ public class MazePanel extends View implements P5PanelF21 {
 		paint.setColor(Color.BLACK);
 		c.drawLine(160, 800, 200, 1000, paint);
 		c.drawLine(300, 900, 600, 800, paint);
+		invalidate();
 	}
 
 	// --------------------------------------------- //
-// 	STATEPLAYING DRAW METHOD:
-//	protected void draw() {
-//		if (panel == null) {
-//			printWarning();
-//			return;
-//		}
-//		// draw the first person view and the map view if wanted
-//		firstPersonView.draw(panel, px, py, walkStep, angle,
-//				getPercentageForDistanceToExit()) ;
-//		if (isInMapMode()) {
-//			mapView.draw(panel, px, py, angle, walkStep,
-//					isInShowMazeMode(),isInShowSolutionMode()) ;
-//		}
-//		// update the screen with the buffer graphics
-//		panel.update() ;
-//	}
 
 //	@Override
 	public void update(Canvas c) {
@@ -166,7 +140,7 @@ public class MazePanel extends View implements P5PanelF21 {
 //					isInShowMazeMode(),isInShowSolutionMode()) ;
 //		}
 		// update the screen with the buffer graphics
-		invalidate();
+		paint(canvas);
 	}
 
 	/**
@@ -188,6 +162,7 @@ public class MazePanel extends View implements P5PanelF21 {
 			Log.v(TAG, "MazePanel.paint: no canvas object, skipping drawImage operation");
 		}
 		else {
+			c.drawBitmap(bitmap, 0, 0, paint);
 			invalidate();
 		}
 	}
@@ -232,33 +207,7 @@ public class MazePanel extends View implements P5PanelF21 {
 //		}
 //		return graphics;
 
-		// if necessary instantiate and store a graphics object for later use
-//		if (null == canvas) {
-//			if (null == bitmap) {
-//				bitmap = Bitmap.createBitmap(Constants.VIEW_WIDTH, Constants.VIEW_HEIGHT, Bitmap.Config.ARGB_8888);
-//				if (null == bitmap)
-//				{
-//					System.out.println("Error: creation of buffered image failed, presumedly container not displayable");
-//					return null; // still no buffer image, give up
-//				}
-//			}
-//			canvas = (Graphics2D) bufferImage.getGraphics();
-//			if (null == canvas) {
-//				System.out.println("Error: creation of graphics for buffered image failed, presumedly container not displayable");
-//			}
-//			else {
-//				// System.out.println("MazePanel: Using Rendering Hint");
-//				// For drawing in FirstPersonDrawer, setting rendering hint
-//				// became necessary when lines of polygons
-//				// that were not horizontal or vertical looked ragged
-//				setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-//						RenderingHints.VALUE_ANTIALIAS_ON);
-//				setRenderingHint(RenderingHints.KEY_INTERPOLATION,
-//						RenderingHints.VALUE_INTERPOLATION_BILINEAR);
-//			}
-//		}
-		Log.v(TAG, "getBufferGraphics() not yet implemented.");
-		return null;
+		return canvas;
 	}
 
 	@Override
@@ -280,19 +229,19 @@ public class MazePanel extends View implements P5PanelF21 {
 		paint.setColor(rgb);
 	}
 
-//	/**
-//	 * Sets the color for future drawing requests. The color setting
-//	 * will remain in effect till this method is called again and
-//	 * with a different color. Accounts for an alpha value.
-//	 * Substitute for Graphics.setColor method.
-//	 * @param r red value in the range 0.0 - 1.0
-//	 * @param g green value in the range 0.0 - 1.0
-//	 * @param b blue value in the range 0.0 - 1.0
-//	 * @param a alpha value in the range 0.0 - 1.0
-//	 */
-//	public void setColor(float r, float g, float b, float a) {
-//		graphics.setColor(new Color(r, g, b, a));
-//	}
+	/**
+	 * Sets the color for future drawing requests. The color setting
+	 * will remain in effect till this method is called again and
+	 * with a different color. Accounts for an alpha value.
+	 * Substitute for Graphics.setColor method.
+	 * @param r red value in the range 0.0 - 1.0
+	 * @param g green value in the range 0.0 - 1.0
+	 * @param b blue value in the range 0.0 - 1.0
+	 * @param a alpha value in the range 0.0 - 1.0
+	 */
+	public void setColor(float r, float g, float b, float a) {
+		paint.setColor(Color.argb(a, r, g, b));
+	}
 
 	@Override
 	public int getColor() {

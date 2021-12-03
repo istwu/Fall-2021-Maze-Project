@@ -118,13 +118,16 @@ public class MazeBuilderBoruvka extends MazeBuilder {
 		
 		for(Point point : component) {
 			for(CardinalDirection cd : CardinalDirection.values()) {
-				temp.setLocationDirection((int)point.getX(), (int)point.getY(), cd);
+//				temp.setLocationDirection((int)point.getX(), (int)point.getY(), cd);
+				temp.setLocationDirection((int)point.x, (int)point.y, cd);
 				Point neighbor = new Point(temp.getNeighborX(), temp.getNeighborY());
 				if(floorplan.canTearDown(temp) && !component.contains(neighbor)) {
 					int current_weight = getEdgeWeight(temp);
 					if(current_weight < min_weight) {
-						x = (int)point.getX();
-						y = (int)point.getY();
+//						x = (int)point.getX();
+//						y = (int)point.getY();
+						x = (int)point.x;
+						y = (int)point.y;
 						dir = cd;
 						min_weight = current_weight;
 					}

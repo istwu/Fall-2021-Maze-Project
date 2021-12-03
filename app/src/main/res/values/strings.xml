@@ -23,8 +23,6 @@
     <string name="walls_on">Walls on</string>
     <string name="walls_off">Walls off</string>
     <string name="zoom">Zoom:</string>
-    <string name="go2winning">Go2Winning</string>
-    <string name="go2losing">Go2Losing</string>
     <string name="sensor_status">Sensor status:</string>
     <string name="remaining_energy">Remaining energy:</string>
     <string name="animation_speed">Animation speed:</string>

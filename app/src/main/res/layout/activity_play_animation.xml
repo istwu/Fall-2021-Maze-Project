@@ -9,8 +9,8 @@
     <ToggleButton
         android:id="@+id/toggleMapButton_auto"
         android:layout_width="100dp"
-        android:layout_height="60dp"
-        android:layout_marginTop="16dp"
+        android:layout_height="52dp"
+        android:layout_marginTop="12dp"
         android:textOff="@string/map_off"
         android:textOn="@string/map_on"
         app:layout_constraintEnd_toEndOf="parent"
@@ -23,39 +23,16 @@
         android:layout_width="70dp"
         android:layout_height="42dp"
         android:layout_marginStart="76dp"
-        android:layout_marginTop="28dp"
+        android:layout_marginTop="20dp"
         android:text="@string/sensor_status"
         app:layout_constraintStart_toEndOf="@+id/toggleMapButton_auto"
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
-        android:id="@+id/sensor_right"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
-        android:layout_marginTop="32dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.348"
-        app:layout_constraintStart_toEndOf="@+id/sensor_left"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/mr_cast_thumb"
-        app:tint="#FF0000" />
-
-    <ImageView
-        android:id="@+id/sensor_backward"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
-        android:layout_marginTop="52dp"
-        android:layout_marginEnd="64dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/mr_cast_thumb"
-        app:tint="#FF0000" />
-
-    <ImageView
         android:id="@+id/sensor_forward"
         android:layout_width="20dp"
         android:layout_height="20dp"
-        android:layout_marginEnd="64dp"
+        android:layout_marginEnd="60dp"
         app:layout_constraintBottom_toTopOf="@+id/sensor_backward"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -64,26 +41,38 @@
         app:tint="#FF0000" />
 
     <ImageView
+        android:id="@+id/sensor_backward"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_marginTop="52dp"
+        android:layout_marginEnd="60dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/mr_cast_thumb"
+        app:tint="#FF0000" />
+
+    <ImageView
         android:id="@+id/sensor_left"
         android:layout_width="20dp"
         android:layout_height="20dp"
-        android:layout_marginStart="12dp"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="32dp"
         app:layout_constraintStart_toEndOf="@+id/textView6"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/mr_cast_thumb"
         app:tint="#FF0000" />
 
-    <TextView
-        android:id="@+id/textView16"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="84dp"
-        android:text="@string/zoom"
+    <ImageView
+        android:id="@+id/sensor_right"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_marginTop="32dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintHorizontal_bias="0.387"
+        app:layout_constraintStart_toEndOf="@+id/sensor_left"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/mr_cast_thumb"
+        app:tint="#FF0000" />
 
     <SeekBar
         android:id="@+id/zoomSeekBar_auto"
@@ -97,11 +86,22 @@
         app:layout_constraintTop_toBottomOf="@+id/textView16" />
 
     <TextView
+        android:id="@+id/textView16"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="68dp"
+        android:text="@string/zoom"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
         android:id="@+id/textView17"
         android:layout_width="40dp"
         android:layout_height="37dp"
         android:layout_marginStart="12dp"
-        android:layout_marginTop="84dp"
+        android:layout_marginTop="68dp"
         android:text="-"
         android:textAlignment="viewEnd"
         android:textSize="48sp"
@@ -115,7 +115,7 @@
         android:id="@+id/textView18"
         android:layout_width="33dp"
         android:layout_height="37dp"
-        android:layout_marginTop="92dp"
+        android:layout_marginTop="76dp"
         android:layout_marginEnd="16dp"
         android:text="+"
         android:textAlignment="viewStart"
@@ -126,60 +126,27 @@
         app:layout_constraintStart_toEndOf="@+id/zoomSeekBar_manual"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/textView5"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="168dp"
-        android:text="@string/remaining_energy"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.496"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
     <ProgressBar
         android:id="@+id/energyBar"
         style="?android:attr/progressBarStyleHorizontal"
         android:layout_width="349dp"
         android:layout_height="25dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="12dp"
         android:max="3500"
         android:min="0"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView5" />
 
-    <Button
-        android:id="@+id/go2winning_auto"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:onClick="go2winning"
-        android:text="@string/go2winning"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/energyBar" />
-
-    <Button
-        android:id="@+id/go2losing_auto"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:onClick="go2losing"
-        android:text="@string/go2losing"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/go2winning_auto" />
-
     <TextView
-        android:id="@+id/textView15"
+        android:id="@+id/textView5"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="28dp"
-        android:text="@string/animation_speed"
+        android:text="@string/remaining_energy"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.496"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/go2losing_auto" />
+        app:layout_constraintTop_toBottomOf="@+id/zoomSeekBar_auto" />
 
     <SeekBar
         android:id="@+id/speedSeekBar"
@@ -188,20 +155,43 @@
         android:layout_marginTop="12dp"
         android:max="100"
         android:min="0"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.272"
+        app:layout_constraintHorizontal_bias="0.111"
         app:layout_constraintStart_toEndOf="@+id/pause_play"
-        app:layout_constraintTop_toBottomOf="@+id/textView15" />
+        app:layout_constraintTop_toBottomOf="@+id/textView15"
+        app:layout_constraintVertical_bias="0.011" />
+
+    <TextView
+        android:id="@+id/textView15"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:text="@string/animation_speed"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/mazePanel_auto" />
 
     <ImageButton
         android:id="@+id/pause_play"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:layout_marginStart="12dp"
-        android:layout_marginTop="52dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="12dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/go2losing_auto"
+        app:layout_constraintTop_toBottomOf="@+id/textView15"
         app:srcCompat="@drawable/mr_media_pause_light"
         tools:ignore="SpeakableTextPresentCheck" />
+
+    <edu.wm.cs.cs301.isabellawu.gui.MazePanel
+        android:id="@+id/mazePanel_auto"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.495"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/energyBar"
+        app:layout_constraintVertical_bias="0.0" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

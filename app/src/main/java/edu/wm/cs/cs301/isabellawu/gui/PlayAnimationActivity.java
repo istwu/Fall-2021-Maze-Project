@@ -168,6 +168,8 @@ public class PlayAnimationActivity extends AppCompatActivity {
                 Log.v(TAG, "Speed set to " + speed);
             }
         });
+
+        MazePanel maze = findViewById(R.id.mazePanel_auto);
     }
 
     /**

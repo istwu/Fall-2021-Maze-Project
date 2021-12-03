@@ -101,7 +101,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/mazePanel"
+        app:layout_constraintTop_toBottomOf="@+id/mazePanel_manual"
         app:layout_constraintVertical_bias="0.086"
         app:srcCompat="@drawable/ic_group_collapse_00"
         app:tint="#000000"
@@ -142,13 +142,15 @@
         tools:ignore="SpeakableTextPresentCheck" />
 
     <edu.wm.cs.cs301.isabellawu.gui.MazePanel
-        android:id="@+id/mazePanel"
+        android:id="@+id/mazePanel_manual"
         android:layout_width="300dp"
         android:layout_height="300dp"
         android:layout_marginTop="12dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.494"
+        app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/zoomSeekBar_manual" />
+        app:layout_constraintTop_toBottomOf="@+id/zoomSeekBar_manual"
+        app:layout_constraintVertical_bias="0.0" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

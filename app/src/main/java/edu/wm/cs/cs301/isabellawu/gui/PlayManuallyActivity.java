@@ -124,6 +124,9 @@ public class PlayManuallyActivity extends AppCompatActivity {
             }
         });
 
+
+        MazePanel maze = findViewById(R.id.mazePanel_manual);
+
     }
 
     /**
