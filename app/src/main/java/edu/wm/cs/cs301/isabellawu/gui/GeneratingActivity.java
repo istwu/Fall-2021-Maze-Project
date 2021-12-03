@@ -208,22 +208,6 @@ public class GeneratingActivity extends AppCompatActivity implements Order {
 
     @Override
     public void updateProgress(int percentage) {
-//        new Thread(() -> {
-//            while (progress < 100) {
-//                progress += 5;
-//                handler.post(() -> progressBar.setProgress(progress));
-//                if (progress == 100) {
-//                    startGame();
-//                }
-//
-//                try {
-//                    Thread.sleep(200);
-//                } catch (InterruptedException e) {
-//                    e.printStackTrace();
-//                }
-//            }
-//        }).start();
-
         if (percentdone < percentage && percentage <= 100) {
             percentdone = percentage;
             handler.post(() -> progressBar.setProgress(percentdone));

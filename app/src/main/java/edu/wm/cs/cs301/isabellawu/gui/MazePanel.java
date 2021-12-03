@@ -48,7 +48,7 @@ public class MazePanel extends View implements P5PanelF21 {
 		setFocusable(false);
 //		bufferImage = null; // bufferImage initialized separately and later
 //		graphics = null;	// same for graphics
-		myTestImage(canvas);
+//		myTestImage(canvas);
 	}
 
 	public MazePanel(Context context, AttributeSet attrs) {
@@ -56,7 +56,7 @@ public class MazePanel extends View implements P5PanelF21 {
 		Log.v(TAG, "Constructor 2");
 		init();
 		setFocusable(false);
-		myTestImage(canvas);
+//		myTestImage(canvas);
 	}
 
 	public void init() {
