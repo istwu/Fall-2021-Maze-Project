@@ -14,11 +14,17 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import edu.wm.cs.cs301.isabellawu.R;
+import edu.wm.cs.cs301.isabellawu.generation.Maze;
+import edu.wm.cs.cs301.isabellawu.generation.MazeFactory;
+import edu.wm.cs.cs301.isabellawu.generation.Order;
 
 /**
  * @author Isabella Wu
  */
-public class GeneratingActivity extends AppCompatActivity {
+public class GeneratingActivity extends AppCompatActivity implements Order {
+
+    public static Maze maze;
+    private MazeFactory factory;
 
     private int progress;
     private int driver;
@@ -29,6 +35,8 @@ public class GeneratingActivity extends AppCompatActivity {
     private int skill;
     private boolean perfect;
     private int generation;
+    private Order.Builder builder;
+    private int percentdone;
 
     private static final String TAG = "GeneratingActivity";
 
@@ -50,25 +58,30 @@ public class GeneratingActivity extends AppCompatActivity {
         skill = extras.getInt("skill");
         perfect = extras.getBoolean("perfect");
         generation = extras.getInt("generation");
+        builder = (Builder) extras.get("builder");
+        percentdone = 0;
+
+        factory = new MazeFactory();
 
         ProgressBar progressBar = findViewById(R.id.progressBar);
         Handler handler = new Handler();
         // code taken from https://www.py4u.net/discuss/694340
-        new Thread(() -> {
-            while (progress < 100) {
-                progress += 5;
-                handler.post(() -> progressBar.setProgress(progress));
-                if (progress == 100) {
-                    startGame();
-                }
-
-                try {
-                    Thread.sleep(200);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
-        }).start();
+//        new Thread(() -> {
+//            while (progress < 100) {
+//                progress += 5;
+//                handler.post(() -> progressBar.setProgress(progress));
+//                if (progress == 100) {
+//                    startGame();
+//                }
+//
+//                try {
+//                    Thread.sleep(200);
+//                } catch (InterruptedException e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//        }).start();
+        generateMaze(seed, skill, perfect, builder, progressBar);
 
         manual = false;
         Spinner driverSpinner = findViewById(R.id.driverSpinner);
@@ -175,8 +188,16 @@ public class GeneratingActivity extends AppCompatActivity {
         intent.putExtra("skill", skill);
         intent.putExtra("perfect", perfect);
         intent.putExtra("generation", generation);
+        intent.putExtra("builder", builder);
         startActivity(intent);
         finish();
+    }
+
+    private void generateMaze(int seed, int skill, boolean perfect, Order.Builder builder, ProgressBar progressBar) {
+        new Thread(() -> {
+            // ewjoifjaosdignjh
+            factory.order(this);
+        }).start();
     }
 
     /**
@@ -229,6 +250,7 @@ public class GeneratingActivity extends AppCompatActivity {
                 intent.putExtra("skill", skill);
                 intent.putExtra("perfect", perfect);
                 intent.putExtra("generation", generation);
+                intent.putExtra("builder", builder);
                 intent.putExtra("driver", driver);  // 2 = wizard, 3 = wallfollower
                 intent.putExtra("config", config);   // 1 = premium, 2 = mediocre, 3 = soso, 4 = shaky
             }
@@ -237,5 +259,39 @@ public class GeneratingActivity extends AppCompatActivity {
 
 
 
+    }
+
+    @Override
+    public int getSkillLevel() {
+        return skill;
+    }
+
+    @Override
+    public Builder getBuilder() {
+        return builder;
+    }
+
+    @Override
+    public boolean isPerfect() {
+        return perfect;
+    }
+
+    @Override
+    public int getSeed() {
+        return seed;
+    }
+
+    @Override
+    public void deliver(Maze mazeConfig) {
+        maze = mazeConfig;
+        startGame();
+    }
+
+    @Override
+    public void updateProgress(int percentage) {
+        if (percentdone < percentage && percentage <= 100) {
+            percentdone = percentage;
+
+        }
     }
 }

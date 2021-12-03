@@ -17,6 +17,7 @@ import java.util.HashMap;
 import java.util.Random;
 
 import edu.wm.cs.cs301.isabellawu.R;
+import edu.wm.cs.cs301.isabellawu.generation.Order;
 
 /**
  * @author Isabella Wu
@@ -27,6 +28,7 @@ public class AMazeActivity extends AppCompatActivity {
     private int skill;
     private boolean perfect;
     private int generation; // 0 = DFS, 1 = Prim, 2 = Boruvka
+    private Order.Builder builder;
     private HashMap prev_values;
 
     private static final String TAG = "AMazeActivity";
@@ -117,12 +119,21 @@ public class AMazeActivity extends AppCompatActivity {
                 generation = i;
                 String algo = "";
                 switch(generation) {
-                    case 0: algo = "DFS";
-                    break;
-                    case 1: algo = "Prim";
-                    break;
-                    case 2: algo = "Boruvka";
-                    break;
+                    case 0: {
+                        algo = "DFS";
+                        builder = Order.Builder.DFS;
+                        break;
+                    }
+                    case 1: {
+                        algo = "Prim";
+                        builder = Order.Builder.Prim;
+                        break;
+                    }
+                    case 2: {
+                        algo = "Boruvka";
+                        builder = Order.Builder.Boruvka;
+                        break;
+                    }
                 }
                 Toast toast = Toast.makeText(getApplicationContext(), "Generation algorithm set to " + algo, Toast.LENGTH_SHORT);
                 toast.show();
@@ -185,6 +196,7 @@ public class AMazeActivity extends AppCompatActivity {
         intent.putExtra("skill", skill);
         intent.putExtra("perfect", perfect);
         intent.putExtra("generation", generation);
+        intent.putExtra("builder", builder);
         Log.v(TAG, "Seed: " + seed);
         Log.v(TAG, "Skill level: " + skill);
         Log.v(TAG, "Rooms included: " + perfect);
