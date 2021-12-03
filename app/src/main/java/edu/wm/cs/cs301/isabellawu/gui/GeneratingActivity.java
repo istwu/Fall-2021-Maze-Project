@@ -34,7 +34,6 @@ public class GeneratingActivity extends AppCompatActivity implements Order {
     private int seed;
     private int skill;
     private boolean perfect;
-    private int generation;
     private Order.Builder builder;
     private int percentdone;
 
@@ -57,11 +56,8 @@ public class GeneratingActivity extends AppCompatActivity implements Order {
         seed = extras.getInt("seed");
         skill = extras.getInt("skill");
         perfect = extras.getBoolean("perfect");
-        generation = extras.getInt("generation");
         builder = (Builder) extras.get("builder");
         percentdone = 0;
-
-        factory = new MazeFactory();
 
         ProgressBar progressBar = findViewById(R.id.progressBar);
         Handler handler = new Handler();
@@ -81,7 +77,6 @@ public class GeneratingActivity extends AppCompatActivity implements Order {
 //                }
 //            }
 //        }).start();
-        generateMaze(seed, skill, perfect, builder, progressBar);
 
         manual = false;
         Spinner driverSpinner = findViewById(R.id.driverSpinner);
@@ -174,6 +169,8 @@ public class GeneratingActivity extends AppCompatActivity implements Order {
             }
         });
 
+        factory = new MazeFactory();
+        generateMaze();
     }
 
     /**
@@ -187,16 +184,17 @@ public class GeneratingActivity extends AppCompatActivity implements Order {
         intent.putExtra("seed", seed);
         intent.putExtra("skill", skill);
         intent.putExtra("perfect", perfect);
-        intent.putExtra("generation", generation);
         intent.putExtra("builder", builder);
         startActivity(intent);
         finish();
     }
 
-    private void generateMaze(int seed, int skill, boolean perfect, Order.Builder builder, ProgressBar progressBar) {
+    private void generateMaze() {
         new Thread(() -> {
-            // ewjoifjaosdignjh
             factory.order(this);
+            factory.waitTillDelivered();
+
+
         }).start();
     }
 
@@ -241,7 +239,7 @@ public class GeneratingActivity extends AppCompatActivity implements Order {
                 intent.putExtra("seed", seed);
                 intent.putExtra("skill", skill);
                 intent.putExtra("perfect", perfect);
-                intent.putExtra("generation", generation);
+                intent.putExtra("builder", builder);
                 intent.putExtra("driver", driver);  // 1 = manual
             }
             else {
@@ -249,7 +247,6 @@ public class GeneratingActivity extends AppCompatActivity implements Order {
                 intent.putExtra("seed", seed);
                 intent.putExtra("skill", skill);
                 intent.putExtra("perfect", perfect);
-                intent.putExtra("generation", generation);
                 intent.putExtra("builder", builder);
                 intent.putExtra("driver", driver);  // 2 = wizard, 3 = wallfollower
                 intent.putExtra("config", config);   // 1 = premium, 2 = mediocre, 3 = soso, 4 = shaky

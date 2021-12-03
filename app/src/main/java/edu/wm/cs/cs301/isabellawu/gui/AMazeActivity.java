@@ -27,7 +27,6 @@ public class AMazeActivity extends AppCompatActivity {
     private int seed;
     private int skill;
     private boolean perfect;
-    private int generation; // 0 = DFS, 1 = Prim, 2 = Boruvka
     private Order.Builder builder;
     private HashMap prev_values;
 
@@ -116,9 +115,8 @@ public class AMazeActivity extends AppCompatActivity {
             public void onItemSelected(android.widget.AdapterView<?> adapterView, View view, int i, long l) {
                 // i = position
                 // l = id
-                generation = i;
                 String algo = "";
-                switch(generation) {
+                switch(i) {
                     case 0: {
                         algo = "DFS";
                         builder = Order.Builder.DFS;
@@ -195,19 +193,18 @@ public class AMazeActivity extends AppCompatActivity {
         intent.putExtra("seed", seed);
         intent.putExtra("skill", skill);
         intent.putExtra("perfect", perfect);
-        intent.putExtra("generation", generation);
         intent.putExtra("builder", builder);
         Log.v(TAG, "Seed: " + seed);
         Log.v(TAG, "Skill level: " + skill);
         Log.v(TAG, "Rooms included: " + perfect);
-        switch(generation) {
-            case 0:
+        switch(builder) {
+            case DFS:
                 Log.v(TAG, "Generation algorithm: DFS");
                 break;
-            case 1:
+            case Prim:
                 Log.v(TAG, "Generation algorithm: Prim");
                 break;
-            case 2:
+            case Boruvka:
                 Log.v(TAG, "Generation algorithm: Boruvka");
                 break;
         }

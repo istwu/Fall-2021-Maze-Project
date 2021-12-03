@@ -11,6 +11,8 @@ import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import edu.wm.cs.cs301.isabellawu.R;
+import edu.wm.cs.cs301.isabellawu.generation.Maze;
+import edu.wm.cs.cs301.isabellawu.generation.Order;
 
 /**
  * @author Isabella Wu
@@ -24,7 +26,7 @@ public class PlayManuallyActivity extends AppCompatActivity {
     private int seed;
     private int skill;
     private boolean perfect;
-    private int generation;
+    private Order.Builder builder;
 
     private static final String TAG = "PlayManuallyActivity";
 
@@ -44,7 +46,7 @@ public class PlayManuallyActivity extends AppCompatActivity {
         seed = extras.getInt("seed");
         skill = extras.getInt("skill");
         perfect = extras.getBoolean("perfect");
-        generation = extras.getInt("generation");
+        builder = (Order.Builder) extras.get("builder");
 
         path = 0;
         shortest_path = 0; // set to path length of solution;
@@ -124,8 +126,8 @@ public class PlayManuallyActivity extends AppCompatActivity {
             }
         });
 
-
-        MazePanel maze = findViewById(R.id.mazePanel_manual);
+        Maze maze = GeneratingActivity.maze;
+        MazePanel mazePanel = findViewById(R.id.mazePanel_manual);
 
     }
 
@@ -140,7 +142,7 @@ public class PlayManuallyActivity extends AppCompatActivity {
         intent.putExtra("seed", seed);
         intent.putExtra("skill", skill);
         intent.putExtra("perfect", perfect);
-        intent.putExtra("generation", generation);
+        intent.putExtra("builder", builder);
         startActivity(intent);
         finish();
     }
@@ -190,7 +192,7 @@ public class PlayManuallyActivity extends AppCompatActivity {
         intent.putExtra("seed", seed);
         intent.putExtra("skill", skill);
         intent.putExtra("perfect", perfect);
-        intent.putExtra("generation", generation);
+        intent.putExtra("builder", builder);
         intent.putExtra("path", path);
         intent.putExtra("shortest path", shortest_path);
         startActivity(intent);
@@ -209,7 +211,7 @@ public class PlayManuallyActivity extends AppCompatActivity {
         intent.putExtra("seed", seed);
         intent.putExtra("skill", skill);
         intent.putExtra("perfect", perfect);
-        intent.putExtra("generation", generation);
+        intent.putExtra("builder", builder);
         intent.putExtra("path", path);
         intent.putExtra("shortest path", shortest_path);
         startActivity(intent);
