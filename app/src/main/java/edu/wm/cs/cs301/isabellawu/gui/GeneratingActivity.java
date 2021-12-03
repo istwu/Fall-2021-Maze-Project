@@ -23,18 +23,19 @@ import edu.wm.cs.cs301.isabellawu.generation.Order;
  */
 public class GeneratingActivity extends AppCompatActivity implements Order {
 
-    public static Maze maze;
-    private MazeFactory factory;
-
-    private int progress;
-    private int driver;
-    private boolean manual;
-    private int config;
-
     private int seed;
     private int skill;
     private boolean perfect;
     private Order.Builder builder;
+
+    private int driver;
+    private boolean manual;
+    private int config;
+
+    public static Maze maze;
+    private MazeFactory factory;
+    private ProgressBar progressBar;
+    private Handler handler;
     private int percentdone;
 
     private static final String TAG = "GeneratingActivity";
@@ -57,26 +58,6 @@ public class GeneratingActivity extends AppCompatActivity implements Order {
         skill = extras.getInt("skill");
         perfect = extras.getBoolean("perfect");
         builder = (Builder) extras.get("builder");
-        percentdone = 0;
-
-        ProgressBar progressBar = findViewById(R.id.progressBar);
-        Handler handler = new Handler();
-        // code taken from https://www.py4u.net/discuss/694340
-//        new Thread(() -> {
-//            while (progress < 100) {
-//                progress += 5;
-//                handler.post(() -> progressBar.setProgress(progress));
-//                if (progress == 100) {
-//                    startGame();
-//                }
-//
-//                try {
-//                    Thread.sleep(200);
-//                } catch (InterruptedException e) {
-//                    e.printStackTrace();
-//                }
-//            }
-//        }).start();
 
         manual = false;
         Spinner driverSpinner = findViewById(R.id.driverSpinner);
@@ -170,7 +151,18 @@ public class GeneratingActivity extends AppCompatActivity implements Order {
         });
 
         factory = new MazeFactory();
+        progressBar = findViewById(R.id.progressBar);
+        percentdone = 0;
+        handler = new Handler();
         generateMaze();
+    }
+
+    private void generateMaze() {
+        new Thread(() -> {
+            factory.order(this);
+            factory.waitTillDelivered();
+
+        }).start();
     }
 
     /**
@@ -189,13 +181,56 @@ public class GeneratingActivity extends AppCompatActivity implements Order {
         finish();
     }
 
-    private void generateMaze() {
-        new Thread(() -> {
-            factory.order(this);
-            factory.waitTillDelivered();
+    @Override
+    public int getSkillLevel() {
+        return skill;
+    }
 
+    @Override
+    public Builder getBuilder() {
+        return builder;
+    }
 
-        }).start();
+    @Override
+    public boolean isPerfect() {
+        return perfect;
+    }
+
+    @Override
+    public int getSeed() {
+        return seed;
+    }
+
+    @Override
+    public void deliver(Maze mazeConfig) {
+        maze = mazeConfig;
+    }
+
+    @Override
+    public void updateProgress(int percentage) {
+//        new Thread(() -> {
+//            while (progress < 100) {
+//                progress += 5;
+//                handler.post(() -> progressBar.setProgress(progress));
+//                if (progress == 100) {
+//                    startGame();
+//                }
+//
+//                try {
+//                    Thread.sleep(200);
+//                } catch (InterruptedException e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//        }).start();
+
+        if (percentdone < percentage && percentage <= 100) {
+            percentdone = percentage;
+            handler.post(() -> progressBar.setProgress(percentdone));
+            if(percentdone == 100) {
+                startGame();
+            }
+        }
     }
 
     /**
@@ -254,41 +289,5 @@ public class GeneratingActivity extends AppCompatActivity implements Order {
             startActivity(intent);
         }).start();
 
-
-
-    }
-
-    @Override
-    public int getSkillLevel() {
-        return skill;
-    }
-
-    @Override
-    public Builder getBuilder() {
-        return builder;
-    }
-
-    @Override
-    public boolean isPerfect() {
-        return perfect;
-    }
-
-    @Override
-    public int getSeed() {
-        return seed;
-    }
-
-    @Override
-    public void deliver(Maze mazeConfig) {
-        maze = mazeConfig;
-        startGame();
-    }
-
-    @Override
-    public void updateProgress(int percentage) {
-        if (percentdone < percentage && percentage <= 100) {
-            percentdone = percentage;
-
-        }
     }
 }
