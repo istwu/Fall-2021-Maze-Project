@@ -166,7 +166,7 @@ public class GeneratingActivity extends AppCompatActivity implements Order {
     }
 
     /**
-     * Passes the seed, skill, perfect, and generation variables back
+     * Passes the seed, skill, perfect, and builder variables back
      * to AMazeActivity to be saved, then closes the activity, returning
      * the user back to the title screen.
      */

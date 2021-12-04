@@ -409,7 +409,7 @@ public class PlayManuallyActivity extends AppCompatActivity {
                     isInShowMazeMode(),isInShowSolutionMode()) ;
         }
         // update the screen with the buffer graphics
-        panel.update() ;
+        panel.commit() ;
     }
     /**
      * Calculates a distance to exit as a percentage.
@@ -593,7 +593,7 @@ public class PlayManuallyActivity extends AppCompatActivity {
 //    		cr.paintComponent(panel.getBufferGraphics());
             cr.paintComponent(panel);
         }
-        panel.update();
+        panel.commit();
     }
     /**
      * Checks if the current position and direction

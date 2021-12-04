@@ -110,25 +110,25 @@ public class MazePanel extends View implements P5PanelF21 {
 	// --------------------------------------------- //
 
 //	@Override
-	public void update(Canvas c) {
+//	public void update(Canvas c) {
 //		paint(g);
-		paint(c);
-		invalidate();
-	}
-	/**
-	 * Method to draw the buffer image on a graphics object that is
-	 * obtained from the superclass.
-	 * Warning: do not override getGraphics() or drawing might fail.
-	 */
-	public void update() {
-//		paint(getGraphics());
-		if (canvas == null) {
-			System.out.println("StatePlaying.start: warning: no panel, dry-run game without graphics!");
-			return;
-		}
-		paint(canvas);
-		invalidate();
-	}
+//		paint(c);
+//		invalidate();
+//	}
+//	/**
+//	 * Method to draw the buffer image on a graphics object that is
+//	 * obtained from the superclass.
+//	 * Warning: do not override getGraphics() or drawing might fail.
+//	 */
+//	public void update() {
+////		paint(getGraphics());
+//		if (canvas == null) {
+//			System.out.println("StatePlaying.start: warning: no panel, dry-run game without graphics!");
+//			return;
+//		}
+//		paint(canvas);
+//		invalidate();
+//	}
 
 	/**
 	 * Draws the buffer image to the given graphics object.
@@ -199,7 +199,7 @@ public class MazePanel extends View implements P5PanelF21 {
 
 	@Override
 	public void commit() {
-		update();
+		invalidate();
 	}
 
 	@Override
