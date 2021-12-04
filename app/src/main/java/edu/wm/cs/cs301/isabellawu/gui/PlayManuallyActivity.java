@@ -78,11 +78,13 @@ public class PlayManuallyActivity extends AppCompatActivity {
         ToggleButton toggleMap = findViewById(R.id.toggleMapButton_manual);
         toggleMap.setOnClickListener(view -> {
             if(toggleMap.isChecked()) {
+                keyDown(Constants.UserInput.TOGGLELOCALMAP, 0);
                 Toast toast = Toast.makeText(getApplicationContext(), "Map on", Toast.LENGTH_SHORT);
                 toast.show();
                 Log.v(TAG, "Map on");
             }
             else {
+                keyDown(Constants.UserInput.TOGGLELOCALMAP, 0);
                 Toast toast = Toast.makeText(getApplicationContext(), "Map off", Toast.LENGTH_SHORT);
                 toast.show();
                 Log.v(TAG, "Map off");
@@ -92,11 +94,13 @@ public class PlayManuallyActivity extends AppCompatActivity {
         ToggleButton toggleSolution = findViewById(R.id.toggleSolutionButton);
         toggleSolution.setOnClickListener(view -> {
             if(toggleSolution.isChecked()) {
+                keyDown(Constants.UserInput.TOGGLESOLUTION, 0);
                 Toast toast = Toast.makeText(getApplicationContext(), "Solution on", Toast.LENGTH_SHORT);
                 toast.show();
                 Log.v(TAG, "Solution on");
             }
             else {
+                keyDown(Constants.UserInput.TOGGLESOLUTION, 0);
                 Toast toast = Toast.makeText(getApplicationContext(), "Solution off", Toast.LENGTH_SHORT);
                 toast.show();
                 Log.v(TAG, "Solution off");
@@ -106,11 +110,13 @@ public class PlayManuallyActivity extends AppCompatActivity {
         ToggleButton toggleWalls = findViewById(R.id.toggleWallsButton);
         toggleWalls.setOnClickListener(view -> {
             if(toggleWalls.isChecked()) {
+                keyDown(Constants.UserInput.TOGGLEFULLMAP, 0);
                 Toast toast = Toast.makeText(getApplicationContext(), "Walls on", Toast.LENGTH_SHORT);
                 toast.show();
                 Log.v(TAG, "Walls on");
             }
             else {
+                keyDown(Constants.UserInput.TOGGLEFULLMAP, 0);
                 Toast toast = Toast.makeText(getApplicationContext(), "Walls off", Toast.LENGTH_SHORT);
                 toast.show();
                 Log.v(TAG, "Walls off");
@@ -118,12 +124,22 @@ public class PlayManuallyActivity extends AppCompatActivity {
         });
 
         SeekBar zoomBar = findViewById(R.id.zoomSeekBar_manual);
+        zoomBar.setProgress(400);
+        zoom = 800;
         zoomBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             /**
              * Sets the zoom variable to the value from the SeekBar.
              */
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
+                if(i > zoom) {
+                    keyDown(Constants.UserInput.ZOOMIN, 0);
+                    keyDown(Constants.UserInput.ZOOMIN, 0);
+                }
+                else if(i < zoom) {
+                    keyDown(Constants.UserInput.ZOOMOUT, 0);
+                    keyDown(Constants.UserInput.ZOOMOUT, 0);
+                }
                 zoom = i;
             }
 
@@ -289,7 +305,7 @@ public class PlayManuallyActivity extends AppCompatActivity {
         // configure compass rose
         cr = new CompassRose();
         cr.setPositionAndSize(Constants.VIEW_WIDTH/2,
-                (int)(0.1*Constants.VIEW_HEIGHT),35);
+                (int)(0.1*Constants.VIEW_HEIGHT),100);   // original size: 35
 
         if (panel != null) {
             startDrawer();
@@ -308,7 +324,7 @@ public class PlayManuallyActivity extends AppCompatActivity {
         firstPersonView = new FirstPersonView(Constants.VIEW_WIDTH,
                 Constants.VIEW_HEIGHT, Constants.MAP_UNIT,
                 Constants.STEP_SIZE, seenCells, mazeConfig.getRootnode()) ;
-        mapView = new Map(seenCells, 15, mazeConfig) ;
+        mapView = new Map(seenCells, 50, mazeConfig) ;
         // draw the initial screen for this state
         draw();
     }
