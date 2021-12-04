@@ -147,7 +147,6 @@ public class MazePanel extends View implements P5PanelF21 {
 		}
 		else {
 			c.drawBitmap(bitmap, 0, 0, paint);
-			invalidate();
 		}
 	}
 
@@ -197,6 +196,7 @@ public class MazePanel extends View implements P5PanelF21 {
 	@Override
 	public void commit() {
 		update();
+		invalidate();
 	}
 
 	@Override
@@ -320,26 +320,28 @@ public class MazePanel extends View implements P5PanelF21 {
 	@Override
 	public void addFilledPolygon(int[] xPoints, int[] yPoints, int nPoints) {
 //		graphics.fillPolygon(xPoints, yPoints, nPoints);
-		paint.setStyle(Paint.Style.FILL);
-		paint.setStrokeWidth(0);
 		Path polygon = new Path();
+		polygon.moveTo(xPoints[0], yPoints[0]);
 		for(int i = 0; i < nPoints; i++) {
 			polygon.lineTo(xPoints[i], yPoints[i]);
 		}
 		polygon.lineTo(xPoints[0], yPoints[0]);
+		paint.setStyle(Paint.Style.FILL);
+		paint.setStrokeWidth(0);
 		canvas.drawPath(polygon, paint);
 	}
 
 	@Override
 	public void addPolygon(int[] xPoints, int[] yPoints, int nPoints) {
 //		graphics.drawPolygon(xPoints, yPoints, nPoints);
-		paint.setStyle(Paint.Style.STROKE);
-		paint.setStrokeWidth(0);
 		Path polygon = new Path();
+		polygon.moveTo(xPoints[0], yPoints[0]);
 		for(int i = 0; i < nPoints; i++) {
 			polygon.lineTo(xPoints[i], yPoints[i]);
 		}
 		polygon.lineTo(xPoints[0], yPoints[0]);
+		paint.setStyle(Paint.Style.STROKE);
+		paint.setStrokeWidth(2);
 		canvas.drawPath(polygon, paint);
 	}
 
@@ -378,9 +380,11 @@ public class MazePanel extends View implements P5PanelF21 {
 //
 //		graphics.drawGlyphVector(gv, x, y);
 
-		paint.setTextSize(36);
+		int textSize = 34;
+		paint.setStyle(Paint.Style.FILL);
+		paint.setTextSize(textSize);
 		paint.setTypeface(Typeface.create("Serif-PLAIN-16", Typeface.NORMAL));
-		canvas.drawText(str, x, y, paint);
+		canvas.drawText(str, (float) (x-(.25)*textSize), (float) (y+(.5)*textSize), paint);
 	}
 
 	@Override

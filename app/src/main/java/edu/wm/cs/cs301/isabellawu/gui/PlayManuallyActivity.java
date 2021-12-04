@@ -305,7 +305,7 @@ public class PlayManuallyActivity extends AppCompatActivity {
         // configure compass rose
         cr = new CompassRose();
         cr.setPositionAndSize(Constants.VIEW_WIDTH/2,
-                (int)(0.1*Constants.VIEW_HEIGHT),100);   // original size: 35
+                (int)(0.1*Constants.VIEW_HEIGHT),80);   // original size: 35
 
         if (panel != null) {
             startDrawer();
