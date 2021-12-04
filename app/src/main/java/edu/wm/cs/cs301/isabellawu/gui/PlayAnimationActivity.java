@@ -87,38 +87,38 @@ public class PlayAnimationActivity extends AppCompatActivity {
         energy.setProgress(3500);
         energy_used = 0;
 
-        SeekBar zoomBar = findViewById(R.id.zoomSeekBar_auto);
-        zoomBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            /**
-             * Sets the zoom variable to the value from the SeekBar.
-             */
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
-                zoom = i;
-            }
-
-            /**
-             * Displays a Toast message to inform user that the SeekBar is
-             * receiving their input.
-             */
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-                Toast toast = Toast.makeText(getApplicationContext(), "Changing maze size", Toast.LENGTH_SHORT);
-                toast.show();
-                Log.v(TAG, "Changing maze size");
-            }
-
-            /**
-             * Displays a Toast message to inform user that the SeekBar stopped
-             * receiving their input.
-             */
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-                Toast toast = Toast.makeText(getApplicationContext(), "Maze size set to " + zoom, Toast.LENGTH_SHORT);
-                toast.show();
-                Log.v(TAG, "Maze size set to " + zoom);
-            }
-        });
+//        SeekBar zoomBar = findViewById(R.id.zoomSeekBar_auto);
+//        zoomBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+//            /**
+//             * Sets the zoom variable to the value from the SeekBar.
+//             */
+//            @Override
+//            public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
+//                zoom = i;
+//            }
+//
+//            /**
+//             * Displays a Toast message to inform user that the SeekBar is
+//             * receiving their input.
+//             */
+//            @Override
+//            public void onStartTrackingTouch(SeekBar seekBar) {
+//                Toast toast = Toast.makeText(getApplicationContext(), "Changing maze size", Toast.LENGTH_SHORT);
+//                toast.show();
+//                Log.v(TAG, "Changing maze size");
+//            }
+//
+//            /**
+//             * Displays a Toast message to inform user that the SeekBar stopped
+//             * receiving their input.
+//             */
+//            @Override
+//            public void onStopTrackingTouch(SeekBar seekBar) {
+//                Toast toast = Toast.makeText(getApplicationContext(), "Maze size set to " + zoom, Toast.LENGTH_SHORT);
+//                toast.show();
+//                Log.v(TAG, "Maze size set to " + zoom);
+//            }
+//        });
 
         ImageButton pauseplay = findViewById(R.id.pause_play);
         pauseplay.setOnClickListener(view -> {

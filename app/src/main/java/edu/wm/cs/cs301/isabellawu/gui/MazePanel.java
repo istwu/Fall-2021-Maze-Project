@@ -63,7 +63,8 @@ public class MazePanel extends View implements P5PanelF21 {
 //		paint.setColor(0xffff0000);
 //		UIcanvas.drawRect(0, 0, 1200, 1200, paint);
 //		myTestImage(UIcanvas);
-		Log.v(TAG, "Redrawing view");
+		Log.v(TAG, "Redrawing MazePanel");
+		paint(UIcanvas);
 		UIcanvas.drawBitmap(bitmap, 0, 0, paint);
 	}
 
@@ -112,6 +113,7 @@ public class MazePanel extends View implements P5PanelF21 {
 	public void update(Canvas c) {
 //		paint(g);
 		paint(c);
+		invalidate();
 	}
 	/**
 	 * Method to draw the buffer image on a graphics object that is
@@ -125,6 +127,7 @@ public class MazePanel extends View implements P5PanelF21 {
 			return;
 		}
 		paint(canvas);
+		invalidate();
 	}
 
 	/**
@@ -147,6 +150,7 @@ public class MazePanel extends View implements P5PanelF21 {
 		}
 		else {
 			c.drawBitmap(bitmap, 0, 0, paint);
+//			invalidate();
 		}
 	}
 
@@ -196,7 +200,6 @@ public class MazePanel extends View implements P5PanelF21 {
 	@Override
 	public void commit() {
 		update();
-		invalidate();
 	}
 
 	@Override
@@ -384,7 +387,7 @@ public class MazePanel extends View implements P5PanelF21 {
 		paint.setStyle(Paint.Style.FILL);
 		paint.setTextSize(textSize);
 		paint.setTypeface(Typeface.create("Serif-PLAIN-16", Typeface.NORMAL));
-		canvas.drawText(str, (float) (x-(.25)*textSize), (float) (y+(.5)*textSize), paint);
+		canvas.drawText(str, (float) (x-(.25)*textSize), (float) (y+(.25)*textSize), paint);
 	}
 
 	@Override
@@ -414,7 +417,7 @@ public class MazePanel extends View implements P5PanelF21 {
 //		java.util.Map<RenderingHints.Key, Object> hints = Map.of(key, val);
 //		graphics.addRenderingHints(hints);
 
-		Log.v(TAG, "setRenderingHint() not implemented");
+//		Log.v(TAG, "setRenderingHint() not implemented");
 	}
 
 }

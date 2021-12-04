@@ -6,6 +6,38 @@
     android:layout_height="match_parent"
     tools:context=".gui.PlayAnimationActivity">
 
+    <TextView
+        android:id="@+id/textView8"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="100dp"
+        android:layout_marginTop="20dp"
+        android:text="@string/zoom"
+        android:textSize="16sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toggleMapButton_auto" />
+
+    <Button
+        android:id="@+id/zoomOutButton_auto"
+        android:layout_width="48dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="8dp"
+        android:text="@string/minus"
+        app:layout_constraintStart_toEndOf="@+id/textView8"
+        app:layout_constraintTop_toBottomOf="@+id/toggleMapButton_auto" />
+
+    <Button
+        android:id="@+id/zoomInButton_anim"
+        android:layout_width="48dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="@string/plus"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.344"
+        app:layout_constraintStart_toEndOf="@+id/zoomOutButton_auto"
+        app:layout_constraintTop_toBottomOf="@+id/toggleMapButton_auto" />
+
     <ToggleButton
         android:id="@+id/toggleMapButton_auto"
         android:layout_width="100dp"
@@ -74,58 +106,6 @@
         app:srcCompat="@drawable/mr_cast_thumb"
         app:tint="#FF0000" />
 
-    <SeekBar
-        android:id="@+id/zoomSeekBar_auto"
-        android:layout_width="287dp"
-        android:layout_height="32dp"
-        android:layout_marginTop="4dp"
-        android:max="100"
-        android:min="0"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView16" />
-
-    <TextView
-        android:id="@+id/textView16"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="68dp"
-        android:text="@string/zoom"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/textView17"
-        android:layout_width="40dp"
-        android:layout_height="37dp"
-        android:layout_marginStart="12dp"
-        android:layout_marginTop="68dp"
-        android:text="-"
-        android:textAlignment="viewEnd"
-        android:textSize="48sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toStartOf="@+id/zoomSeekBar_manual"
-        app:layout_constraintHorizontal_bias="0.272"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/textView18"
-        android:layout_width="33dp"
-        android:layout_height="37dp"
-        android:layout_marginTop="76dp"
-        android:layout_marginEnd="16dp"
-        android:text="+"
-        android:textAlignment="viewStart"
-        android:textSize="34sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.448"
-        app:layout_constraintStart_toEndOf="@+id/zoomSeekBar_manual"
-        app:layout_constraintTop_toTopOf="parent" />
-
     <ProgressBar
         android:id="@+id/energyBar"
         style="?android:attr/progressBarStyleHorizontal"
@@ -146,7 +126,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.496"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/zoomSeekBar_auto" />
+        app:layout_constraintTop_toBottomOf="@+id/zoomOutButton_auto" />
 
     <SeekBar
         android:id="@+id/speedSeekBar"

@@ -388,8 +388,6 @@ public class Map {
 		int centerX = viewWidth/2; // center x
 		int centerY = viewHeight/2; // center y
 		int diameter = mapScale/2; // circle size
-
-		System.out.println("CURRENT LOCATION: " + centerX + ", " + centerY + ", " + diameter);
 		// we need the top left corner of a bounding box the circle is in
 		// and its width and height to draw the circle
 		// top left corner is (centerX-radius, centerY-radius)

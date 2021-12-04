@@ -6,7 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.SeekBar;
+import android.widget.Button;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
@@ -123,46 +123,20 @@ public class PlayManuallyActivity extends AppCompatActivity {
             }
         });
 
-        SeekBar zoomBar = findViewById(R.id.zoomSeekBar_manual);
-        zoomBar.setProgress(400);
-        zoom = 800;
-        zoomBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            /**
-             * Sets the zoom variable to the value from the SeekBar.
-             */
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
-                if(i > zoom) {
-                    keyDown(Constants.UserInput.ZOOMIN, 0);
-                    keyDown(Constants.UserInput.ZOOMIN, 0);
-                }
-                else if(i < zoom) {
-                    keyDown(Constants.UserInput.ZOOMOUT, 0);
-                    keyDown(Constants.UserInput.ZOOMOUT, 0);
-                }
-                zoom = i;
+        Button zoomOutButton = findViewById(R.id.zoomOutButton_manual);
+        zoomOutButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                keyDown(Constants.UserInput.ZOOMOUT, 0);
+                keyDown(Constants.UserInput.ZOOMOUT, 0);
+                keyDown(Constants.UserInput.ZOOMOUT, 0);
             }
-
-            /**
-             * Displays a Toast message to inform user that the SeekBar is
-             * receiving their input.
-             */
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-                Toast toast = Toast.makeText(getApplicationContext(), "Changing maze size", Toast.LENGTH_SHORT);
-                toast.show();
-                Log.v(TAG, "Changing maze size");
-            }
-
-            /**
-             * Displays a Toast message to inform user that the SeekBar stopped
-             * receiving their input.
-             */
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-                Toast toast = Toast.makeText(getApplicationContext(), "Maze size set to " + zoom, Toast.LENGTH_SHORT);
-                toast.show();
-                Log.v(TAG, "Maze size set to " + zoom);
+        });
+        Button zoomInButton = findViewById(R.id.zoomInButton_manual);
+        zoomInButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                keyDown(Constants.UserInput.ZOOMIN, 0);
+                keyDown(Constants.UserInput.ZOOMIN, 0);
+                keyDown(Constants.UserInput.ZOOMIN, 0);
             }
         });
 
@@ -633,8 +607,5 @@ public class PlayManuallyActivity extends AppCompatActivity {
                 mazeConfig.hasWall(px, py, getCurrentDirection().oppositeDirection().rotateClockwise()) &&
                 mazeConfig.hasWall(px, py, getCurrentDirection().rotateClockwise()));
     }
-
-
-
 
 }

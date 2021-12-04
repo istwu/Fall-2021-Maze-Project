@@ -22,7 +22,7 @@
     <string name="solution_off">Solution off</string>
     <string name="walls_on">Walls on</string>
     <string name="walls_off">Walls off</string>
-    <string name="zoom">Zoom:</string>
+    <string name="zoom">Map zoom:</string>
     <string name="sensor_status">Sensor status:</string>
     <string name="remaining_energy">Remaining energy:</string>
     <string name="animation_speed">Animation speed:</string>
