@@ -145,7 +145,7 @@ public class PlayManuallyActivity extends AppCompatActivity {
         start(panel);
     }
 
-    // methods
+    // other methods
 
     /**
      * Passes the seed, skill, perfect, and generation variables back

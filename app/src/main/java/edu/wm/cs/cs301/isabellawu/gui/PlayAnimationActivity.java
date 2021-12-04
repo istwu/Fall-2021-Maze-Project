@@ -14,6 +14,8 @@ import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import edu.wm.cs.cs301.isabellawu.R;
+import edu.wm.cs.cs301.isabellawu.generation.CardinalDirection;
+import edu.wm.cs.cs301.isabellawu.generation.Floorplan;
 import edu.wm.cs.cs301.isabellawu.generation.Maze;
 import edu.wm.cs.cs301.isabellawu.generation.Order;
 
@@ -22,18 +24,42 @@ import edu.wm.cs.cs301.isabellawu.generation.Order;
  */
 public class PlayAnimationActivity extends AppCompatActivity {
 
-    private int config;
-    private int path;
-    private int shortest_path;
-    private int zoom;
-    private boolean paused;
-    private int speed;
-    private int energy_used;
-
     private int seed;
     private int skill;
     private boolean perfect;
     private Order.Builder builder;
+    private RobotDriver driver;
+    private int config;
+
+    private int path;
+    private int shortest_path;
+    private int energy_used;
+    private int zoom;
+    private int speed;
+    private boolean paused;
+
+    private FirstPersonView firstPersonView;
+    private Map mapView;
+    private MazePanel panel;
+    private Maze mazeConfig;
+    private UnreliableRobot robot;
+    private RobotDriver robotDriver;
+
+    private boolean started;
+    private boolean showMaze;           // toggle switch to show overall maze on screen
+    private boolean showSolution;       // toggle switch to show solution in overall maze on screen
+    private boolean mapMode; // true: display map of maze, false: do not display map of maze
+    // mapMode is toggled by user keyboard input, causes a call to drawMap during play mode
+
+    // current position and direction with regard to MazeConfiguration
+    int px, py ; // current position on maze grid (x,y)
+    int dx, dy;  // current direction
+
+    int angle; // current viewing angle, east == 0 degrees
+    int walkStep; // counter for intermediate steps within a single step forward or backward
+    Floorplan seenCells; // a matrix with cells to memorize which cells are visible from the current point of view
+    // the FirstPersonView obtains this information and the Map uses it for highlighting currently visible walls on the map
+    private CompassRose cr; // compass rose to show current direction
 
     private static final String TAG = "PlayAnimationActivity";
 
@@ -56,9 +82,8 @@ public class PlayAnimationActivity extends AppCompatActivity {
         skill = extras.getInt("skill");
         perfect = extras.getBoolean("perfect");
         builder = (Order.Builder) extras.get("builder");
-        config = extras.getInt("config");  // 1 = premium, 2 = mediocre, 3 = soso, 4 = shaky
-        // set sensors on robot based on config int value
 
+        started = false;
         path = 0;
         shortest_path = 0; // set to path length of solution;
 
@@ -86,39 +111,6 @@ public class PlayAnimationActivity extends AppCompatActivity {
         ProgressBar energy = findViewById(R.id.energyBar);
         energy.setProgress(3500);
         energy_used = 0;
-
-//        SeekBar zoomBar = findViewById(R.id.zoomSeekBar_auto);
-//        zoomBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-//            /**
-//             * Sets the zoom variable to the value from the SeekBar.
-//             */
-//            @Override
-//            public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
-//                zoom = i;
-//            }
-//
-//            /**
-//             * Displays a Toast message to inform user that the SeekBar is
-//             * receiving their input.
-//             */
-//            @Override
-//            public void onStartTrackingTouch(SeekBar seekBar) {
-//                Toast toast = Toast.makeText(getApplicationContext(), "Changing maze size", Toast.LENGTH_SHORT);
-//                toast.show();
-//                Log.v(TAG, "Changing maze size");
-//            }
-//
-//            /**
-//             * Displays a Toast message to inform user that the SeekBar stopped
-//             * receiving their input.
-//             */
-//            @Override
-//            public void onStopTrackingTouch(SeekBar seekBar) {
-//                Toast toast = Toast.makeText(getApplicationContext(), "Maze size set to " + zoom, Toast.LENGTH_SHORT);
-//                toast.show();
-//                Log.v(TAG, "Maze size set to " + zoom);
-//            }
-//        });
 
         ImageButton pauseplay = findViewById(R.id.pause_play);
         pauseplay.setOnClickListener(view -> {
@@ -171,8 +163,54 @@ public class PlayAnimationActivity extends AppCompatActivity {
             }
         });
 
-        Maze maze = GeneratingActivity.maze;
-        MazePanel mazePanel = findViewById(R.id.mazePanel_auto);
+        mazeConfig = GeneratingActivity.maze;
+        panel = findViewById(R.id.mazePanel_auto);
+        // instantiate driver and robot/sensors
+        robot = new UnreliableRobot();
+        robot.setActivity(this);
+        robot.setBatteryLevel(3500);
+        robot.resetOdometer();
+        switch(extras.getInt("driver")) {    // 2 = wizard, 3 = wallfollower
+            case 2: {
+                driver = new Wizard();
+                break;
+            }
+            case 3: {
+                driver = new WallFollower();
+                break;
+            }
+        }
+        driver.setMaze(mazeConfig);
+        driver.setRobot(robot);
+
+//        Premium has 4 reliable sensors, mediocre has reliable front & back sensors,
+//        unreliable left and right sensors, Soso has reliable left & right sensors, unreliable front
+//        and back sensors, Shaky has 4 unreliable sensors.
+        // 0 = unreliable
+        // 1 = reliable
+        // string order: front left right back
+        config = extras.getInt("config");  // 1 = premium, 2 = mediocre, 3 = soso, 4 = shaky
+        switch(config) {    // 1 = premium, 2 = mediocre, 3 = soso, 4 = shaky
+            case 1: {
+                setSensors(robot, "1111");
+                break;
+            }
+            case 2: {
+                setSensors(robot, "1001");
+                break;
+            }
+            case 3: {
+                setSensors(robot, "0110");
+                break;
+            }
+            case 4: {
+                setSensors(robot, "0000");
+                break;
+            }
+        }
+
+        start(panel);
+
     }
 
     /**
@@ -191,12 +229,14 @@ public class PlayAnimationActivity extends AppCompatActivity {
         finish();
     }
 
+    // WINNING/LOSING METHODS
+
     /**
      * Takes the user to the winning screen, passing in the user's
      * path length and the solution path length through an intent.
      */
-    public void go2winning(View view) {
-        // need to pass in steps, energy
+    public void go2winning() {
+        // need to pass in steps
         Toast toast = Toast.makeText(getApplicationContext(), "Moving to winning screen", Toast.LENGTH_SHORT);
         toast.show();
         Log.v(TAG, "Moving to winning screen");
@@ -207,7 +247,6 @@ public class PlayAnimationActivity extends AppCompatActivity {
         intent.putExtra("builder", builder);
         intent.putExtra("path", path);
         intent.putExtra("shortest path", shortest_path);
-        intent.putExtra("energy used", energy_used);
         startActivity(intent);
     }
 
@@ -215,7 +254,7 @@ public class PlayAnimationActivity extends AppCompatActivity {
      * Takes the user to the losing screen, passing in the user's
      * path length and the solution path length through an intent.
      */
-    public void go2losing(View view) {
+    public void go2losing() {
         Toast toast = Toast.makeText(getApplicationContext(), "Moving to losing screen", Toast.LENGTH_SHORT);
         toast.show();
         Log.v(TAG, "Moving to losing screen");
@@ -227,7 +266,468 @@ public class PlayAnimationActivity extends AppCompatActivity {
         intent.putExtra("builder", builder);
         intent.putExtra("path", path);
         intent.putExtra("shortest path", shortest_path);
-        intent.putExtra("energy used", energy_used);
         startActivity(intent);
+    }
+
+    // STATEPLAYING METHODS
+
+    public void setMazeConfiguration(Maze config) {
+        mazeConfig = config;
+    }
+
+    /**
+     * Sets the four directional sensors of the robot based on the given
+     * configuration.
+     * @param robot the robot to which the method attaches the sensors
+     * @param r the string of 0s and 1s representing the configuration of
+     * the robot's sensors.
+     */
+    public void setSensors(Robot robot, String r) {
+        if (r.length() == 4) {
+            for(int i = 0; i < r.length(); i++) {
+                ReliableSensor sensor = null;
+                if(r.charAt(i) == '0') {
+                    sensor = new UnreliableSensor();
+                    sensor.setMaze(mazeConfig);
+                    sensor.startFailureAndRepairProcess(4, 2);
+                    try {
+                        Thread.sleep(1333);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+                else if(r.charAt(i) == '1') {
+                    sensor = new ReliableSensor();
+                    sensor.setMaze(mazeConfig);
+                }
+                else {	// if not 0 or 1
+                    sensor = new ReliableSensor();
+                    sensor.setMaze(mazeConfig);
+                }
+                switch(i) {
+                    case 0: {
+                        sensor.setSensorDirection(Robot.Direction.FORWARD);
+                        robot.addDistanceSensor(sensor, Robot.Direction.FORWARD);
+                        break;
+                    }
+                    case 1: {
+                        sensor.setSensorDirection(Robot.Direction.LEFT);
+                        robot.addDistanceSensor(sensor, Robot.Direction.LEFT);
+                        break;
+                    }
+                    case 2: {
+                        sensor.setSensorDirection(Robot.Direction.RIGHT);
+                        robot.addDistanceSensor(sensor, Robot.Direction.RIGHT);
+                        break;
+                    }
+                    case 3: {
+                        sensor.setSensorDirection(Robot.Direction.BACKWARD);
+                        robot.addDistanceSensor(sensor, Robot.Direction.BACKWARD);
+                        break;
+                    }
+                }
+            }
+        }
+        else {
+            for(Robot.Direction d : Robot.Direction.values()) {
+                ReliableSensor sensor = new ReliableSensor();
+                sensor.setSensorDirection(d);
+                sensor.setMaze(getMazeConfiguration());
+                robot.addDistanceSensor(sensor, d);
+            }
+        }
+    }
+
+    /**
+     * Start the actual game play by showing the playing screen.
+     * If the panel is null, all drawing operations are skipped.
+     * This mode of operation is useful for testing purposes,
+     * i.e., a dryrun of the game without the graphics part.
+     * @param panel is part of the UI and visible on the screen, needed for drawing
+     */
+    public void start(MazePanel panel) {
+        // starting the game will have a delay before robot starts...
+        // ...solving the maze b/c instantiating sensors has a delay (1.3s)
+
+        started = true;
+        // keep the reference to the panel for drawing
+        this.panel = panel;
+        //
+        // adjust internal state of maze model
+        // visibility settings
+        showMaze = false ;
+        showSolution = false ;
+        mapMode = false;
+        // init data structure for visible walls
+        seenCells = new Floorplan(mazeConfig.getWidth()+1,mazeConfig.getHeight()+1) ;
+        // set the current position and direction consistently with the viewing direction
+        setPositionDirectionViewingDirection();
+        walkStep = 0; // counts incremental steps during move/rotate operation
+
+        // configure compass rose
+        cr = new CompassRose();
+        cr.setPositionAndSize(Constants.VIEW_WIDTH/2,
+                (int)(0.1*Constants.VIEW_HEIGHT),80);   // original size: 35
+
+        if (panel != null) {
+            startDrawer();
+        }
+        else {
+            // else: dry-run without graphics, most likely for testing purposes
+            printWarning();
+        }
+
+        // reset driver
+//        RobotDriver driver;
+//        if(control.getDriver().getClass().equals(WallFollower.class)) {
+//            driver = new WallFollower();
+//        }
+//        else {
+//            driver = new Wizard();
+//        }
+//        driver.setMaze(control.getMazeConfiguration());
+//        driver.setRobot(control.getRobot());
+
+        // reset robot
+//        control.getRobot().setController(control);
+//        control.getRobot().setBatteryLevel(3500);
+//        control.getRobot().resetOdometer();
+
+//        control.setRobotAndDriver(control.getRobot(), driver);
+
+        showMaze = true;
+        showSolution = true;
+        mapMode = true;
+        draw();
+        try {
+            driver.drive2Exit();
+            for(Robot.Direction d : Robot.Direction.values()) {
+                try {
+                    robot.stopFailureAndRepairProcess(d);
+                } catch (Exception e0) {
+
+                }
+            }
+        } catch (Exception e) {
+            go2winning();
+        }
+    }
+    /**
+     * Initializes the drawer for the first person view
+     * and the map view and then draws the initial screen
+     * for this state.
+     */
+    protected void startDrawer() {
+        firstPersonView = new FirstPersonView(Constants.VIEW_WIDTH,
+                Constants.VIEW_HEIGHT, Constants.MAP_UNIT,
+                Constants.STEP_SIZE, seenCells, mazeConfig.getRootnode()) ;
+        mapView = new Map(seenCells, 50, mazeConfig) ;
+        // draw the initial screen for this state
+        draw();
+    }
+    /**
+     * Internal method to set the current position, the direction
+     * and the viewing direction to values consistent with the
+     * given maze.
+     */
+    private void setPositionDirectionViewingDirection() {
+        // obtain starting position
+        int[] start = mazeConfig.getStartingPosition() ;
+        setCurrentPosition(start[0],start[1]) ;
+        // set current view direction and angle
+        angle = 0; // angle matches with east direction,
+        // hidden consistency constraint!
+        setDirectionToMatchCurrentAngle();
+        // initial direction is east, check this for sanity:
+        assert(dx == 1);
+        assert(dy == 0);
+    }
+
+
+    /**
+     * Method incorporates all reactions to keyboard input in original code,
+     * The simple key listener calls this method to communicate input.
+     * Method requires {@link #start(MazePanel) start} to be
+     * called before.
+     * @param key provides the feature the user selected
+     * @param value is not used, exists only for consistency across State classes
+     * @return false if not started yet otherwise true
+     */
+    public boolean keyDown(Constants.UserInput key, int value) {
+        if (!started)
+            return false;
+
+        // react to input for directions and interrupt signal (ESCAPE key)
+        // react to input for displaying a map of the current path or of the overall maze (on/off toggle switch)
+        // react to input to display solution (on/off toggle switch)
+        // react to input to increase/reduce map scale
+        switch (key) {
+            case UP: // move forward
+                walk(1);
+                // check termination, did we leave the maze?
+                if (isOutside(px,py)) {
+                    go2winning();
+                }
+                break;
+            case LEFT: // turn left
+                rotate(1);
+                break;
+            case RIGHT: // turn right
+                rotate(-1);
+                break;
+            case DOWN: // move backward
+                walk(-1);
+                // check termination, did we leave the maze?
+                if (isOutside(px,py)) {
+                    go2winning();
+                }
+                break;
+            case JUMP: // make a step forward even through a wall
+                // go to position if within maze
+                if (mazeConfig.isValidPosition(px + dx, py + dy)) {
+                    setCurrentPosition(px + dx, py + dy) ;
+                    draw() ;
+                }
+                break;
+            case TOGGLELOCALMAP: // show local information: current position and visible walls
+                // precondition for showMaze and showSolution to be effective
+                // acts as a toggle switch
+                mapMode = !mapMode;
+                draw() ;
+                break;
+            case TOGGLEFULLMAP: // show the whole maze
+                // acts as a toggle switch
+                showMaze = !showMaze;
+                draw() ;
+                break;
+            case TOGGLESOLUTION: // show the solution as a yellow line towards the exit
+                // acts as a toggle switch
+                showSolution = !showSolution;
+                draw() ;
+                break;
+            case ZOOMIN: // zoom into map
+                mapView.incrementMapScale();
+                draw() ;
+                break ;
+            case ZOOMOUT: // zoom out of map
+                mapView.decrementMapScale();
+                draw() ;
+                break ;
+        } // end of internal switch statement for playing state
+        return true;
+    }
+    /**
+     * Draws the current content on panel to show it on screen.
+     */
+    protected void draw() {
+        if (panel == null) {
+            printWarning();
+            return;
+        }
+        // draw the first person view and the map view if wanted
+        firstPersonView.draw(panel, px, py, walkStep, angle,
+                getPercentageForDistanceToExit()) ;
+        if (isInMapMode()) {
+            mapView.draw(panel, px, py, angle, walkStep,
+                    isInShowMazeMode(),isInShowSolutionMode()) ;
+        }
+        // update the screen with the buffer graphics
+        panel.commit() ;
+    }
+    /**
+     * Calculates a distance to exit as a percentage.
+     * 1.0 is for the starting position as this is the maximal
+     * distance possible.
+     * @return a value between 0.0 and 1.0, the smaller the closer
+     */
+    float getPercentageForDistanceToExit() {
+        return mazeConfig.getDistanceToExit(px, py) /
+                ((float) mazeConfig.getMazedists().getMaxDistance());
+    }
+    /**
+     * Prints the warning about a missing panel only once
+     */
+    boolean printedWarning = false;
+    protected void printWarning() {
+        if (printedWarning)
+            return;
+        System.out.println("StatePlaying.start: warning: no panel, dry-run game without graphics!");
+        printedWarning = true;
+    }
+    ////////////////////////////// set methods ///////////////////////////////////////////////////////////////
+    ////////////////////////////// Actions that can be performed on the maze model ///////////////////////////
+    protected void setCurrentPosition(int x, int y) {
+        px = x ;
+        py = y ;
+    }
+    private void setCurrentDirection(int x, int y) {
+        dx = x ;
+        dy = y ;
+    }
+    /**
+     * Sets fields dx and dy to be consistent with
+     * current setting of field angle.
+     */
+    private void setDirectionToMatchCurrentAngle() {
+        setCurrentDirection((int) Math.cos(radify(angle)), (int) Math.sin(radify(angle))) ;
+    }
+
+    ////////////////////////////// get methods ///////////////////////////////////////////////////////////////
+    protected int[] getCurrentPosition() {
+        int[] result = new int[2];
+        result[0] = px;
+        result[1] = py;
+        return result;
+    }
+    protected CardinalDirection getCurrentDirection() {
+        return CardinalDirection.getDirection(dx, dy);
+    }
+    boolean isInMapMode() {
+        return mapMode ;
+    }
+    boolean isInShowMazeMode() {
+        return showMaze ;
+    }
+    boolean isInShowSolutionMode() {
+        return showSolution ;
+    }
+    public Maze getMazeConfiguration() {
+        return mazeConfig ;
+    }
+    //////////////////////// Methods for move and rotate operations ///////////////
+    final double radify(int x) {
+        return x*Math.PI/180;
+    }
+    /**
+     * Helper method for walk()
+     * @param dir is the direction of interest
+     * @return true if there is no wall in this direction
+     */
+    protected boolean checkMove(int dir) {
+        CardinalDirection cd = null;
+        switch (dir) {
+            case 1: // forward
+                cd = getCurrentDirection();
+                break;
+            case -1: // backward
+                cd = getCurrentDirection().oppositeDirection();
+                break;
+            default:
+                throw new RuntimeException("Unexpected direction value: " + dir);
+        }
+        return !mazeConfig.hasWall(px, py, cd);
+    }
+    /**
+     * Draws and waits. Used to obtain a smooth appearance for rotate and move operations
+     */
+    private void slowedDownRedraw() {
+        draw() ;
+        try {
+            Thread.sleep(25);
+        } catch (Exception e) {
+            // may happen if thread is interrupted
+            // no reason to do anything about it, ignore exception
+        }
+    }
+
+    /**
+     * Performs a rotation with 4 intermediate views,
+     * updates the screen and the internal direction
+     * @param dir for current direction, values are either 1 or -1
+     */
+    private synchronized void rotate(int dir) {
+        final int originalAngle = angle;
+        final int steps = 4;
+
+        for (int i = 0; i != steps; i++) {
+            // add 1/4 of 90 degrees per step
+            // if dir is -1 then subtract instead of addition
+            angle = originalAngle + dir*(90*(i+1))/steps;
+            angle = (angle+1800) % 360;
+            // draw method is called and uses angle field for direction
+            // information.
+            slowedDownRedraw();
+        }
+        // update maze direction only after intermediate steps are done
+        // because choice of direction values are more limited.
+        setDirectionToMatchCurrentAngle();
+        //logPosition(); // debugging
+        drawHintIfNecessary();
+    }
+
+    /**
+     * Moves in the given direction with 4 intermediate steps,
+     * updates the screen and the internal position
+     * @param dir, only possible values are 1 (forward) and -1 (backward)
+     */
+    private synchronized void walk(int dir) {
+        // check if there is a wall in the way
+        if (!checkMove(dir))
+            return;
+        // walkStep is a parameter of FirstPersonDrawer.draw()
+        // it is used there for scaling steps
+        // so walkStep is implicitly used in slowedDownRedraw
+        // which triggers the draw operation in
+        // FirstPersonDrawer and MapDrawer
+        for (int step = 0; step != 4; step++) {
+            walkStep += dir;
+            slowedDownRedraw();
+        }
+        setCurrentPosition(px + dir*dx, py + dir*dy) ;
+        walkStep = 0; // reset counter for next time
+        //logPosition(); // debugging
+        drawHintIfNecessary();
+    }
+
+    /**
+     * Checks if the given position is outside the maze
+     * @param x coordinate of position
+     * @param y coordinate of position
+     * @return true if position is outside, false otherwise
+     */
+    private boolean isOutside(int x, int y) {
+        return !mazeConfig.isValidPosition(x, y) ;
+    }
+    /**
+     * Draw a visual cue to help the user unless the
+     * map is on display anyway.
+     * This is the map if current position faces a dead end
+     * otherwise it is a compass rose.
+     */
+    private void drawHintIfNecessary() {
+        if (isInMapMode())
+            return; // no need for help
+        // in testing environments, there is sometimes no panel to draw on
+        // or the panel is unable to deliver a graphics object
+        // check this and quietly move on if drawing is impossible
+        if ((panel == null || panel.getBufferGraphics() == null)) {
+            printWarning();
+            return;
+        }
+        // if current position faces a dead end, show map with solution
+        // for guidance
+        if (isFacingDeadEnd()) {
+            //System.out.println("Facing deadend, help by showing solution");
+            mapView.draw(panel, px, py, angle, walkStep, true, true) ;
+        }
+        else {
+            // draw compass rose
+            cr.setCurrentDirection(getCurrentDirection());
+//    		cr.paintComponent(panel.getBufferGraphics());
+            cr.paintComponent(panel);
+        }
+        panel.commit();
+    }
+    /**
+     * Checks if the current position and direction
+     * faces a dead end
+     * @return true if at the current position there is
+     * a wall to the left, right and front, false otherwise
+     */
+    private boolean isFacingDeadEnd() {
+        return (!isOutside(px,py) &&
+                mazeConfig.hasWall(px, py, getCurrentDirection()) &&
+                mazeConfig.hasWall(px, py, getCurrentDirection().oppositeDirection().rotateClockwise()) &&
+                mazeConfig.hasWall(px, py, getCurrentDirection().rotateClockwise()));
     }
 }
