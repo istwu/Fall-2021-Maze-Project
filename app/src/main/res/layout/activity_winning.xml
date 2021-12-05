@@ -8,8 +8,8 @@
 
     <TextView
         android:id="@+id/textView7"
-        android:layout_width="240dp"
-        android:layout_height="64dp"
+        android:layout_width="241dp"
+        android:layout_height="91dp"
         android:layout_marginTop="80dp"
         android:text="@string/win"
         android:textAlignment="center"

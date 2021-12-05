@@ -28,7 +28,7 @@
     <string name="animation_speed">Animation speed:</string>
 
     <string name="win">You escaped the ISC!</string>
-    <string name="loss">You got locked in...</string>
+    <string name="loss">You got locked inside the ISC...</string>
     <string name="no_energy">You ran out of energy.</string>
     <string name="crashed">You crashed into a wall.</string>
     <string name="jump_border">You tried to jump over the outside wall.</string>

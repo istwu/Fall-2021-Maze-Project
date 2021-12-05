@@ -1,7 +1,5 @@
 package edu.wm.cs.cs301.isabellawu.gui;
 
-import android.content.Context;
-
 import edu.wm.cs.cs301.isabellawu.generation.CardinalDirection;
 import edu.wm.cs.cs301.isabellawu.gui.Constants.UserInput;
 

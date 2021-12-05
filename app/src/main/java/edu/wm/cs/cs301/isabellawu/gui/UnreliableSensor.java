@@ -36,7 +36,7 @@ public class UnreliableSensor extends ReliableSensor implements Runnable {
 	
 	/**
 	 * Sets the sensor's operation status from outside. Used for testing.
-	 * @param sensor operation status
+	 * @param o operation status
 	 */
 	protected void setOperational(boolean o) {
 		operational = o;

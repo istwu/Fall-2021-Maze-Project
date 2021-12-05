@@ -1,7 +1,5 @@
 package edu.wm.cs.cs301.isabellawu.gui;
 
-import android.content.Context;
-
 /**
  * The responsibilities of the UnreliableRobot are to perform actions (turning, moving forward, jumping walls),
  * to use unreliable sensors (to detect walls, rooms, and the exit position), and to keep track of its battery 

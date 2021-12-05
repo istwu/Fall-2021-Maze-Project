@@ -6,12 +6,15 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.SeekBar;
 import android.widget.Toast;
 import android.widget.ToggleButton;
+
+import java.util.ArrayList;
 
 import edu.wm.cs.cs301.isabellawu.R;
 import edu.wm.cs.cs301.isabellawu.generation.CardinalDirection;
@@ -28,13 +31,11 @@ public class PlayAnimationActivity extends AppCompatActivity {
     private int skill;
     private boolean perfect;
     private Order.Builder builder;
-    private RobotDriver driver;
     private int config;
 
     private int path;
     private int shortest_path;
     private int energy_used;
-    private int zoom;
     private int speed;
     private boolean paused;
 
@@ -43,7 +44,7 @@ public class PlayAnimationActivity extends AppCompatActivity {
     private MazePanel panel;
     private Maze mazeConfig;
     private UnreliableRobot robot;
-    private RobotDriver robotDriver;
+    private Wizard driver;
 
     private boolean started;
     private boolean showMaze;           // toggle switch to show overall maze on screen
@@ -83,18 +84,21 @@ public class PlayAnimationActivity extends AppCompatActivity {
         perfect = extras.getBoolean("perfect");
         builder = (Order.Builder) extras.get("builder");
 
-        started = false;
-        path = 0;
-        shortest_path = 0; // set to path length of solution;
-
         ToggleButton toggleMap = findViewById(R.id.toggleMapButton_auto);
+        toggleMap.setChecked(true);
         toggleMap.setOnClickListener(view -> {
             if(toggleMap.isChecked()) {
+                keyDown(Constants.UserInput.TOGGLELOCALMAP, 0);
+                keyDown(Constants.UserInput.TOGGLESOLUTION, 0);
+                keyDown(Constants.UserInput.TOGGLEFULLMAP, 0);
                 Toast toast = Toast.makeText(getApplicationContext(), "Map on", Toast.LENGTH_SHORT);
                 toast.show();
                 Log.v(TAG, "Map on");
             }
             else {
+                keyDown(Constants.UserInput.TOGGLELOCALMAP, 0);
+                keyDown(Constants.UserInput.TOGGLESOLUTION, 0);
+                keyDown(Constants.UserInput.TOGGLEFULLMAP, 0);
                 Toast toast = Toast.makeText(getApplicationContext(), "Map off", Toast.LENGTH_SHORT);
                 toast.show();
                 Log.v(TAG, "Map off");
@@ -106,6 +110,23 @@ public class PlayAnimationActivity extends AppCompatActivity {
         ImageView sensor_left = findViewById(R.id.sensor_left);
         ImageView sensor_right = findViewById(R.id.sensor_right);
         ImageView sensor_backward = findViewById(R.id.sensor_backward);
+
+        Button zoomOutButton = findViewById(R.id.zoomOutButton_auto);
+        zoomOutButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                keyDown(Constants.UserInput.ZOOMOUT, 0);
+                keyDown(Constants.UserInput.ZOOMOUT, 0);
+                keyDown(Constants.UserInput.ZOOMOUT, 0);
+            }
+        });
+        Button zoomInButton = findViewById(R.id.zoomInButton_auto);
+        zoomInButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                keyDown(Constants.UserInput.ZOOMIN, 0);
+                keyDown(Constants.UserInput.ZOOMIN, 0);
+                keyDown(Constants.UserInput.ZOOMIN, 0);
+            }
+        });
 
         // change this based on remaining energy
         ProgressBar energy = findViewById(R.id.energyBar);
@@ -165,6 +186,9 @@ public class PlayAnimationActivity extends AppCompatActivity {
 
         mazeConfig = GeneratingActivity.maze;
         panel = findViewById(R.id.mazePanel_auto);
+        started = false;
+        path = 0;
+        shortest_path = mazeConfig.getMazedists().getDistanceValue(mazeConfig.getStartingPosition()[0],mazeConfig.getStartingPosition()[1]);
         // instantiate driver and robot/sensors
         robot = new UnreliableRobot();
         robot.setActivity(this);
@@ -237,8 +261,8 @@ public class PlayAnimationActivity extends AppCompatActivity {
      */
     public void go2winning() {
         // need to pass in steps
-        Toast toast = Toast.makeText(getApplicationContext(), "Moving to winning screen", Toast.LENGTH_SHORT);
-        toast.show();
+//        Toast toast = Toast.makeText(getApplicationContext(), "Moving to winning screen", Toast.LENGTH_SHORT);
+//        toast.show();
         Log.v(TAG, "Moving to winning screen");
         Intent intent = new Intent(this, WinningActivity.class);
         intent.putExtra("seed", seed);
@@ -255,8 +279,8 @@ public class PlayAnimationActivity extends AppCompatActivity {
      * path length and the solution path length through an intent.
      */
     public void go2losing() {
-        Toast toast = Toast.makeText(getApplicationContext(), "Moving to losing screen", Toast.LENGTH_SHORT);
-        toast.show();
+//        Toast toast = Toast.makeText(getApplicationContext(), "Moving to losing screen", Toast.LENGTH_SHORT);
+//        toast.show();
         Log.v(TAG, "Moving to losing screen");
         // need to pass in steps, energy, reason for loss
         Intent intent = new Intent(this, LosingActivity.class);
@@ -355,9 +379,9 @@ public class PlayAnimationActivity extends AppCompatActivity {
         //
         // adjust internal state of maze model
         // visibility settings
-        showMaze = false ;
-        showSolution = false ;
-        mapMode = false;
+        showMaze = true;
+        showSolution = true;
+        mapMode = true;
         // init data structure for visible walls
         seenCells = new Floorplan(mazeConfig.getWidth()+1,mazeConfig.getHeight()+1) ;
         // set the current position and direction consistently with the viewing direction
@@ -376,42 +400,59 @@ public class PlayAnimationActivity extends AppCompatActivity {
             // else: dry-run without graphics, most likely for testing purposes
             printWarning();
         }
-
-        // reset driver
-//        RobotDriver driver;
-//        if(control.getDriver().getClass().equals(WallFollower.class)) {
-//            driver = new WallFollower();
-//        }
-//        else {
-//            driver = new Wizard();
-//        }
-//        driver.setMaze(control.getMazeConfiguration());
-//        driver.setRobot(control.getRobot());
-
-        // reset robot
-//        control.getRobot().setController(control);
-//        control.getRobot().setBatteryLevel(3500);
-//        control.getRobot().resetOdometer();
-
-//        control.setRobotAndDriver(control.getRobot(), driver);
-
-        showMaze = true;
-        showSolution = true;
-        mapMode = true;
         draw();
-        try {
-            driver.drive2Exit();
-            for(Robot.Direction d : Robot.Direction.values()) {
-                try {
-                    robot.stopFailureAndRepairProcess(d);
-                } catch (Exception e0) {
 
-                }
-            }
-        } catch (Exception e) {
-            go2winning();
-        }
+        // PLAY ANIMATION
+        startThread(1000);
+
+//        try {
+//            driver.drive2Exit();
+//            for(Robot.Direction d : Robot.Direction.values()) {
+//                try {
+//                    robot.stopFailureAndRepairProcess(d);
+//                } catch (Exception e0) {
+//
+//                }
+//            }
+//            go2winning();
+//        } catch (Exception e) {
+//            go2losing();
+//        }
     }
+
+    private void startThread(int speed) {
+        new Thread(() -> {
+            try {
+                ArrayList<int[]> visited = new ArrayList<>();
+                int energyConsumption = 0;
+                int pathLength = 0;
+                boolean driving = true;
+                while(!robot.getCurrentPosition().equals(mazeConfig.getExitPosition())) {
+                    System.out.println(pathLength);
+                    if(robot.hasStopped()) {
+                        throw new Exception("Robot has stopped.");
+                    }
+                    driving = driver.drive1Step2Exit();
+                    if(!driving) {	// if exit has been reached
+                        robot.move(1);
+                        energyConsumption += robot.getEnergyForStepForward();
+                        pathLength += 1;
+                        driving = true;
+                    }
+                    if(visited.contains(robot.getCurrentPosition())) {
+                        driving = false;
+                    }
+                    visited.add(robot.getCurrentPosition());
+                }
+                driving = false;
+            } catch (Exception e) {
+                e.printStackTrace();
+                go2losing();
+            }
+        }).start();
+
+    }
+
     /**
      * Initializes the drawer for the first person view
      * and the map view and then draws the initial screen

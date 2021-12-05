@@ -28,7 +28,6 @@ public class PlayManuallyActivity extends AppCompatActivity {
 
     private int path;
     private int shortest_path;
-    private int zoom;
 
     private FirstPersonView firstPersonView;
     private Map mapView;
@@ -70,10 +69,6 @@ public class PlayManuallyActivity extends AppCompatActivity {
         skill = extras.getInt("skill");
         perfect = extras.getBoolean("perfect");
         builder = (Order.Builder) extras.get("builder");
-
-        started = false;
-        path = 0;
-        shortest_path = 0; // set to path length of solution;
 
         ToggleButton toggleMap = findViewById(R.id.toggleMapButton_manual);
         toggleMap.setOnClickListener(view -> {
@@ -142,6 +137,9 @@ public class PlayManuallyActivity extends AppCompatActivity {
 
         mazeConfig = GeneratingActivity.maze;
         panel = findViewById(R.id.mazePanel_manual);
+        started = false;
+        path = 0;
+        shortest_path = mazeConfig.getMazedists().getDistanceValue(mazeConfig.getStartingPosition()[0],mazeConfig.getStartingPosition()[1]);
         start(panel);
     }
 
@@ -170,8 +168,8 @@ public class PlayManuallyActivity extends AppCompatActivity {
      * the step counter by 1.
      */
     public void forward(View view) {
-        keyDown(Constants.UserInput.UP, 0);
         path += 1;
+        keyDown(Constants.UserInput.UP, 0);
 //        Toast toast = Toast.makeText(getApplicationContext(), "Forward (step count: " + path + ")", Toast.LENGTH_SHORT);
 //        toast.show();
         Log.v(TAG, "Forward (step count: " + path + ")");

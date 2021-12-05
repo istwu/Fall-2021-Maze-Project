@@ -317,7 +317,7 @@ public class MazePanel extends View implements P5PanelF21 {
 //		graphics.fillRect(x, y, width, height);
 		paint.setStyle(Paint.Style.FILL);
 		paint.setStrokeWidth(0);
-		canvas.drawRect(x, y, width, height, paint);
+		canvas.drawRect(x, y, x+width, y+height, paint);
 	}
 
 	@Override
@@ -369,7 +369,7 @@ public class MazePanel extends View implements P5PanelF21 {
 //		graphics.drawArc(x, y, width, height, startAngle, arcAngle);
 		paint.setStyle(Paint.Style.STROKE);
 		paint.setStrokeWidth(0);
-		canvas.drawArc(x, y, width, height, startAngle, arcAngle, false, paint);	// usecenter = true
+		canvas.drawArc(x, y, x+width, y+height, startAngle, arcAngle, false, paint);	// usecenter = true
 	}
 
 	@Override
