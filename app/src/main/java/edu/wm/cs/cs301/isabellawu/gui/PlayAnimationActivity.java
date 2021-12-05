@@ -38,13 +38,16 @@ public class PlayAnimationActivity extends AppCompatActivity {
     private int energy_used;
     private int speed;
     private boolean paused;
+    private ProgressBar energyBar;
 
+    private Thread animationThread;
     private FirstPersonView firstPersonView;
     private Map mapView;
     private MazePanel panel;
     private Maze mazeConfig;
     private UnreliableRobot robot;
     private Wizard driver;
+    private ArrayList<int[]> visited;
 
     private boolean started;
     private boolean showMaze;           // toggle switch to show overall maze on screen
@@ -83,6 +86,8 @@ public class PlayAnimationActivity extends AppCompatActivity {
         skill = extras.getInt("skill");
         perfect = extras.getBoolean("perfect");
         builder = (Order.Builder) extras.get("builder");
+
+        speed = 1000;
 
         ToggleButton toggleMap = findViewById(R.id.toggleMapButton_auto);
         toggleMap.setChecked(true);
@@ -129,29 +134,37 @@ public class PlayAnimationActivity extends AppCompatActivity {
         });
 
         // change this based on remaining energy
-        ProgressBar energy = findViewById(R.id.energyBar);
-        energy.setProgress(3500);
         energy_used = 0;
+        energyBar = findViewById(R.id.energyBar);
+        energyBar.setProgress(3500);
 
         ImageButton pauseplay = findViewById(R.id.pause_play);
         pauseplay.setOnClickListener(view -> {
             if(!paused) {
                 paused = true;
                 pauseplay.setImageResource(R.drawable.mr_media_play_light);
-                Toast toast = Toast.makeText(getApplicationContext(), "Pausing animation", Toast.LENGTH_SHORT);
-                toast.show();
+//                Toast toast = Toast.makeText(getApplicationContext(), "Pausing animation", Toast.LENGTH_SHORT);
+//                toast.show();
+                animationThread.interrupt();
                 Log.v(TAG, "Pausing animation");
             }
             else {
                 paused = false;
                 pauseplay.setImageResource(R.drawable.mr_media_pause_light);
-                Toast toast = Toast.makeText(getApplicationContext(), "Playing animation", Toast.LENGTH_SHORT);
-                toast.show();
+//                Toast toast = Toast.makeText(getApplicationContext(), "Playing animation", Toast.LENGTH_SHORT);
+//                toast.show();
+                try {
+                    drive2Exit(speed);
+                } catch (Exception e) {
+                    go2losing();
+                }
                 Log.v(TAG, "Playing animation");
             }
         });
 
         SeekBar animationSpeed = findViewById(R.id.speedSeekBar);
+        speed = 5;
+        animationSpeed.setProgress(5);
         animationSpeed.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             /**
              * Sets the speed variable to the value from the SeekBar.
@@ -271,6 +284,7 @@ public class PlayAnimationActivity extends AppCompatActivity {
         intent.putExtra("builder", builder);
         intent.putExtra("path", path);
         intent.putExtra("shortest path", shortest_path);
+        intent.putExtra("energy used", energy_used);
         startActivity(intent);
     }
 
@@ -290,6 +304,7 @@ public class PlayAnimationActivity extends AppCompatActivity {
         intent.putExtra("builder", builder);
         intent.putExtra("path", path);
         intent.putExtra("shortest path", shortest_path);
+        intent.putExtra("energy", energy_used);
         startActivity(intent);
     }
 
@@ -403,54 +418,59 @@ public class PlayAnimationActivity extends AppCompatActivity {
         draw();
 
         // PLAY ANIMATION
-        startThread(1000);
+        try {
+            drive2Exit(speed);
+            for(Robot.Direction d : Robot.Direction.values()) {
+                try {
+                    robot.stopFailureAndRepairProcess(d);
+                } catch (Exception e0) {
 
-//        try {
-//            driver.drive2Exit();
-//            for(Robot.Direction d : Robot.Direction.values()) {
-//                try {
-//                    robot.stopFailureAndRepairProcess(d);
-//                } catch (Exception e0) {
-//
-//                }
-//            }
+                }
+            }
 //            go2winning();
-//        } catch (Exception e) {
-//            go2losing();
-//        }
+        } catch (Exception e) {
+            go2losing();
+        }
     }
 
-    private void startThread(int speed) {
-        new Thread(() -> {
-            try {
-                ArrayList<int[]> visited = new ArrayList<>();
-                int energyConsumption = 0;
-                int pathLength = 0;
-                boolean driving = true;
-                while(!robot.getCurrentPosition().equals(mazeConfig.getExitPosition())) {
-                    System.out.println(pathLength);
-                    if(robot.hasStopped()) {
-                        throw new Exception("Robot has stopped.");
+    private void drive2Exit(int speed) throws Exception {
+        Runnable drive = new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    while (!robot.getCurrentPosition().equals(mazeConfig.getExitPosition())) {
+                        if (robot.hasStopped()) {
+                            throw new Exception("Robot has stopped.");
+                        }
+                        boolean driving = driver.drive1Step2Exit();
+                        energy_used = (int) driver.getEnergyConsumption();
+                        energyBar.setProgress(energy_used);
+                        path = driver.getPathLength();
+                        Thread.sleep(1000 / speed);
+                        if (!driving) {    // if exit has been reached
+                            energy_used += robot.getEnergyForStepForward();
+                            path += 1;
+                            robot.move(1);
+//                            return true;
+                        }
+                        if (visited.contains(robot.getCurrentPosition())) {
+//                            return false;
+                        }
+                        visited.add(robot.getCurrentPosition());
                     }
-                    driving = driver.drive1Step2Exit();
-                    if(!driving) {	// if exit has been reached
-                        robot.move(1);
-                        energyConsumption += robot.getEnergyForStepForward();
-                        pathLength += 1;
-                        driving = true;
-                    }
-                    if(visited.contains(robot.getCurrentPosition())) {
-                        driving = false;
-                    }
-                    visited.add(robot.getCurrentPosition());
-                }
-                driving = false;
-            } catch (Exception e) {
-                e.printStackTrace();
-                go2losing();
-            }
-        }).start();
 
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            ;
+        };
+        if(visited == null) {
+            visited = new ArrayList<>();
+        }
+        animationThread = new Thread(drive);
+        animationThread.start();
     }
 
     /**
