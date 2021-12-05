@@ -90,6 +90,16 @@ public class ReliableRobot implements Robot {
 		}
 	}
 
+	public DistanceSensor getDistanceSensor(Direction mountedDirection) {
+		switch (mountedDirection) {
+			case LEFT: return sensor_left;
+			case RIGHT: return sensor_right;
+			case FORWARD: return sensor_forward;
+			case BACKWARD: return sensor_backward;
+		}
+		return null;
+	}
+
 	/**
 	 * Provides the current position as (x,y) coordinates for 
 	 * the maze as an array of length 2 with [x,y].
@@ -249,9 +259,11 @@ public class ReliableRobot implements Robot {
 			// if robot tries to move into a wall w/o jumping, it crashes
 			if(activity.getMazeConfiguration().hasWall(activity.getCurrentPosition()[0], activity.getCurrentPosition()[1], getCurrentDirection())) {
 				crashed = true;
+				System.out.println("crashed: ran into wall");
 			}
 			if(battery[0] < getEnergyForStepForward()) {
 				crashed = true;
+				System.out.println("crashed: not enough energy for step forward");
 			}
 			if(battery[0] >= 6 && !hasStopped()) {
 				battery[0] -= getEnergyForStepForward();

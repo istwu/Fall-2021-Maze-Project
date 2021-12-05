@@ -63,7 +63,7 @@ public class MazePanel extends View implements P5PanelF21 {
 //		paint.setColor(0xffff0000);
 //		UIcanvas.drawRect(0, 0, 1200, 1200, paint);
 //		myTestImage(UIcanvas);
-		Log.v(TAG, "Redrawing MazePanel");
+//		Log.v(TAG, "Redrawing MazePanel");
 		paint(UIcanvas);
 		UIcanvas.drawBitmap(bitmap, 0, 0, paint);
 	}
