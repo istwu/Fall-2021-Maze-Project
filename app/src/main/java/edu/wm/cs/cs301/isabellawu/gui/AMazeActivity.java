@@ -1,7 +1,10 @@
 package edu.wm.cs.cs301.isabellawu.gui;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -120,12 +123,40 @@ public class AMazeActivity extends AppCompatActivity {
      * previously generated maze.
      */
     public void getOldMaze(View view) {                 // FIX THIS
-        Bundle extras = getIntent().getExtras();
-        if(extras == null) {
-            Log.v(TAG, "No previous maze to explore");
+        SharedPreferences sharedPref = this.getPreferences(Context.MODE_PRIVATE);
+        if(!sharedPref.contains("seed")) {
+            Log.v(TAG, "No previous maze to explore, generating new maze");
+            generateNewMaze(view);
         }
         else {
+            Log.v(TAG, "Revisiting old maze with the following values:");
+            Log.v(TAG, "Seed: " + sharedPref.getInt("seed", seed));
+            Log.v(TAG, "Skill level: " + sharedPref.getInt("skill", skill));
+            Log.v(TAG, "Rooms included: " + sharedPref.getBoolean("perfect", perfect));
+            switch(sharedPref.getInt("builderInt", 0)) {
+                case 0:
+                    Log.v(TAG, "Builder: DFS");
+                    break;
+                case 1:
+                    Log.v(TAG, "Builder: Prim");
+                    break;
+                case 2:
+                    Log.v(TAG, "Builder: Boruvka");
+                    break;
+            }
+
             Intent intent = new Intent(this, GeneratingActivity.class);
+            intent.putExtra("seed", sharedPref.getInt("seed", seed));
+            intent.putExtra("skill", sharedPref.getInt("skill", skill));
+            intent.putExtra("perfect", sharedPref.getBoolean("perfect", perfect));
+            switch(sharedPref.getInt("builderInt", 0)) {
+                case 0: intent.putExtra("builder", Order.Builder.DFS);
+                break;
+                case 1: intent.putExtra("builder", Order.Builder.Prim);
+                break;
+                case 2: intent.putExtra("builder", Order.Builder.Boruvka);
+                break;
+            }
             startActivity(intent);
         }
     }
@@ -138,12 +169,31 @@ public class AMazeActivity extends AppCompatActivity {
         Random random = new Random();
         seed = random.nextInt();
         Intent intent = new Intent(this, GeneratingActivity.class);
-        intent.putExtra("seed", 432377924);
+        intent.putExtra("seed", seed);
         intent.putExtra("skill", skill);
         intent.putExtra("perfect", perfect);
         intent.putExtra("builder", builder);
+
+        // saving to shared preferences:
+        SharedPreferences sharedPref = this.getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putInt("seed", seed);
+        editor.putInt("skill", skill);
+        editor.putBoolean("perfect", perfect);
+        int builderInt = 0;
+        switch(builder) {
+            case DFS: builderInt = 0;
+            break;
+            case Prim: builderInt = 1;
+            break;
+            case Boruvka: builderInt = 2;
+            break;
+        }
+        editor.putInt("builderInt", builderInt);
+        editor.apply();
+
         Log.v(TAG, "Generating new maze with the following values:");
-        Log.v(TAG, "Seed: " + 432377924);
+        Log.v(TAG, "Seed: " + seed);
         Log.v(TAG, "Skill level: " + skill);
         Log.v(TAG, "Rooms included: " + perfect);
         switch(builder) {
