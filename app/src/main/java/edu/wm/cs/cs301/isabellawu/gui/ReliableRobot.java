@@ -259,11 +259,9 @@ public class ReliableRobot implements Robot {
 			// if robot tries to move into a wall w/o jumping, it crashes
 			if(activity.getMazeConfiguration().hasWall(activity.getCurrentPosition()[0], activity.getCurrentPosition()[1], getCurrentDirection())) {
 				crashed = true;
-				System.out.println("crashed: ran into wall");
 			}
 			if(battery[0] < getEnergyForStepForward()) {
 				crashed = true;
-				System.out.println("crashed: not enough energy for step forward");
 			}
 			if(battery[0] >= 6 && !hasStopped()) {
 				battery[0] -= getEnergyForStepForward();

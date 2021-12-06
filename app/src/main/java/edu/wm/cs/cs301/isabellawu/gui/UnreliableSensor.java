@@ -7,15 +7,15 @@ import edu.wm.cs.cs301.isabellawu.generation.CardinalDirection;
  * and to repair itself in a separate background thread when it fails.
  * It collaborates with the Maze and Floorplan to get the measure the distances toward obstacles.
  * (generally has same responsibilities and collaborators as ReliableSensor)
- * 
+ *
  * @author Isabella Wu
  */
 public class UnreliableSensor extends ReliableSensor implements Runnable {
-	
+
 	private boolean operational;
 	private boolean interrupted;
 	private Thread thread;
-	
+
 	/**
 	 * Constructor instantiates variables from superclass, as well as a boolean
 	 * to determine whether or not the sensor is operational.
@@ -25,7 +25,7 @@ public class UnreliableSensor extends ReliableSensor implements Runnable {
 		operational = true;
 		interrupted = false;
 	}
-	
+
 	/**
 	 * Returns true if the sensor is operational, false otherwise. Used for testing.
 	 * @return sensor operation status
@@ -33,7 +33,7 @@ public class UnreliableSensor extends ReliableSensor implements Runnable {
 	protected boolean isOperational() {
 		return operational;
 	}
-	
+
 	/**
 	 * Sets the sensor's operation status from outside. Used for testing.
 	 * @param o operation status
@@ -50,11 +50,11 @@ public class UnreliableSensor extends ReliableSensor implements Runnable {
 	 * e.g. 0 if the current cell has a wallboard in this direction, 
 	 * 1 if it is one step in this direction before directly facing a wallboard,
 	 * Integer.MaxValue if one looks through the exit into eternity.
-	 * 
+	 *
 	 * This method requires that the sensor has been given a reference
 	 * to the current maze and a mountedDirection by calling 
 	 * the corresponding set methods with a parameterized constructor.
-	 * 
+	 *
 	 * @param currentPosition is the current location as (x,y) coordinates
 	 * @param currentDirection specifies the direction of the robot
 	 * @param powersupply is an array of length 1, whose content is modified 
@@ -82,7 +82,7 @@ public class UnreliableSensor extends ReliableSensor implements Runnable {
 	 * Down time: The duration of a time period when the sensor is in repair
 	 * and not operational is characterized by a distribution
 	 * whose mean value is given by parameter meanTimeToRepair.
-	 * 
+	 *
 	 * @param meanTimeBetweenFailures is the mean time in seconds, must be greater than zero
 	 * @param meanTimeToRepair is the mean time in seconds, must be greater than zero
 	 */
@@ -97,16 +97,16 @@ public class UnreliableSensor extends ReliableSensor implements Runnable {
 	/**
 	 * This method stops a failure and repair process and
 	 * leaves the sensor in an operational state.
-	 * 
+	 *
 	 * It is complementary to starting a 
 	 * failure and repair process. 
-	 * 
+	 *
 	 * Intended use: If called after starting a process, this method
 	 * will stop the process as soon as the sensor is operational.
-	 * 
+	 *
 	 * If called with no running failure and repair process, 
 	 * the method will return an UnsupportedOperationException.
-	 * 
+	 *
 	 * @throws UnsupportedOperationException if there is no running 
 	 * failure and repair process
 	 */
@@ -115,9 +115,9 @@ public class UnreliableSensor extends ReliableSensor implements Runnable {
 		if(thread.isInterrupted()) {
 			throw new UnsupportedOperationException("No running failure and repair process.");
 		}
-		interrupted = true;		
+		interrupted = true;
 	}
-	
+
 	/**
 	 * Thread run method that is called to automate the intervals with which 
 	 * the sensor fails and repairs. 
@@ -138,5 +138,5 @@ public class UnreliableSensor extends ReliableSensor implements Runnable {
 		thread.interrupt();
 		operational = true;
 	}
-	
+
 }

@@ -3,6 +3,7 @@ package edu.wm.cs.cs301.isabellawu.gui;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -40,6 +41,7 @@ public class PlayAnimationActivity extends AppCompatActivity {
     private int energy_used;
     private int losing;
     private int speed;
+    private boolean gameIsRunning;
     private boolean paused;
     private boolean interrupted;
     private ProgressBar energyBar;
@@ -53,6 +55,7 @@ public class PlayAnimationActivity extends AppCompatActivity {
     private Wizard driver;
     private ArrayList<int[]> visited;
     private HashMap<Robot.Direction, ImageView> sensorMap;
+    private Thread[] sensorThreads;
 
     private boolean started;
     private boolean showMaze;           // toggle switch to show overall maze on screen
@@ -99,16 +102,16 @@ public class PlayAnimationActivity extends AppCompatActivity {
                 keyDown(Constants.UserInput.TOGGLELOCALMAP, 0);
                 keyDown(Constants.UserInput.TOGGLESOLUTION, 0);
                 keyDown(Constants.UserInput.TOGGLEFULLMAP, 0);
-                Toast toast = Toast.makeText(getApplicationContext(), "Map on", Toast.LENGTH_SHORT);
-                toast.show();
+//                Toast toast = Toast.makeText(getApplicationContext(), "Map on", Toast.LENGTH_SHORT);
+//                toast.show();
                 Log.v(TAG, "Map on");
             }
             else {
                 keyDown(Constants.UserInput.TOGGLELOCALMAP, 0);
                 keyDown(Constants.UserInput.TOGGLESOLUTION, 0);
                 keyDown(Constants.UserInput.TOGGLEFULLMAP, 0);
-                Toast toast = Toast.makeText(getApplicationContext(), "Map off", Toast.LENGTH_SHORT);
-                toast.show();
+//                Toast toast = Toast.makeText(getApplicationContext(), "Map off", Toast.LENGTH_SHORT);
+//                toast.show();
                 Log.v(TAG, "Map off");
             }
         });
@@ -152,11 +155,6 @@ public class PlayAnimationActivity extends AppCompatActivity {
 //                Toast toast = Toast.makeText(getApplicationContext(), "Pausing animation", Toast.LENGTH_SHORT);
 //                toast.show();
                 animationThread.interrupt();
-                try {
-                    System.out.println(robot.getCurrentPosition()[0] + ", " + robot.getCurrentPosition()[1] + ", " + robot.getCurrentDirection());
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
                 Log.v(TAG, "Pausing animation");
             }
             else {
@@ -167,11 +165,6 @@ public class PlayAnimationActivity extends AppCompatActivity {
 //                toast.show();
                 try {
                     drive2Exit();
-                    try {
-                        System.out.println(robot.getCurrentPosition()[0] + ", " + robot.getCurrentPosition()[1] + ", " + robot.getCurrentDirection());
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
                 } catch (Exception e) {
                     go2losing();
                 }
@@ -197,8 +190,8 @@ public class PlayAnimationActivity extends AppCompatActivity {
              */
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
-                Toast toast = Toast.makeText(getApplicationContext(), "Changing speed", Toast.LENGTH_SHORT);
-                toast.show();
+//                Toast toast = Toast.makeText(getApplicationContext(), "Changing speed", Toast.LENGTH_SHORT);
+//                toast.show();
                 Log.v(TAG, "Changing speed");
             }
 
@@ -208,12 +201,13 @@ public class PlayAnimationActivity extends AppCompatActivity {
              */
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-                Toast toast = Toast.makeText(getApplicationContext(), "Speed set to " + speed, Toast.LENGTH_SHORT);
-                toast.show();
+//                Toast toast = Toast.makeText(getApplicationContext(), "Speed set to " + speed, Toast.LENGTH_SHORT);
+//                toast.show();
                 Log.v(TAG, "Speed set to " + speed);
             }
         });
 
+        gameIsRunning = true;
         mazeConfig = GeneratingActivity.maze;
         panel = findViewById(R.id.mazePanel_auto);
         started = false;
@@ -274,8 +268,23 @@ public class PlayAnimationActivity extends AppCompatActivity {
      */
     @Override
     public void onBackPressed() {
+        gameIsRunning = false;
+        for(Robot.Direction d : Robot.Direction.values()) {
+            try {
+                robot.stopFailureAndRepairProcess(d);
+            } catch (Exception e0) {
+
+            }
+        }
         if(animationThread != null) {
             animationThread.interrupt();
+        }
+        if(sensorThreads != null) {
+            for (int i = 0; i < sensorThreads.length; i++) {
+                if(sensorThreads[i] != null) {
+                    sensorThreads[i].interrupt();
+                }
+            }
         }
         Intent intent = new Intent(this, AMazeActivity.class);
         intent.putExtra("seed", seed);
@@ -293,9 +302,19 @@ public class PlayAnimationActivity extends AppCompatActivity {
      * path length and the solution path length through an intent.
      */
     public void go2winning() {
-        // need to pass in steps
 //        Toast toast = Toast.makeText(getApplicationContext(), "Moving to winning screen", Toast.LENGTH_SHORT);
 //        toast.show();
+        gameIsRunning = false;
+        for(Robot.Direction d : Robot.Direction.values()) {
+            try {
+                robot.stopFailureAndRepairProcess(d);
+            } catch (Exception e0) {
+
+            }
+        }
+        for(int i = 0; i < sensorThreads.length; i++) {
+            sensorThreads[i].interrupt();
+        }
         Log.v(TAG, "Moving to winning screen");
         Intent intent = new Intent(this, WinningActivity.class);
         intent.putExtra("seed", seed);
@@ -315,6 +334,17 @@ public class PlayAnimationActivity extends AppCompatActivity {
     public void go2losing() {
 //        Toast toast = Toast.makeText(getApplicationContext(), "Moving to losing screen", Toast.LENGTH_SHORT);
 //        toast.show();
+        gameIsRunning = false;
+        for(Robot.Direction d : Robot.Direction.values()) {
+            try {
+                robot.stopFailureAndRepairProcess(d);
+            } catch (Exception e0) {
+
+            }
+        }
+        for(int i = 0; i < sensorThreads.length; i++) {
+            sensorThreads[i].interrupt();
+        }
         Log.v(TAG, "Moving to losing screen");
         // need to pass in steps, energy, reason for loss
         Intent intent = new Intent(this, LosingActivity.class);
@@ -343,57 +373,65 @@ public class PlayAnimationActivity extends AppCompatActivity {
      * the robot's sensors.
      */
     public void setSensors(Robot robot, String r) {
-        if (r.length() == 4) {
-            for(int i = 0; i < r.length(); i++) {
-                ReliableSensor sensor = null;
-                if(r.charAt(i) == '0') {
-                    sensor = new UnreliableSensor();
-                    sensor.setMaze(mazeConfig);
-                    sensor.startFailureAndRepairProcess(4, 2);
-                    try {
-                        Thread.sleep(1333);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
+        sensorThreads = new Thread[4];
+        for(int i = 0; i < r.length(); i++) {
+            Robot.Direction dir = null;
+            switch(i) {
+                case 0: {
+                    dir = Robot.Direction.FORWARD;
+                    break;
                 }
-                else if(r.charAt(i) == '1') {
-                    sensor = new ReliableSensor();
-                    sensor.setMaze(mazeConfig);
+                case 1: {
+                    dir = Robot.Direction.LEFT;
+                    break;
                 }
-                else {	// if not 0 or 1
-                    sensor = new ReliableSensor();
-                    sensor.setMaze(mazeConfig);
+                case 2: {
+                    dir = Robot.Direction.RIGHT;
+                    break;
                 }
-                switch(i) {
-                    case 0: {
-                        sensor.setSensorDirection(Robot.Direction.FORWARD);
-                        robot.addDistanceSensor(sensor, Robot.Direction.FORWARD);
-                        break;
-                    }
-                    case 1: {
-                        sensor.setSensorDirection(Robot.Direction.LEFT);
-                        robot.addDistanceSensor(sensor, Robot.Direction.LEFT);
-                        break;
-                    }
-                    case 2: {
-                        sensor.setSensorDirection(Robot.Direction.RIGHT);
-                        robot.addDistanceSensor(sensor, Robot.Direction.RIGHT);
-                        break;
-                    }
-                    case 3: {
-                        sensor.setSensorDirection(Robot.Direction.BACKWARD);
-                        robot.addDistanceSensor(sensor, Robot.Direction.BACKWARD);
-                        break;
-                    }
+                case 3: {
+                    dir = Robot.Direction.BACKWARD;
+                    break;
                 }
             }
-        }
-        else {
-            for(Robot.Direction d : Robot.Direction.values()) {
+
+            if(r.charAt(i) == '0') {
+                UnreliableSensor sensor = new UnreliableSensor();
+                sensor.setMaze(mazeConfig);
+                sensor.setSensorDirection(dir);
+                robot.addDistanceSensor(sensor, dir);
+                sensor.startFailureAndRepairProcess(4, 2);
+                try {
+                    Thread.sleep(1333);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                UnreliableSensor finalSensor = sensor;
+                Robot.Direction finalDir = dir;
+                sensorThreads[i] = new Thread(() -> {
+                    while (gameIsRunning) {
+                        if(finalSensor.isOperational()) {
+                            sensorMap.get(finalDir).setColorFilter(Color.GREEN);
+                        }
+                        else {
+                            sensorMap.get(finalDir).setColorFilter(Color.RED);
+                        }
+                        try {
+                            Thread.sleep(2000);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+                sensorThreads[i].start();
+
+            }
+            else if(r.charAt(i) == '1') {
                 ReliableSensor sensor = new ReliableSensor();
-                sensor.setSensorDirection(d);
-                sensor.setMaze(getMazeConfiguration());
-                robot.addDistanceSensor(sensor, d);
+                sensor.setMaze(mazeConfig);
+                sensor.setSensorDirection(dir);
+                robot.addDistanceSensor(sensor, dir);
+                sensorMap.get(dir).setColorFilter(Color.GREEN);
             }
         }
     }
@@ -439,16 +477,9 @@ public class PlayAnimationActivity extends AppCompatActivity {
         draw();
 
         // PLAY ANIMATION
-        visited = new ArrayList<>();
         interrupted = false;
+        visited = new ArrayList<>();
         drive2Exit();
-        for(Robot.Direction d : Robot.Direction.values()) {
-            try {
-                robot.stopFailureAndRepairProcess(d);
-            } catch (Exception e0) {
-
-            }
-        }
     }
 
     private void drive2Exit() {
