@@ -166,12 +166,8 @@ public class GeneratingActivity extends AppCompatActivity implements Order {
     public void onBackPressed() {
         Log.v(TAG, "Returning to title screen");
         Intent intent = new Intent(this, AMazeActivity.class);
-        intent.putExtra("seed", seed);
-        intent.putExtra("skill", skill);
-        intent.putExtra("perfect", perfect);
-        intent.putExtra("builder", builder);
         startActivity(intent);
-        finish();
+        this.finish();
     }
 
     @Override
@@ -248,18 +244,10 @@ public class GeneratingActivity extends AppCompatActivity implements Order {
             Intent intent;
             if(manual) {
                 intent = new Intent(getApplicationContext(), PlayManuallyActivity.class);
-                intent.putExtra("seed", seed);
-                intent.putExtra("skill", skill);
-                intent.putExtra("perfect", perfect);
-                intent.putExtra("builder", builder);
                 intent.putExtra("driver", driver);  // 1 = manual
             }
             else {
                 intent = new Intent(getApplicationContext(), PlayAnimationActivity.class);
-                intent.putExtra("seed", seed);
-                intent.putExtra("skill", skill);
-                intent.putExtra("perfect", perfect);
-                intent.putExtra("builder", builder);
                 intent.putExtra("driver", driver);  // 2 = wizard, 3 = wallfollower
                 intent.putExtra("config", config);   // 1 = premium, 2 = mediocre, 3 = soso, 4 = shaky
             }

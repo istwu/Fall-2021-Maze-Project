@@ -19,11 +19,6 @@ public class LosingActivity extends AppCompatActivity {
     private int energy_used;
     private int losing;
 
-    private int seed;
-    private int skill;
-    private boolean perfect;
-    private int generation;
-
     private static final String TAG = "LosingActivity";
 
     /**
@@ -38,10 +33,6 @@ public class LosingActivity extends AppCompatActivity {
         setContentView(R.layout.activity_losing);
 
         Bundle extras = getIntent().getExtras();
-        seed = extras.getInt("seed");
-        skill = extras.getInt("skill");
-        perfect = extras.getBoolean("perfect");
-        generation = extras.getInt("generation");
         path = extras.getInt("path");
         shortest_path = extras.getInt("shortest path");
         if(extras.containsKey("energy used")) {
@@ -94,11 +85,7 @@ public class LosingActivity extends AppCompatActivity {
     public void onBackPressed() {
         Log.v(TAG, "Returning to title screen");
         Intent intent = new Intent(this, AMazeActivity.class);
-        intent.putExtra("seed", seed);
-        intent.putExtra("skill", skill);
-        intent.putExtra("perfect", perfect);
-        intent.putExtra("generation", generation);
         startActivity(intent);
-        finish();
+        this.finish();
     }
 }

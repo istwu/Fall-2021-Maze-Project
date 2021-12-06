@@ -29,10 +29,6 @@ import edu.wm.cs.cs301.isabellawu.generation.Order;
  */
 public class PlayAnimationActivity extends AppCompatActivity {
 
-    private int seed;
-    private int skill;
-    private boolean perfect;
-    private Order.Builder builder;
     private int config;
 
     private int path;
@@ -89,10 +85,7 @@ public class PlayAnimationActivity extends AppCompatActivity {
         setContentView(R.layout.activity_play_animation);
 
         Bundle extras = getIntent().getExtras();
-        seed = extras.getInt("seed");
-        skill = extras.getInt("skill");
-        perfect = extras.getBoolean("perfect");
-        builder = (Order.Builder) extras.get("builder");
+        config = extras.getInt("config");
 
         ToggleButton toggleMap = findViewById(R.id.toggleMapButton_auto);
         toggleMap.setChecked(true);
@@ -235,7 +228,6 @@ public class PlayAnimationActivity extends AppCompatActivity {
         // 0 = unreliable
         // 1 = reliable
         // string order: front left right back
-        config = extras.getInt("config");  // 1 = premium, 2 = mediocre, 3 = soso, 4 = shaky
         switch(config) {    // 1 = premium, 2 = mediocre, 3 = soso, 4 = shaky
             case 1: {
                 setSensors(robot, "1111");
@@ -286,12 +278,8 @@ public class PlayAnimationActivity extends AppCompatActivity {
             }
         }
         Intent intent = new Intent(this, AMazeActivity.class);
-        intent.putExtra("seed", seed);
-        intent.putExtra("skill", skill);
-        intent.putExtra("perfect", perfect);
-        intent.putExtra("builder", builder);
         startActivity(intent);
-        finish();
+        this.finish();
     }
 
     // WINNING/LOSING METHODS
@@ -311,13 +299,11 @@ public class PlayAnimationActivity extends AppCompatActivity {
             }
         }
         for (Thread sensorThread : sensorThreads) {
-            sensorThread.interrupt();
+            if(sensorThread != null) {
+                sensorThread.interrupt();
+            }
         }
         Intent intent = new Intent(this, WinningActivity.class);
-        intent.putExtra("seed", seed);
-        intent.putExtra("skill", skill);
-        intent.putExtra("perfect", perfect);
-        intent.putExtra("builder", builder);
         intent.putExtra("path", path);
         intent.putExtra("shortest path", shortest_path);
         intent.putExtra("energy used", energy_used);
@@ -341,12 +327,9 @@ public class PlayAnimationActivity extends AppCompatActivity {
         for (Thread sensorThread : sensorThreads) {
             sensorThread.interrupt();
         }
+
         // need to pass in steps, energy, reason for loss
         Intent intent = new Intent(this, LosingActivity.class);
-        intent.putExtra("seed", seed);
-        intent.putExtra("skill", skill);
-        intent.putExtra("perfect", perfect);
-        intent.putExtra("builder", builder);
         intent.putExtra("path", path);
         intent.putExtra("shortest path", shortest_path);
         intent.putExtra("energy used", energy_used);
@@ -517,17 +500,19 @@ public class PlayAnimationActivity extends AppCompatActivity {
                 try {
                     driving = driver.drive1Step2Exit();
                 } catch (Exception e) {
-                    if(robot.crashed()) {
-                        losing = 0;
-                    }
-                    else if(robot.noEnergy()) {
+                    losing = 1;     // usually ran out of energy by default
+                    if(robot.noEnergy()) {
                         losing = 1;
+                    }
+                    else if(robot.crashed()) {
+                        losing = 0;
                     }
                     else if(robot.jumpedBorder()) {
                         losing = 2;
                     }
                     go2losing();
                     e.printStackTrace();
+                    break;
                 }
                 energy_used = (int) driver.getEnergyConsumption();
                 energyBar.setProgress(3500 - energy_used);
@@ -551,6 +536,7 @@ public class PlayAnimationActivity extends AppCompatActivity {
                 }
                 visited.add(currentPosition);
             }
+            return;
         };
         animationThread = new Thread(drive);
         animationThread.start();

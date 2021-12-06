@@ -21,11 +21,6 @@ import edu.wm.cs.cs301.isabellawu.generation.Wallboard;
  */
 public class PlayManuallyActivity extends AppCompatActivity {
 
-    private int seed;
-    private int skill;
-    private boolean perfect;
-    private Order.Builder builder;
-
     private int path;
     private int shortest_path;
     private int losing;
@@ -64,12 +59,6 @@ public class PlayManuallyActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_play_manually);
-
-        Bundle extras = getIntent().getExtras();
-        seed = extras.getInt("seed");
-        skill = extras.getInt("skill");
-        perfect = extras.getBoolean("perfect");
-        builder = (Order.Builder) extras.get("builder");
 
         ToggleButton toggleMap = findViewById(R.id.toggleMapButton_manual);
         toggleMap.setOnClickListener(view -> {
@@ -141,12 +130,8 @@ public class PlayManuallyActivity extends AppCompatActivity {
     public void onBackPressed() {
         Log.v(TAG, "Returning to title screen");
         Intent intent = new Intent(this, AMazeActivity.class);
-        intent.putExtra("seed", seed);
-        intent.putExtra("skill", skill);
-        intent.putExtra("perfect", perfect);
-        intent.putExtra("builder", builder);
         startActivity(intent);
-        finish();
+        this.finish();
     }
 
     // MOVE BUTTON METHODS
@@ -207,10 +192,6 @@ public class PlayManuallyActivity extends AppCompatActivity {
         // need to pass in steps
         Log.v(TAG, "Moving to winning screen");
         Intent intent = new Intent(this, WinningActivity.class);
-        intent.putExtra("seed", seed);
-        intent.putExtra("skill", skill);
-        intent.putExtra("perfect", perfect);
-        intent.putExtra("builder", builder);
         intent.putExtra("path", path);
         intent.putExtra("shortest path", shortest_path);
         startActivity(intent);
@@ -224,10 +205,6 @@ public class PlayManuallyActivity extends AppCompatActivity {
         Log.v(TAG, "Moving to losing screen");
         // need to pass in steps, energy, reason for loss
         Intent intent = new Intent(this, LosingActivity.class);
-        intent.putExtra("seed", seed);
-        intent.putExtra("skill", skill);
-        intent.putExtra("perfect", perfect);
-        intent.putExtra("builder", builder);
         intent.putExtra("path", path);
         intent.putExtra("shortest path", shortest_path);
         intent.putExtra("losing", losing);

@@ -237,6 +237,9 @@ public class ReliableRobot implements Robot {
 					activity.keyDown(UserInput.LEFT, 0);
 					activity.keyDown(UserInput.LEFT, 0);
 				}
+				else {
+					no_energy = true;
+				}
 				break;
 			}
 			}
@@ -265,7 +268,7 @@ public class ReliableRobot implements Robot {
 			if(battery[0] < getEnergyForStepForward()) {
 				no_energy = true;
 			}
-			if(battery[0] >= 6 && !hasStopped()) {
+			if(battery[0] >= getEnergyForStepForward() && !hasStopped()) {
 				battery[0] -= getEnergyForStepForward();
 				activity.keyDown(UserInput.UP, 0);
 				odometer += 1;

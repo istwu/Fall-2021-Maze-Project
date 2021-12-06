@@ -26,7 +26,6 @@ public class AMazeActivity extends AppCompatActivity {
     private int skill;
     private boolean perfect;
     private Order.Builder builder;
-    private HashMap prev_values;
 
     private static final String TAG = "AMazeActivity";
 
@@ -41,23 +40,6 @@ public class AMazeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        prev_values = new HashMap<String, Object>();
-        Bundle extras = getIntent().getExtras();
-        if(extras != null) {
-            if (extras.containsKey("seed")) {
-                prev_values.put("seed", extras.getInt("seed"));
-            }
-            if (extras.containsKey("skill")) {
-                prev_values.put("skill", extras.getInt("skill"));
-            }
-            if (extras.containsKey("perfect")) {
-                prev_values.put("perfect", extras.getBoolean("perfect"));
-            }
-            if (extras.containsKey("generation")) {
-                prev_values.put("generation", extras.getInt("generation"));
-            }
-        }
 
         TextView skillText = findViewById(R.id.skillText);
         skillText.setText(getString(R.string.skill_level, 0));
@@ -144,25 +126,6 @@ public class AMazeActivity extends AppCompatActivity {
         }
         else {
             Intent intent = new Intent(this, GeneratingActivity.class);
-            intent.putExtra("seed", (int) prev_values.get("seed"));
-            intent.putExtra("skill", (int) prev_values.get("skill"));
-            intent.putExtra("perfect", (boolean) prev_values.get("perfect"));
-            intent.putExtra("generation", (int) prev_values.get("generation"));
-            Log.v(TAG, "Returning to old maze with the following values:");
-            Log.v(TAG, "Seed: " + prev_values.get("seed"));
-            Log.v(TAG, "Skill level: " + prev_values.get("skill"));
-            Log.v(TAG, "Rooms included: " + prev_values.get("perfect"));
-            switch((int) prev_values.get("generation")) {
-                case 0:
-                    Log.v(TAG, "Builder: DFS");
-                    break;
-                case 1:
-                    Log.v(TAG, "Builder: Prim");
-                    break;
-                case 2:
-                    Log.v(TAG, "Builder: Boruvka");
-                    break;
-            }
             startActivity(intent);
         }
     }
@@ -175,12 +138,12 @@ public class AMazeActivity extends AppCompatActivity {
         Random random = new Random();
         seed = random.nextInt();
         Intent intent = new Intent(this, GeneratingActivity.class);
-        intent.putExtra("seed", seed);
+        intent.putExtra("seed", 432377924);
         intent.putExtra("skill", skill);
         intent.putExtra("perfect", perfect);
         intent.putExtra("builder", builder);
         Log.v(TAG, "Generating new maze with the following values:");
-        Log.v(TAG, "Seed: " + seed);
+        Log.v(TAG, "Seed: " + 432377924);
         Log.v(TAG, "Skill level: " + skill);
         Log.v(TAG, "Rooms included: " + perfect);
         switch(builder) {
@@ -195,5 +158,13 @@ public class AMazeActivity extends AppCompatActivity {
                 break;
         }
         startActivity(intent);
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent a = new Intent(Intent.ACTION_MAIN);
+        a.addCategory(Intent.CATEGORY_HOME);
+        a.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(a);
     }
 }
