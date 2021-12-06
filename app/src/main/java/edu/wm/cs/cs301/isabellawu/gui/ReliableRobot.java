@@ -22,6 +22,8 @@ public class ReliableRobot implements Robot {
 	protected float[] battery;
 	protected int odometer;
 	protected boolean crashed;
+	protected boolean no_energy;
+	protected boolean jumped_border;
 	
 	/**
 	 * Default constructor, instantiates sensors and counters used to track battery 
@@ -214,7 +216,7 @@ public class ReliableRobot implements Robot {
 	@Override
 	public void rotate(Turn turn) {
 		if(battery[0] < 3) {
-			crashed = true;		// forces robot to stop
+			no_energy = true;		// forces robot to stop
 		}
 		
 		if(battery[0] >= 3 && !hasStopped()) {
@@ -261,7 +263,7 @@ public class ReliableRobot implements Robot {
 				crashed = true;
 			}
 			if(battery[0] < getEnergyForStepForward()) {
-				crashed = true;
+				no_energy = true;
 			}
 			if(battery[0] >= 6 && !hasStopped()) {
 				battery[0] -= getEnergyForStepForward();
@@ -287,16 +289,16 @@ public class ReliableRobot implements Robot {
 	public void jump() {
 		// check if the wall to jump is an exterior wall
 		if(activity.getCurrentPosition()[0] == 0 && getCurrentDirection() == CardinalDirection.West) {
-			crashed = true;
+			jumped_border = true;
 		}
 		else if(activity.getCurrentPosition()[0] == activity.getMazeConfiguration().getWidth()-1 && getCurrentDirection() == CardinalDirection.East) {
-			crashed = true;
+			jumped_border = true;
 		}
 		else if(activity.getCurrentPosition()[1] == 0 && getCurrentDirection() == CardinalDirection.North) {
-			crashed = true;
+			jumped_border = true;
 		}
 		else if(activity.getCurrentPosition()[1] == activity.getMazeConfiguration().getHeight()-1 && getCurrentDirection() == CardinalDirection.South) {
-			crashed = true;
+			jumped_border = true;
 		}
 		
 		if(battery[0] >= 40 && !hasStopped()) {
@@ -352,8 +354,26 @@ public class ReliableRobot implements Robot {
 		}
 		if(crashed) {
 			return true;
-		}	
+		}
+		if(no_energy) {
+			return true;
+		}
+		if(jumped_border) {
+			return true;
+		}
 		return false;
+	}
+
+	public boolean crashed() {
+		return crashed;
+	}
+
+	public boolean noEnergy() {
+		return no_energy;
+	}
+
+	public boolean jumpedBorder() {
+		return jumped_border;
 	}
 
 	/**

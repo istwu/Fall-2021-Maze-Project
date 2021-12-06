@@ -29,9 +29,10 @@
 
     <string name="win">You escaped the ISC!</string>
     <string name="loss">You got locked inside the ISC...</string>
-    <string name="no_energy">You ran out of energy and lost consciousness.</string>
     <string name="crashed">You crashed into a wall and lost consciousness.</string>
-    <string name="jump_border">You tried to jump over the outside wall. You can\'t do that, you\'re inside a building!</string>
+    <string name="no_energy">You ran out of energy and lost consciousness.</string>
+    <string name="jump_border">You tried to jump over the outside wall. You can\'t do that, you\'re still inside the building!</string>
+    <string name="looping">You\'re just running in circles!</string>
     <string name="path_length">Path length: %1$d</string>
     <string name="shortest_path">Shortest path: %1$d</string>
     <string name="energy_used">Energy used: %1$d</string>

@@ -223,7 +223,7 @@ public class GeneratingActivity extends AppCompatActivity implements Order {
         // check if progress bar is at 100%
         // check if driver + config have been selected
         new Thread(() -> {
-            while (driver == 0 || (!manual && config == 0)) {
+            while (driver == 0 || (!manual && config == 0) || maze == null) {
                 TextView driverWarning = (TextView) findViewById(R.id.driverWarning);
                 TextView configWarning = (TextView) findViewById(R.id.configWarning);
                 if(driver == 0) {
@@ -264,6 +264,7 @@ public class GeneratingActivity extends AppCompatActivity implements Order {
                 intent.putExtra("config", config);   // 1 = premium, 2 = mediocre, 3 = soso, 4 = shaky
             }
             startActivity(intent);
+            return;
         }).start();
 
     }

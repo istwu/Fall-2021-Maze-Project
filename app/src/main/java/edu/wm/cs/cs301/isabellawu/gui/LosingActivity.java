@@ -17,8 +17,7 @@ public class LosingActivity extends AppCompatActivity {
     private int path;
     private int shortest_path;
     private int energy_used;
-    private boolean crashed;
-    private boolean jump_border;
+    private int losing;
 
     private int seed;
     private int skill;
@@ -48,20 +47,31 @@ public class LosingActivity extends AppCompatActivity {
         if(extras.containsKey("energy used")) {
             energy_used = extras.getInt("energy used");
         }
-        if(extras.containsKey("crashed")) {
-            crashed = extras.getBoolean("crashed");
-        }
+        // 0 = crashed into wall
+        // 1 = ran out of energy
+        // 2 = jumped over border wall
+        // 3 = stuck in loop
+        losing = extras.getInt("losing");
 
-        TextView losing = findViewById(R.id.losing);
+        TextView losingReason = findViewById(R.id.losingReason);
         // set text of losing based on reason for loss (placeholder)
-        if(energy_used >= 3500) {
-            losing.setText(getString(R.string.no_energy));
-        }
-        else if(crashed) {
-            losing.setText(getString(R.string.crashed));
-        }
-        else if(jump_border) {
-            losing.setText(getString(R.string.jump_border));
+        switch(losing) {
+            case 0: {
+                losingReason.setText(getString(R.string.crashed));
+                break;
+            }
+            case 1: {
+                losingReason.setText(getText(R.string.no_energy));
+                break;
+            }
+            case 2: {
+                losingReason.setText(getText(R.string.jump_border));
+                break;
+            }
+            case 3: {
+                losingReason.setText(getText(R.string.looping));
+                break;
+            }
         }
 
 

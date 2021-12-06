@@ -14,6 +14,7 @@ import edu.wm.cs.cs301.isabellawu.generation.CardinalDirection;
 import edu.wm.cs.cs301.isabellawu.generation.Floorplan;
 import edu.wm.cs.cs301.isabellawu.generation.Maze;
 import edu.wm.cs.cs301.isabellawu.generation.Order;
+import edu.wm.cs.cs301.isabellawu.generation.Wallboard;
 
 /**
  * @author Isabella Wu
@@ -27,6 +28,7 @@ public class PlayManuallyActivity extends AppCompatActivity {
 
     private int path;
     private int shortest_path;
+    private int losing;
 
     private FirstPersonView firstPersonView;
     private Map mapView;
@@ -189,6 +191,10 @@ public class PlayManuallyActivity extends AppCompatActivity {
 //        Toast toast = Toast.makeText(getApplicationContext(), "Jump", Toast.LENGTH_SHORT);
 //        toast.show();
         Log.v(TAG, "Jump");
+        if(mazeConfig.getFloorplan().isPartOfBorder(new Wallboard(getCurrentPosition()[0], getCurrentPosition()[1], getCurrentDirection()))) {
+            losing = 2;
+            go2losing();
+        }
     }
 
     // WINNING/LOSING METHODS
@@ -224,6 +230,7 @@ public class PlayManuallyActivity extends AppCompatActivity {
         intent.putExtra("builder", builder);
         intent.putExtra("path", path);
         intent.putExtra("shortest path", shortest_path);
+        intent.putExtra("losing", losing);
         startActivity(intent);
     }
 

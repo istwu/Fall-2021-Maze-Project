@@ -159,6 +159,15 @@ public class PlayAnimationActivity extends AppCompatActivity {
                 try {
                     drive2Exit();
                 } catch (Exception e) {
+                    if(robot.noEnergy()) {
+                        losing = 1;
+                    }
+                    else if(robot.crashed()) {
+                        losing = 0;
+                    }
+                    else if(robot.jumpedBorder()) {
+                        losing = 2;
+                    }
                     go2losing();
                 }
                 Log.v(TAG, "Playing animation");
@@ -341,7 +350,11 @@ public class PlayAnimationActivity extends AppCompatActivity {
         intent.putExtra("path", path);
         intent.putExtra("shortest path", shortest_path);
         intent.putExtra("energy used", energy_used);
-        intent.putExtra("losing reason", losing);
+        // 0 = crashed into wall
+        // 1 = ran out of energy
+        // 2 = jumped over border wall
+        // 3 = stuck in loop
+        intent.putExtra("losing", losing);
         startActivity(intent);
     }
 
@@ -488,13 +501,32 @@ public class PlayAnimationActivity extends AppCompatActivity {
                 }
 
                 if (robot.hasStopped()) {
+                    if(robot.noEnergy()) {
+                        losing = 1;
+                    }
+                    else if(robot.crashed()) {
+                        losing = 0;
+                    }
+                    else if(robot.jumpedBorder()) {
+                        losing = 2;
+                    }
                     go2losing();
                     break;
                 }
-                boolean driving = false;
+                boolean driving = true;
                 try {
                     driving = driver.drive1Step2Exit();
                 } catch (Exception e) {
+                    if(robot.crashed()) {
+                        losing = 0;
+                    }
+                    else if(robot.noEnergy()) {
+                        losing = 1;
+                    }
+                    else if(robot.jumpedBorder()) {
+                        losing = 2;
+                    }
+                    go2losing();
                     e.printStackTrace();
                 }
                 energy_used = (int) driver.getEnergyConsumption();
@@ -513,6 +545,7 @@ public class PlayAnimationActivity extends AppCompatActivity {
                     break;
                 }
                 if (visited.contains(currentPosition)) {
+                    losing = 3;
                     go2losing();
                     break;
                 }
