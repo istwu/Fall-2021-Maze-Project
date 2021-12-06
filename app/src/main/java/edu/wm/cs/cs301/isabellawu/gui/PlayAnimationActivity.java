@@ -38,8 +38,10 @@ public class PlayAnimationActivity extends AppCompatActivity {
     private int path;
     private int shortest_path;
     private int energy_used;
+    private int losing;
     private int speed;
     private boolean paused;
+    private boolean interrupted;
     private ProgressBar energyBar;
 
     private Thread animationThread;
@@ -140,23 +142,36 @@ public class PlayAnimationActivity extends AppCompatActivity {
         energyBar = findViewById(R.id.energyBar);
         energyBar.setProgress(3500);
 
+        paused = false;
         ImageButton pauseplay = findViewById(R.id.pause_play);
         pauseplay.setOnClickListener(view -> {
             if(!paused) {
                 paused = true;
+                interrupted = true;
                 pauseplay.setImageResource(R.drawable.mr_media_play_light);
 //                Toast toast = Toast.makeText(getApplicationContext(), "Pausing animation", Toast.LENGTH_SHORT);
 //                toast.show();
                 animationThread.interrupt();
+                try {
+                    System.out.println(robot.getCurrentPosition()[0] + ", " + robot.getCurrentPosition()[1] + ", " + robot.getCurrentDirection());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
                 Log.v(TAG, "Pausing animation");
             }
             else {
                 paused = false;
+                interrupted = false;
                 pauseplay.setImageResource(R.drawable.mr_media_pause_light);
 //                Toast toast = Toast.makeText(getApplicationContext(), "Playing animation", Toast.LENGTH_SHORT);
 //                toast.show();
                 try {
                     drive2Exit();
+                    try {
+                        System.out.println(robot.getCurrentPosition()[0] + ", " + robot.getCurrentPosition()[1] + ", " + robot.getCurrentDirection());
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 } catch (Exception e) {
                     go2losing();
                 }
@@ -259,6 +274,9 @@ public class PlayAnimationActivity extends AppCompatActivity {
      */
     @Override
     public void onBackPressed() {
+        if(animationThread != null) {
+            animationThread.interrupt();
+        }
         Intent intent = new Intent(this, AMazeActivity.class);
         intent.putExtra("seed", seed);
         intent.putExtra("skill", skill);
@@ -307,6 +325,7 @@ public class PlayAnimationActivity extends AppCompatActivity {
         intent.putExtra("path", path);
         intent.putExtra("shortest path", shortest_path);
         intent.putExtra("energy used", energy_used);
+        intent.putExtra("losing reason", losing);
         startActivity(intent);
     }
 
@@ -421,24 +440,14 @@ public class PlayAnimationActivity extends AppCompatActivity {
 
         // PLAY ANIMATION
         visited = new ArrayList<>();
-        try {
-            drive2Exit();
-//            for(Robot.Direction d : Robot.Direction.values()) {
-//                try {
-//                    robot.stopFailureAndRepairProcess(d);
-//                    if(true) {
-//                        sensorMap.get(d).setBackgroundColor(0);
-//                    }
-//                    else {
-//                        sensorMap.get(d).setBackgroundColor(0);
-//                    }
-//                } catch (Exception e0) {
-//
-//                }
-//            }
-//            go2winning();
-        } catch (Exception e) {
-            go2losing();
+        interrupted = false;
+        drive2Exit();
+        for(Robot.Direction d : Robot.Direction.values()) {
+            try {
+                robot.stopFailureAndRepairProcess(d);
+            } catch (Exception e0) {
+
+            }
         }
     }
 
@@ -454,6 +463,9 @@ public class PlayAnimationActivity extends AppCompatActivity {
                 }
 
                 while (!currentPosition.equals(mazeConfig.getExitPosition())) {
+                    if(interrupted) {
+                        break;
+                    }
                     try {
                         currentPosition = robot.getCurrentPosition();
                     } catch (Exception e) {
@@ -474,7 +486,6 @@ public class PlayAnimationActivity extends AppCompatActivity {
                     energyBar.setProgress(3500 - energy_used);
                     path = driver.getPathLength();
                     try {
-                        System.out.println(speed);
                         Thread.sleep(1000 / speed);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
