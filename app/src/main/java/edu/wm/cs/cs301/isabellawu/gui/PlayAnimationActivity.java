@@ -393,10 +393,10 @@ public class PlayAnimationActivity extends AppCompatActivity {
                 sensorThreads[i] = new Thread(() -> {
                     while (gameIsRunning) {
                         if(finalSensor.isOperational()) {
-                            sensorMap.get(finalDir).setColorFilter(Color.GREEN);
+                            sensorMap.get(finalDir).setColorFilter(Color.parseColor("#00A300")); // green
                         }
                         else {
-                            sensorMap.get(finalDir).setColorFilter(Color.RED);
+                            sensorMap.get(finalDir).setColorFilter(Color.parseColor("#D10000")); // red
                         }
                         try {
                             Thread.sleep(2000);
@@ -413,7 +413,7 @@ public class PlayAnimationActivity extends AppCompatActivity {
                 sensor.setMaze(mazeConfig);
                 sensor.setSensorDirection(dir);
                 robot.addDistanceSensor(sensor, dir);
-                sensorMap.get(dir).setColorFilter(Color.GREEN);
+                sensorMap.get(dir).setColorFilter(Color.parseColor("#00A300")); // green
             }
         }
     }

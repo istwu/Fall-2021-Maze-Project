@@ -6,27 +6,98 @@
     android:layout_height="match_parent"
     tools:context=".gui.AMazeActivity">
 
-    <TextView
-        android:id="@+id/titleText"
+
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="705dp"
+        android:layout_height="1267dp"
+        android:scaleType="centerInside"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.187"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.276"
+        app:srcCompat="@drawable/isc_main" />
+
+    <SeekBar
+        android:id="@+id/skillSeekBar"
+        android:layout_width="290dp"
+        android:layout_height="27dp"
+        android:layout_marginTop="8dp"
+        android:indeterminate="false"
+        android:max="15"
+        android:progressBackgroundTint="#FFFFFF"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.495"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/skillText" />
+
+    <Switch
+        android:id="@+id/roomSwitch"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
-        android:text="@string/title"
-        android:textSize="34sp"
+        android:layout_marginTop="20dp"
+        android:checked="true"
+        android:minHeight="48dp"
+        android:showText="false"
+        android:text="@string/include_rooms"
+        android:textColor="#FFFFFF"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.494"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/skillSeekBar" />
+
+    <TextView
+        android:id="@+id/textView14"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:text="@string/select_gen"
+        android:textColor="#FFFFFF"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/roomSwitch" />
 
     <TextView
         android:id="@+id/skillText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="16dp"
+        android:fontFamily="@font/open_sans"
         android:text="@string/skill_level"
+        android:textColor="#FFFFFF"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/titleText" />
+
+    <TextView
+        android:id="@+id/titleText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:fontFamily="@font/bebasnueue"
+        android:text="@string/title"
+        android:textColor="#FFFFFF"
+        android:textSize="48sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.494"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/returnButton"
+        android:layout_width="140dp"
+        android:layout_height="68dp"
+        android:layout_marginStart="48dp"
+        android:layout_marginBottom="172dp"
+        android:onClick="getOldMaze"
+        android:text="@string/return_old_maze"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/algoSpinner"
+        app:layout_constraintVertical_bias="0.355" />
 
     <Button
         android:id="@+id/generateButton"
@@ -40,62 +111,17 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.421"
         app:layout_constraintStart_toEndOf="@+id/returnButton"
-        app:layout_constraintTop_toBottomOf="@+id/algoSpinner" />
-
-    <Button
-        android:id="@+id/returnButton"
-        android:layout_width="140dp"
-        android:layout_height="68dp"
-        android:layout_marginStart="48dp"
-        android:layout_marginBottom="172dp"
-        android:onClick="getOldMaze"
-        android:text="@string/return_old_maze"
-        android:textSize="16sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/algoSpinner" />
-
-    <Switch
-        android:id="@+id/roomSwitch"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
-        android:checked="true"
-        android:minHeight="48dp"
-        android:showText="false"
-        android:text="@string/include_rooms"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/skillSeekBar" />
-
-    <SeekBar
-        android:id="@+id/skillSeekBar"
-        android:layout_width="290dp"
-        android:layout_height="27dp"
-        android:layout_marginTop="4dp"
-        android:indeterminate="false"
-        android:max="15"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.495"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/skillText" />
-
-    <TextView
-        android:id="@+id/textView14"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:text="@string/select_gen"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/roomSwitch" />
+        app:layout_constraintTop_toBottomOf="@+id/algoSpinner"
+        app:layout_constraintVertical_bias="0.355" />
 
     <Spinner
         android:id="@+id/algoSpinner"
         android:layout_width="197dp"
         android:layout_height="48dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="8dp"
+        android:background="#FFFFFF"
+        android:backgroundTint="#000000"
+        android:backgroundTintMode="add"
         android:entries="@array/generation_names"
         android:spinnerMode="dropdown"
         app:layout_constraintEnd_toEndOf="parent"
