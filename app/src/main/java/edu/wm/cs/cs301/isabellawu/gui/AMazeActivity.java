@@ -132,7 +132,7 @@ public class AMazeActivity extends AppCompatActivity {
             Log.v(TAG, "Revisiting old maze with the following values:");
             Log.v(TAG, "Seed: " + sharedPref.getInt("seed", seed));
             Log.v(TAG, "Skill level: " + sharedPref.getInt("skill", skill));
-            Log.v(TAG, "Rooms included: " + sharedPref.getBoolean("perfect", perfect));
+            Log.v(TAG, "Rooms included: " + !sharedPref.getBoolean("perfect", perfect));
             switch(sharedPref.getInt("builderInt", 0)) {
                 case 0:
                     Log.v(TAG, "Builder: DFS");
@@ -195,7 +195,7 @@ public class AMazeActivity extends AppCompatActivity {
         Log.v(TAG, "Generating new maze with the following values:");
         Log.v(TAG, "Seed: " + seed);
         Log.v(TAG, "Skill level: " + skill);
-        Log.v(TAG, "Rooms included: " + perfect);
+        Log.v(TAG, "Rooms included: " + !perfect);
         switch(builder) {
             case DFS:
                 Log.v(TAG, "Builder: DFS");
