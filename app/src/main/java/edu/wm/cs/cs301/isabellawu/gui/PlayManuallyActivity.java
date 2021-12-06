@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import edu.wm.cs.cs301.isabellawu.R;
@@ -74,14 +73,10 @@ public class PlayManuallyActivity extends AppCompatActivity {
         toggleMap.setOnClickListener(view -> {
             if(toggleMap.isChecked()) {
                 keyDown(Constants.UserInput.TOGGLELOCALMAP, 0);
-                Toast toast = Toast.makeText(getApplicationContext(), "Map on", Toast.LENGTH_SHORT);
-                toast.show();
                 Log.v(TAG, "Map on");
             }
             else {
                 keyDown(Constants.UserInput.TOGGLELOCALMAP, 0);
-                Toast toast = Toast.makeText(getApplicationContext(), "Map off", Toast.LENGTH_SHORT);
-                toast.show();
                 Log.v(TAG, "Map off");
             }
         });
@@ -90,14 +85,10 @@ public class PlayManuallyActivity extends AppCompatActivity {
         toggleSolution.setOnClickListener(view -> {
             if(toggleSolution.isChecked()) {
                 keyDown(Constants.UserInput.TOGGLESOLUTION, 0);
-                Toast toast = Toast.makeText(getApplicationContext(), "Solution on", Toast.LENGTH_SHORT);
-                toast.show();
                 Log.v(TAG, "Solution on");
             }
             else {
                 keyDown(Constants.UserInput.TOGGLESOLUTION, 0);
-                Toast toast = Toast.makeText(getApplicationContext(), "Solution off", Toast.LENGTH_SHORT);
-                toast.show();
                 Log.v(TAG, "Solution off");
             }
         });
@@ -106,33 +97,27 @@ public class PlayManuallyActivity extends AppCompatActivity {
         toggleWalls.setOnClickListener(view -> {
             if(toggleWalls.isChecked()) {
                 keyDown(Constants.UserInput.TOGGLEFULLMAP, 0);
-                Toast toast = Toast.makeText(getApplicationContext(), "Walls on", Toast.LENGTH_SHORT);
-                toast.show();
                 Log.v(TAG, "Walls on");
             }
             else {
                 keyDown(Constants.UserInput.TOGGLEFULLMAP, 0);
-                Toast toast = Toast.makeText(getApplicationContext(), "Walls off", Toast.LENGTH_SHORT);
-                toast.show();
                 Log.v(TAG, "Walls off");
             }
         });
 
         Button zoomOutButton = findViewById(R.id.zoomOutButton_manual);
-        zoomOutButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View view) {
-                keyDown(Constants.UserInput.ZOOMOUT, 0);
-                keyDown(Constants.UserInput.ZOOMOUT, 0);
-                keyDown(Constants.UserInput.ZOOMOUT, 0);
-            }
+        zoomOutButton.setOnClickListener(view -> {
+            keyDown(Constants.UserInput.ZOOMOUT, 0);
+            keyDown(Constants.UserInput.ZOOMOUT, 0);
+            keyDown(Constants.UserInput.ZOOMOUT, 0);
+            Log.v(TAG, "Zooming out");
         });
         Button zoomInButton = findViewById(R.id.zoomInButton_manual);
-        zoomInButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View view) {
-                keyDown(Constants.UserInput.ZOOMIN, 0);
-                keyDown(Constants.UserInput.ZOOMIN, 0);
-                keyDown(Constants.UserInput.ZOOMIN, 0);
-            }
+        zoomInButton.setOnClickListener(view -> {
+            keyDown(Constants.UserInput.ZOOMIN, 0);
+            keyDown(Constants.UserInput.ZOOMIN, 0);
+            keyDown(Constants.UserInput.ZOOMIN, 0);
+            Log.v(TAG, "Zooming in");
         });
 
         mazeConfig = GeneratingActivity.maze;
@@ -152,6 +137,7 @@ public class PlayManuallyActivity extends AppCompatActivity {
      */
     @Override
     public void onBackPressed() {
+        Log.v(TAG, "Returning to title screen");
         Intent intent = new Intent(this, AMazeActivity.class);
         intent.putExtra("seed", seed);
         intent.putExtra("skill", skill);
@@ -213,8 +199,6 @@ public class PlayManuallyActivity extends AppCompatActivity {
      */
     public void go2winning() {
         // need to pass in steps
-        Toast toast = Toast.makeText(getApplicationContext(), "Moving to winning screen", Toast.LENGTH_SHORT);
-        toast.show();
         Log.v(TAG, "Moving to winning screen");
         Intent intent = new Intent(this, WinningActivity.class);
         intent.putExtra("seed", seed);
@@ -231,8 +215,6 @@ public class PlayManuallyActivity extends AppCompatActivity {
      * path length and the solution path length through an intent.
      */
     public void go2losing() {
-        Toast toast = Toast.makeText(getApplicationContext(), "Moving to losing screen", Toast.LENGTH_SHORT);
-        toast.show();
         Log.v(TAG, "Moving to losing screen");
         // need to pass in steps, energy, reason for loss
         Intent intent = new Intent(this, LosingActivity.class);

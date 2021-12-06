@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.TextView;
 
 import edu.wm.cs.cs301.isabellawu.R;
@@ -21,6 +22,8 @@ public class WinningActivity extends AppCompatActivity {
     private int skill;
     private boolean perfect;
     private int generation;
+
+    private static final String TAG = "WinningActivity";
 
     /**
      * Instantiates TextViews to show the user has won, their
@@ -62,6 +65,7 @@ public class WinningActivity extends AppCompatActivity {
      */
     @Override
     public void onBackPressed() {
+        Log.v(TAG, "Returning to title screen");
         Intent intent = new Intent(this, AMazeActivity.class);
         intent.putExtra("seed", seed);
         intent.putExtra("skill", skill);

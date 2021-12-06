@@ -10,9 +10,7 @@ import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import java.util.Dictionary;
 import java.util.HashMap;
 import java.util.Random;
 
@@ -75,24 +73,20 @@ public class AMazeActivity extends AppCompatActivity {
             }
 
             /**
-             * Displays a Toast message to inform user that the SeekBar is
+             * Sends a Logcat message to inform user that the SeekBar is
              * receiving their input.
              */
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
-                Toast toast = Toast.makeText(getApplicationContext(), "Setting difficulty", Toast.LENGTH_SHORT);
-                toast.show();
                 Log.v(TAG, "Setting difficulty");
             }
 
             /**
-             * Displays a Toast message to inform user that the SeekBar stopped
+             * Sends a Logcat message to inform user that the SeekBar stopped
              * receiving their input.
              */
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-                Toast toast = Toast.makeText(getApplicationContext(), "Difficulty set to " + skill, Toast.LENGTH_SHORT);
-                toast.show();
                 Log.v(TAG, "Difficulty set to " + skill);
             }
         });
@@ -100,8 +94,6 @@ public class AMazeActivity extends AppCompatActivity {
         Switch roomSwitch = findViewById(R.id.roomSwitch);
         roomSwitch.setOnClickListener(view -> {
             perfect = !roomSwitch.isChecked();
-            Toast toast = Toast.makeText(getApplicationContext(), "Rooms set to " + !perfect, Toast.LENGTH_SHORT);
-            toast.show();
             Log.v(TAG, "Rooms set to " + !perfect);
         });
 
@@ -115,27 +107,21 @@ public class AMazeActivity extends AppCompatActivity {
             public void onItemSelected(android.widget.AdapterView<?> adapterView, View view, int i, long l) {
                 // i = position
                 // l = id
-                String algo = "";
                 switch(i) {
                     case 0: {
-                        algo = "DFS";
                         builder = Order.Builder.DFS;
                         break;
                     }
                     case 1: {
-                        algo = "Prim";
                         builder = Order.Builder.Prim;
                         break;
                     }
                     case 2: {
-                        algo = "Boruvka";
                         builder = Order.Builder.Boruvka;
                         break;
                     }
                 }
-                Toast toast = Toast.makeText(getApplicationContext(), "Generation algorithm set to " + algo, Toast.LENGTH_SHORT);
-                toast.show();
-                Log.v(TAG, "Generation algorithm set to " + algo);
+                Log.v(TAG, "Builder set to " + builder);
             }
 
             /**
@@ -151,11 +137,9 @@ public class AMazeActivity extends AppCompatActivity {
      * Starts GeneratingActivity using the values stored for the
      * previously generated maze.
      */
-    public void getOldMaze(View view) {
+    public void getOldMaze(View view) {                 // FIX THIS
         Bundle extras = getIntent().getExtras();
         if(extras == null) {
-            Toast toast = Toast.makeText(getApplicationContext(), "No previous maze to explore", Toast.LENGTH_SHORT);
-            toast.show();
             Log.v(TAG, "No previous maze to explore");
         }
         else {
@@ -164,18 +148,19 @@ public class AMazeActivity extends AppCompatActivity {
             intent.putExtra("skill", (int) prev_values.get("skill"));
             intent.putExtra("perfect", (boolean) prev_values.get("perfect"));
             intent.putExtra("generation", (int) prev_values.get("generation"));
+            Log.v(TAG, "Returning to old maze with the following values:");
             Log.v(TAG, "Seed: " + prev_values.get("seed"));
             Log.v(TAG, "Skill level: " + prev_values.get("skill"));
             Log.v(TAG, "Rooms included: " + prev_values.get("perfect"));
             switch((int) prev_values.get("generation")) {
                 case 0:
-                    Log.v(TAG, "Generation algorithm: DFS");
+                    Log.v(TAG, "Builder: DFS");
                     break;
                 case 1:
-                    Log.v(TAG, "Generation algorithm: Prim");
+                    Log.v(TAG, "Builder: Prim");
                     break;
                 case 2:
-                    Log.v(TAG, "Generation algorithm: Boruvka");
+                    Log.v(TAG, "Builder: Boruvka");
                     break;
             }
             startActivity(intent);
@@ -194,18 +179,19 @@ public class AMazeActivity extends AppCompatActivity {
         intent.putExtra("skill", skill);
         intent.putExtra("perfect", perfect);
         intent.putExtra("builder", builder);
+        Log.v(TAG, "Generating new maze with the following values:");
         Log.v(TAG, "Seed: " + seed);
         Log.v(TAG, "Skill level: " + skill);
         Log.v(TAG, "Rooms included: " + perfect);
         switch(builder) {
             case DFS:
-                Log.v(TAG, "Generation algorithm: DFS");
+                Log.v(TAG, "Builder: DFS");
                 break;
             case Prim:
-                Log.v(TAG, "Generation algorithm: Prim");
+                Log.v(TAG, "Builder: Prim");
                 break;
             case Boruvka:
-                Log.v(TAG, "Generation algorithm: Boruvka");
+                Log.v(TAG, "Builder: Boruvka");
                 break;
         }
         startActivity(intent);

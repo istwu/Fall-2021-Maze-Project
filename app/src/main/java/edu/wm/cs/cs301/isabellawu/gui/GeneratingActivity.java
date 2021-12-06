@@ -11,7 +11,6 @@ import android.widget.AdapterView;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import edu.wm.cs.cs301.isabellawu.R;
 import edu.wm.cs.cs301.isabellawu.generation.Maze;
@@ -98,8 +97,6 @@ public class GeneratingActivity extends AppCompatActivity implements Order {
                         break;
                     }
                 }
-                Toast toast = Toast.makeText(getApplicationContext(), "Driver set to " + d, Toast.LENGTH_SHORT);
-                toast.show();
                 Log.v(TAG, "Driver set to " + d);
             }
 
@@ -125,21 +122,17 @@ public class GeneratingActivity extends AppCompatActivity implements Order {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 config = i;
-                String c = "";
                 switch(config){
-                    case 0: c = "None";
+                    case 0: Log.v(TAG, "Robot configuration set to None");
                         break;
-                    case 1: c = "Premium";
+                    case 1: Log.v(TAG, "Robot configuration set to Premium");
                         break;
-                    case 2: c = "Mediocre";
+                    case 2: Log.v(TAG, "Robot configuration set to Mediocre");
                         break;
-                    case 3: c = "So-so";
+                    case 3: Log.v(TAG, "Robot configuration set to So-so");
                         break;
-                    case 4: c = "Shaky";
+                    case 4: Log.v(TAG, "Robot configuration set to Shaky");
                 }
-                Toast toast = Toast.makeText(getApplicationContext(), "Robot configuration set to " + c, Toast.LENGTH_SHORT);
-                toast.show();
-                Log.v(TAG, "Robot configuration set to " + c);
             }
 
             /**
@@ -161,7 +154,6 @@ public class GeneratingActivity extends AppCompatActivity implements Order {
         new Thread(() -> {
             factory.order(this);
             factory.waitTillDelivered();
-
         }).start();
     }
 
@@ -172,6 +164,7 @@ public class GeneratingActivity extends AppCompatActivity implements Order {
      */
     @Override
     public void onBackPressed() {
+        Log.v(TAG, "Returning to title screen");
         Intent intent = new Intent(this, AMazeActivity.class);
         intent.putExtra("seed", seed);
         intent.putExtra("skill", skill);
