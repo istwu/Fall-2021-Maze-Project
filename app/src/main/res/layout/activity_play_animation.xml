@@ -18,24 +18,24 @@
         app:layout_constraintTop_toBottomOf="@+id/toggleMapButton_auto" />
 
     <Button
-        android:id="@+id/zoomOutButton_auto"
-        android:layout_width="48dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="40dp"
-        android:layout_marginTop="8dp"
-        android:text="@string/minus"
-        app:layout_constraintStart_toEndOf="@+id/textView8"
-        app:layout_constraintTop_toBottomOf="@+id/toggleMapButton_auto" />
-
-    <Button
         android:id="@+id/zoomInButton_auto"
         android:layout_width="48dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:text="@string/plus"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.263"
+        app:layout_constraintHorizontal_bias="0.24"
         app:layout_constraintStart_toEndOf="@+id/zoomOutButton_auto"
+        app:layout_constraintTop_toBottomOf="@+id/toggleMapButton_auto" />
+
+    <Button
+        android:id="@+id/zoomOutButton_auto"
+        android:layout_width="48dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="8dp"
+        android:text="@string/minus"
+        app:layout_constraintStart_toEndOf="@+id/textView8"
         app:layout_constraintTop_toBottomOf="@+id/toggleMapButton_auto" />
 
     <ToggleButton

@@ -56,10 +56,10 @@ public interface P5PanelF21 {
 			return(Color.rgb(255, 153, 0));	// orange
         case 2:
 //        	return(new Color(RGB_DEF, RGB_DEF, rgbValue).getRGB());
-			return(Color.rgb(255, 204, 0));	// yellow
+			return(Color.rgb(164, 183, 191));	// gray
         case 3:
 //        	return(new Color(rgbValue, RGB_DEF_GREEN, RGB_DEF).getRGB());
-			return(Color.rgb(255, 153, 0));	// orange
+			return(Color.rgb(185, 218, 120));	// green
         case 4:
 //        	return(new Color(RGB_DEF, RGB_DEF_GREEN, rgbValue).getRGB());
 			return(Color.rgb(255, 204, 0));	// yellow
@@ -68,7 +68,7 @@ public interface P5PanelF21 {
 			return(Color.rgb(255, 153, 0));	// orange
         default:
 //        	return(new Color(RGB_DEF, RGB_DEF, RGB_DEF).getRGB());
-			return(Color.rgb(255, 204, 0));	// yellow
+			return(Color.rgb(164, 183, 191));	// gray
         }
     };
 	

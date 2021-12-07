@@ -298,9 +298,11 @@ public class PlayAnimationActivity extends AppCompatActivity {
 
             }
         }
-        for (Thread sensorThread : sensorThreads) {
-            if(sensorThread != null) {
-                sensorThread.interrupt();
+        if(sensorThreads != null) {
+            for (Thread sensorThread : sensorThreads) {
+                if(sensorThread != null) {
+                    sensorThread.interrupt();
+                }
             }
         }
         Intent intent = new Intent(this, WinningActivity.class);
@@ -324,8 +326,12 @@ public class PlayAnimationActivity extends AppCompatActivity {
 
             }
         }
-        for (Thread sensorThread : sensorThreads) {
-            sensorThread.interrupt();
+        if(sensorThreads != null) {
+            for (Thread sensorThread : sensorThreads) {
+                if(sensorThread != null) {
+                    sensorThread.interrupt();
+                }
+            }
         }
 
         // need to pass in steps, energy, reason for loss
