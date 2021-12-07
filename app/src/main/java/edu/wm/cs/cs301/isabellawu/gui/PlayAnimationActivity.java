@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -83,6 +84,12 @@ public class PlayAnimationActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_play_animation);
+
+        if(AMazeActivity.musicPlayer == null) {
+            AMazeActivity.musicPlayer = MediaPlayer.create(PlayAnimationActivity.this, R.raw.kahoot_countdown);
+            AMazeActivity.musicPlayer.start();
+            AMazeActivity.musicPlayer.setLooping(true);
+        }
 
         Bundle extras = getIntent().getExtras();
         config = extras.getInt("config");
@@ -259,6 +266,8 @@ public class PlayAnimationActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         Log.v(TAG, "Returning to title screen");
+        AMazeActivity.musicPlayer.release();
+        AMazeActivity.musicPlayer = null;
         gameIsRunning = false;
         for(Robot.Direction d : Robot.Direction.values()) {
             try {
@@ -290,6 +299,10 @@ public class PlayAnimationActivity extends AppCompatActivity {
      */
     public void go2winning() {
         Log.v(TAG, "Moving to winning screen");
+        if(AMazeActivity.musicPlayer != null) {
+            AMazeActivity.musicPlayer.release();
+            AMazeActivity.musicPlayer = null;
+        }
         gameIsRunning = false;
         for(Robot.Direction d : Robot.Direction.values()) {
             try {
@@ -318,6 +331,10 @@ public class PlayAnimationActivity extends AppCompatActivity {
      */
     public void go2losing() {
         Log.v(TAG, "Moving to losing screen");
+        if(AMazeActivity.musicPlayer != null) {
+            AMazeActivity.musicPlayer.release();
+            AMazeActivity.musicPlayer = null;
+        }
         gameIsRunning = false;
         for(Robot.Direction d : Robot.Direction.values()) {
             try {

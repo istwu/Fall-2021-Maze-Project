@@ -3,6 +3,7 @@ package edu.wm.cs.cs301.isabellawu.gui;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.TextView;
@@ -31,6 +32,12 @@ public class LosingActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_losing);
+
+        if(AMazeActivity.musicPlayer == null) {
+            AMazeActivity.musicPlayer = MediaPlayer.create(LosingActivity.this, R.raw.game_over);
+            AMazeActivity.musicPlayer.start();
+            AMazeActivity.musicPlayer.setLooping(true);
+        }
 
         Bundle extras = getIntent().getExtras();
         path = extras.getInt("path");
@@ -84,6 +91,10 @@ public class LosingActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         Log.v(TAG, "Returning to title screen");
+        if(AMazeActivity.musicPlayer != null) {
+            AMazeActivity.musicPlayer.release();
+            AMazeActivity.musicPlayer = null;
+        }
         Intent intent = new Intent(this, AMazeActivity.class);
         startActivity(intent);
         this.finish();

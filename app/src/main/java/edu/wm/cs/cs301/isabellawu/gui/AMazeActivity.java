@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -25,6 +26,8 @@ import edu.wm.cs.cs301.isabellawu.generation.Order;
  */
 public class AMazeActivity extends AppCompatActivity {
 
+    public static MediaPlayer musicPlayer;
+
     private int seed;
     private int skill;
     private boolean perfect;
@@ -43,6 +46,12 @@ public class AMazeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        if(musicPlayer == null) {
+            musicPlayer = MediaPlayer.create(AMazeActivity.this, R.raw.kahoot_lobby);
+            musicPlayer.start();
+            musicPlayer.setLooping(true);
+        }
 
         TextView skillText = findViewById(R.id.skillText);
         skillText.setText(getString(R.string.skill_level, 0));
@@ -212,6 +221,8 @@ public class AMazeActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
+        musicPlayer.release();
+        musicPlayer = null;
         Intent a = new Intent(Intent.ACTION_MAIN);
         a.addCategory(Intent.CATEGORY_HOME);
         a.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

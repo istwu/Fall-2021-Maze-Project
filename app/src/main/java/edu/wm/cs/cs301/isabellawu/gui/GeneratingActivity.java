@@ -251,6 +251,10 @@ public class GeneratingActivity extends AppCompatActivity implements Order {
                 intent.putExtra("driver", driver);  // 2 = wizard, 3 = wallfollower
                 intent.putExtra("config", config);   // 1 = premium, 2 = mediocre, 3 = soso, 4 = shaky
             }
+            if(AMazeActivity.musicPlayer != null) {
+                AMazeActivity.musicPlayer.release();
+                AMazeActivity.musicPlayer = null;
+            }
             startActivity(intent);
             return;
         }).start();

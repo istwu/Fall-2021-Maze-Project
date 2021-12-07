@@ -3,6 +3,7 @@ package edu.wm.cs.cs301.isabellawu.gui;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.TextView;
@@ -31,6 +32,12 @@ public class WinningActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_winning);
 
+        if(AMazeActivity.musicPlayer == null) {
+            AMazeActivity.musicPlayer = MediaPlayer.create(WinningActivity.this, R.raw.victory_fanfare);
+            AMazeActivity.musicPlayer.start();
+            AMazeActivity.musicPlayer.setLooping(true);
+        }
+
         Bundle extras = getIntent().getExtras();
         path = extras.getInt("path");
         shortest_path = extras.getInt("shortest path");
@@ -57,6 +64,10 @@ public class WinningActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         Log.v(TAG, "Returning to title screen");
+        if(AMazeActivity.musicPlayer != null) {
+            AMazeActivity.musicPlayer.release();
+            AMazeActivity.musicPlayer = null;
+        }
         Intent intent = new Intent(this, AMazeActivity.class);
         startActivity(intent);
         this.finish();
