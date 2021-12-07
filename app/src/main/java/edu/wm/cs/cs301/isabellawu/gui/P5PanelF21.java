@@ -40,8 +40,8 @@ public interface P5PanelF21 {
     public static int getWallColor(int distance, int cc, int extensionX) {
         final int RGB_DEF = 20;
         final int RGB_DEF_GREEN = 60;
-    	
-        final int d = distance / 4;        
+
+		final int d = distance / 4;
         final int part1 = d & 7;
         final int add = (extensionX != 0) ? 1 : 0;        
         // mod used to limit the number of colors to 6
@@ -50,25 +50,25 @@ public interface P5PanelF21 {
         switch (((d >> 3) ^ cc) % 6) {
         case 0:
 //            return(new Color(rgbValue, RGB_DEF, RGB_DEF).getRGB());
-            return(Color.rgb(rgbValue, RGB_DEF, RGB_DEF));
+			return(Color.rgb(255, 204, 0));	// yellow
         case 1:
 //        	return(new Color(RGB_DEF, RGB_DEF_GREEN, RGB_DEF).getRGB());
-			return(Color.rgb(RGB_DEF, RGB_DEF_GREEN, RGB_DEF));
+			return(Color.rgb(255, 153, 0));	// orange
         case 2:
 //        	return(new Color(RGB_DEF, RGB_DEF, rgbValue).getRGB());
-			return(Color.rgb(RGB_DEF, RGB_DEF, rgbValue));
+			return(Color.rgb(255, 204, 0));	// yellow
         case 3:
 //        	return(new Color(rgbValue, RGB_DEF_GREEN, RGB_DEF).getRGB());
-			return(Color.rgb(rgbValue, RGB_DEF_GREEN, RGB_DEF));
+			return(Color.rgb(255, 153, 0));	// orange
         case 4:
 //        	return(new Color(RGB_DEF, RGB_DEF_GREEN, rgbValue).getRGB());
-			return(Color.rgb(RGB_DEF, RGB_DEF_GREEN, rgbValue));
+			return(Color.rgb(255, 204, 0));	// yellow
         case 5:
 //        	return(new Color(rgbValue, RGB_DEF, rgbValue).getRGB());
-			return(Color.rgb(rgbValue, RGB_DEF, rgbValue));
+			return(Color.rgb(255, 153, 0));	// orange
         default:
 //        	return(new Color(RGB_DEF, RGB_DEF, RGB_DEF).getRGB());
-			return(Color.rgb(RGB_DEF, RGB_DEF, RGB_DEF));
+			return(Color.rgb(255, 204, 0));	// yellow
         }
     };
 	

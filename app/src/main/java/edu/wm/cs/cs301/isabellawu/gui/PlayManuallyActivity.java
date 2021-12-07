@@ -172,14 +172,17 @@ public class PlayManuallyActivity extends AppCompatActivity {
      * Makes the player jump.
      */
     public void jump(View view) {
-        keyDown(Constants.UserInput.JUMP, 0);
-//        Toast toast = Toast.makeText(getApplicationContext(), "Jump", Toast.LENGTH_SHORT);
-//        toast.show();
-        Log.v(TAG, "Jump");
+        path += 1;
         if(mazeConfig.getFloorplan().isPartOfBorder(new Wallboard(getCurrentPosition()[0], getCurrentPosition()[1], getCurrentDirection()))) {
             losing = 2;
             go2losing();
         }
+        else {
+            keyDown(Constants.UserInput.JUMP, 0);
+        }
+//        Toast toast = Toast.makeText(getApplicationContext(), "Jump", Toast.LENGTH_SHORT);
+//        toast.show();
+        Log.v(TAG, "Jump");
     }
 
     // WINNING/LOSING METHODS

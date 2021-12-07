@@ -5,7 +5,7 @@
     <application
         android:allowBackup="true"
         android:icon="@mipmap/wm_logo"
-        android:label="@string/app_name"
+        android:label="@string/title"
         android:roundIcon="@mipmap/wm_logo_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AMazeByIsabellaWu">

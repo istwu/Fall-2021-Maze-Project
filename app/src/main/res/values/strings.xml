@@ -28,6 +28,7 @@
     <string name="animation_speed">Animation speed:</string>
 
     <string name="win">You escaped the ISC!</string>
+    <string name="sleep">Congratulations, you get to sleep in a real bed tonight!</string>
     <string name="loss">You got locked inside the ISC...</string>
     <string name="crashed">You crashed into a wall and lost consciousness.</string>
     <string name="no_energy">You ran out of energy and lost consciousness.</string>

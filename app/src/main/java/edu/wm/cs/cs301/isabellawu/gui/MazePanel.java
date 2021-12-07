@@ -109,27 +109,6 @@ public class MazePanel extends View implements P5PanelF21 {
 
 	// --------------------------------------------- //
 
-//	@Override
-//	public void update(Canvas c) {
-//		paint(g);
-//		paint(c);
-//		invalidate();
-//	}
-//	/**
-//	 * Method to draw the buffer image on a graphics object that is
-//	 * obtained from the superclass.
-//	 * Warning: do not override getGraphics() or drawing might fail.
-//	 */
-//	public void update() {
-////		paint(getGraphics());
-//		if (canvas == null) {
-//			System.out.println("StatePlaying.start: warning: no panel, dry-run game without graphics!");
-//			return;
-//		}
-//		paint(canvas);
-//		invalidate();
-//	}
-
 	/**
 	 * Draws the buffer image to the given graphics object.
 	 * This method is called when this panel should redraw itself.
@@ -138,13 +117,6 @@ public class MazePanel extends View implements P5PanelF21 {
 	 */
 //	@Override
 	public void paint(Canvas c) {
-//		if (null == g) {
-//			System.out.println("MazePanel.paint: no graphics object, skipping drawImage operation");
-//		}
-//		else {
-//			g.drawImage(bufferImage,0,0,null);
-//		}
-
 		if (null == c) {
 			Log.v(TAG, "MazePanel.paint: no canvas object, skipping drawImage operation");
 		}
@@ -167,33 +139,6 @@ public class MazePanel extends View implements P5PanelF21 {
 	 * @return graphics object to draw on, null if impossible to obtain image
 	 */
 	public Canvas getBufferGraphics() {
-//		// if necessary instantiate and store a graphics object for later use
-//		if (null == graphics) {
-//			if (null == bufferImage) {
-//				bufferImage = createImage(Constants.VIEW_WIDTH, Constants.VIEW_HEIGHT);
-//				if (null == bufferImage)
-//				{
-//					System.out.println("Error: creation of buffered image failed, presumedly container not displayable");
-//					return null; // still no buffer image, give up
-//				}
-//			}
-//			graphics = (Graphics2D) bufferImage.getGraphics();
-//			if (null == graphics) {
-//				System.out.println("Error: creation of graphics for buffered image failed, presumedly container not displayable");
-//			}
-//			else {
-//				// System.out.println("MazePanel: Using Rendering Hint");
-//				// For drawing in FirstPersonDrawer, setting rendering hint
-//				// became necessary when lines of polygons
-//				// that were not horizontal or vertical looked ragged
-//				graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-//						RenderingHints.VALUE_ANTIALIAS_ON);
-//				graphics.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
-//						RenderingHints.VALUE_INTERPOLATION_BILINEAR);
-//			}
-//		}
-//		return graphics;
-
 		return canvas;
 	}
 
@@ -238,39 +183,21 @@ public class MazePanel extends View implements P5PanelF21 {
 
 	@Override
 	public void addBackground(float percentToExit) {
-//		Color greenWM = Color.decode("#115740");
-//		Color goldWM = Color.decode("#916f41");
-//		Color yellowWM = Color.decode("#FFFF99");
-//
-//		// black rectangle in upper half of screen
-//		// graphics.setColor(Color.black);
-//		// dynamic color setting:
-//		graphics.setColor(blend(yellowWM, goldWM, percentToExit));
-//		graphics.fillRect(0, 0, Constants.VIEW_WIDTH, Constants.VIEW_HEIGHT/2);
-//		// grey rectangle in lower half of screen
-//		// graphics.setColor(Color.darkGray);
-//		// dynamic color setting:
-//		graphics.setColor(blend(Color.lightGray, greenWM, percentToExit));
-//		graphics.fillRect(0, Constants.VIEW_HEIGHT/2, Constants.VIEW_WIDTH, Constants.VIEW_HEIGHT/2);
-
-// 		Color greenWM = Color.valueOf(0x115740);
-//		Color goldWM = Color.valueOf(0x916f41);
-//		Color yellowWM = Color.valueOf(0xFFFF99);
-		int greenWM = Color.parseColor("#115740");
-		int goldWM = Color.parseColor("#916f41");
-		int yellowWM = Color.parseColor("#FFFF99");
+		int sky = Color.parseColor("#88D2E5");
+		int ground = Color.parseColor("#2F7C3A");;
+		int ceiling = Color.parseColor("#A27842");
 
 		// black rectangle in upper half of screen
 		// graphics.setColor(Color.black);
 		// dynamic color setting:
 		paint.setStyle(Paint.Style.FILL);
 		paint.setStrokeWidth(0);
-		paint.setColor(blend(yellowWM, goldWM, percentToExit));
+		paint.setColor(blend(ceiling, sky, percentToExit));
 		canvas.drawRect(0, 0, Constants.VIEW_WIDTH, Constants.VIEW_HEIGHT/2, paint);
 		// grey rectangle in lower half of screen
 		// graphics.setColor(Color.darkGray);
 		// dynamic color setting:
-		paint.setColor(blend(Color.parseColor("lightgray"), greenWM, percentToExit));
+		paint.setColor(blend(Color.rgb(232, 226, 220), ground, percentToExit));
 		canvas.drawRect(0, Constants.VIEW_HEIGHT/2, Constants.VIEW_WIDTH, Constants.VIEW_HEIGHT, paint);
 	}
 
@@ -286,19 +213,6 @@ public class MazePanel extends View implements P5PanelF21 {
 	 * @param weightFstColor is the weight of fstColor, {@code 0.0 <= weightFstColor <= 1.0}
 	 * @return blend of both colors as weighted average of their rgb values
 	 */
-//	private Color blend(Color fstColor, Color sndColor, double weightFstColor) {
-//		if (weightFstColor < 0.1)
-//			return sndColor;
-//		if (weightFstColor > 0.95)
-//			return fstColor;
-//		double r = weightFstColor * fstColor.getRed() + (1-weightFstColor) * sndColor.getRed();
-//		double g = weightFstColor * fstColor.getGreen() + (1-weightFstColor) * sndColor.getGreen();
-//		double b = weightFstColor * fstColor.getBlue() + (1-weightFstColor) * sndColor.getBlue();
-//		double a = Math.max(fstColor.getAlpha(), sndColor.getAlpha());
-//
-//		return new Color((int) r, (int) g, (int) b, (int) a);
-//	}
-
 	private int blend(int fstColor, int sndColor, double weightFstColor) {
 		if (weightFstColor < 0.1)
 			return sndColor;
@@ -374,15 +288,6 @@ public class MazePanel extends View implements P5PanelF21 {
 
 	@Override
 	public void addMarker(float x, float y, String str) {
-//		GlyphVector gv = Font.decode("Serif-PLAIN-16").createGlyphVector(graphics.getFontRenderContext(), str);
-//		Rectangle2D rect = gv.getVisualBounds();
-//		// need to update x, y by half of rectangle width, height
-//		// to serve as x, y coordinates for drawing a GlyphVector
-//		x -= rect.getWidth() / 2;
-//		y += rect.getHeight() / 2;
-//
-//		graphics.drawGlyphVector(gv, x, y);
-
 		int textSize = 34;
 		paint.setStyle(Paint.Style.FILL);
 		paint.setTextSize(textSize);
@@ -392,32 +297,7 @@ public class MazePanel extends View implements P5PanelF21 {
 
 	@Override
 	public void setRenderingHint(P5RenderingHints hintKey, P5RenderingHints hintValue) {
-//		RenderingHints.Key key = null;
-//		Object val = null;
-//		switch(hintKey) {
-//			case KEY_RENDERING: key = RenderingHints.KEY_RENDERING;
-//				break;
-//			case KEY_ANTIALIASING: key = RenderingHints.KEY_ANTIALIASING;
-//				break;
-//			case KEY_INTERPOLATION: key = RenderingHints.KEY_INTERPOLATION;
-//			default:
-//				break;v
-//		}
-//		switch(hintValue) {
-//			case VALUE_RENDER_QUALITY: val = RenderingHints.VALUE_RENDER_QUALITY;
-//				break;
-//			case VALUE_ANTIALIAS_ON: val = RenderingHints.VALUE_ANTIALIAS_ON;
-//				break;
-//			case VALUE_INTERPOLATION_BILINEAR: val = RenderingHints.VALUE_INTERPOLATION_BILINEAR;
-//				break;
-//			default:
-//				break;
-//		}
-//
-//		java.util.Map<RenderingHints.Key, Object> hints = Map.of(key, val);
-//		graphics.addRenderingHints(hints);
-
-//		Log.v(TAG, "setRenderingHint() not implemented");
+		Log.v(TAG, "setRenderingHint() not implemented");
 	}
 
 }
